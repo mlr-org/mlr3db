@@ -29,5 +29,7 @@ Suggests:
     dbplyr,
     tibble,
     testthat
+Remotes:
+    mlr-org/mlr3
 URL: https://github.com/mlr-org/mlr3db
 BugReports: https://github.com/mlr-org/mlr3db/issues
