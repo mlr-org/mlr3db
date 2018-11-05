@@ -1,0 +1,31 @@
+Package: mlr3db
+Title: Data Base Backend for mlr3
+Version: 0.0.0.9000
+Authors@R:
+    c(person(given = "Michel",
+             family = "Lang",
+             role = c("cre", "aut"),
+             email = "michellang@gmail.com",
+             comment = c(ORCID = "0000-0001-9754-0393")))
+Description: Extends the mlr3 package with a data backend to transparently work with data bases.
+    Internally relies on the abstraction of `dbplyr`.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.0
+Depends:
+    R (>= 3.1.0)
+Imports:
+    R6,
+    backports,
+    checkmate,
+    data.table,
+    dplyr,
+    mlr3
+Suggests: 
+    DBI,
+    RSQLite,
+    dbplyr,
+    tibble,
+    testthat
