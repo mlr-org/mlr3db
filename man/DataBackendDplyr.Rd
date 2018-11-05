@@ -5,7 +5,7 @@
 \title{DataBackend for dplyr/dbplyr}
 \description{
 Abstraction for \code{\link[dplyr:tbl]{tbl}} used in packages \pkg{dplyr} and \pkg{dbplyr}.
-Allows to connect a \link[mlr:Task]{Task} to a out-of-memory data base.
+Allows to connect a \link[mlr3:Task]{Task} to a out-of-memory data base.
 
 Returns an object of class \link{DataBackend}.
 }

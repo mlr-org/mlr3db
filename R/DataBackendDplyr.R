@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Abstraction for [`tbl`][dplyr::tbl()] used in packages \pkg{dplyr} and \pkg{dbplyr}.
-#' Allows to connect a [Task][mlr::Task] to a out-of-memory data base.
+#' Allows to connect a [Task][mlr3::Task] to a out-of-memory data base.
 #'
 #' Returns an object of class [DataBackend].
 #'
