@@ -3,7 +3,7 @@
 #' @description
 #' Abstraction for [`tbl`][dplyr::tbl()] used in packages \pkg{dplyr} and \pkg{dbplyr}.
 #' Allows to connect a [Task][mlr::Task] to a out-of-memory data base.
-#' 
+#'
 #' Returns an object of class [DataBackend].
 #'
 #' @section Usage:
@@ -15,10 +15,10 @@
 #'
 #' @section Arguments:
 #' * `tbl` \[[`tbl`][dplyr::tbl()]\]\cr
-#'   See [dplyr::tbl()] for construction. 
+#'   See [dplyr::tbl()] for construction.
 #'   Also note that all [`tibbles`][tibble::tibble()] inherit from `tbl`.
 #' * `primary_key` \[`character(1)`\]:\cr
-#'   Name of the column in `tbl` which represents a unique row identifier (as integer or character). 
+#'   Name of the column in `tbl` which represents a unique row identifier (as integer or character).
 #'
 #' @name DataBackendDplyr
 #' @examples
@@ -50,7 +50,7 @@
 #' tbl = dplyr::filter(tbl, row_id %in% 1:120) # Use only first 120 rows
 #' b = DataBackendDplyr$new(tbl, primary_key = "row_id")
 #' print(b)
-#' 
+#'
 #' # Note that SQLite does not support factors, column Species has been converted to character
 #' lapply(b$head(), class)
 NULL
@@ -119,27 +119,3 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
     tbl = NULL
   )
 )
-
-if (FALSE) {
-  library(checkmate)
-
-  library(dplyr)
-  con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  cars = mtcars
-  cars$row_id = 1:32
-  copy_to(con, cars)
-  data <- tbl(con, "cars")
-  primary_key = "row_id"
-  self = private = list()
-  
-  rows = 1:10
-  cols = "hp"
-
-  b = DataBackendDplyr$new(data, "row_id")
-  b$nrow
-  b$ncol
-  b$colnames
-  b$rownames
-  b$distinct(b$colnames)
-  b$head(1)
-}
