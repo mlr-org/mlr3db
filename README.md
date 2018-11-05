@@ -4,4 +4,4 @@
 
 
 Extends the [mlr3](https://github.com/mlr-org/mlr3) package with a data backend to transparently work with data bases.
-Internally relies on the abstraction of packages [dplyr](https://dplyr.tidyverse.org/) and [dbplyr](https://dplyr.tidyverse.org/).
+Internally relies on the abstraction of packages [dplyr](https://dplyr.tidyverse.org/) and [dbplyr](https://dbplyr.tidyverse.org/).
