@@ -99,7 +99,7 @@ And to keep the runtimes reasonable for this toy example, we filter the data to 
 tbl = dplyr::filter(tbl, row_id %% 2 == 0)
 ```
 
-This subsetted table is now used to create a `DataBackendDplyr`.
+This subsetted table is now used to create a `mlr3db::DataBackendDplyr`.
 ```{r}
 b = DataBackendDplyr$new(tbl, primary_key = "row_id")
 ```
@@ -115,7 +115,7 @@ Note that the `mlr3::DataBackend` just does not know about any rows or columns w
 
 We create the following mlr3 objects:
 
-* A regression task, based on the previously created `DataBackendDplyr`
+* A regression task, based on the previously created `mlr3db::DataBackendDplyr`
 * A regression learner (using `rpart::rpart()`)
 * A resampling strategy: 3 times repeated subsampling using 10\% of the observations for training (see `mlr3::Resampling`)
 * A list of `mlr3::Measure` to measure MSE, time to train and time to predict
@@ -125,7 +125,7 @@ task = TaskRegr$new("flights_sqlite", b, target = "arr_delay")
 learner = mlr_learners$get("regr.rpart")
 resampling = mlr_resamplings$get("subsampling")
 resampling$par_vals = list(repeats = 3, ratio = 0.1)
-measures = mlr_measures$mget(c("mse", "time_train", "time_predict"))
+measures = mlr_measures$mget("mse")
 ```
 
 We pass all these objects to `mlr3::resample()` to perform a simple resampling with three iterations.
