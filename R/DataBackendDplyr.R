@@ -1,17 +1,17 @@
 #' @title DataBackend for dplyr/dbplyr
 #'
 #' @description
-#' Abstraction for [`tbl`][dplyr::tbl()] used in packages \pkg{dplyr} and \pkg{dbplyr}.
+#' A [mlr3::DataBackend] using [`tbl`][dplyr::tbl()] from packages \pkg{dplyr}/\pkg{dbplyr}.
 #' Allows to connect a [Task][mlr3::Task] to a out-of-memory data base.
 #'
-#' Returns an object of class [DataBackend].
+#' Returns an object of class [mlr3::DataBackend].
 #'
 #' @section Usage:
 #' ```
 #' # Construction
 #' b = DataBackendDplyr$new(tbl, primary_key)
 #' ```
-#' The interface is described in [DataBackend].
+#' The interface is described in [mlr3::DataBackend].
 #'
 #' @section Arguments:
 #' * `tbl` \[[`tbl`][dplyr::tbl()]\]\cr

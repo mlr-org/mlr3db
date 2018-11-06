@@ -4,17 +4,17 @@
 \alias{DataBackendDplyr}
 \title{DataBackend for dplyr/dbplyr}
 \description{
-Abstraction for \code{\link[dplyr:tbl]{tbl}} used in packages \pkg{dplyr} and \pkg{dbplyr}.
+A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{\link[dplyr:tbl]{tbl}} from packages \pkg{dplyr}/\pkg{dbplyr}.
 Allows to connect a \link[mlr3:Task]{Task} to a out-of-memory data base.
 
-Returns an object of class \link{DataBackend}.
+Returns an object of class \link[mlr3:DataBackend]{mlr3::DataBackend}.
 }
 \section{Usage}{
 \preformatted{# Construction
 b = DataBackendDplyr$new(tbl, primary_key)
 }
 
-The interface is described in \link{DataBackend}.
+The interface is described in \link[mlr3:DataBackend]{mlr3::DataBackend}.
 }
 
 \section{Arguments}{
