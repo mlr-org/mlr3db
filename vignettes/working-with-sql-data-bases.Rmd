@@ -129,7 +129,7 @@ measures = mlr_measures$mget("mse")
 ```
 
 We pass all these objects to `mlr3::resample()` to perform a simple resampling with three iterations.
-In each iteration, a subset of the data is queried from the SQLite data base and passed to `rpart::rpart()` transparently.
+In each iteration, only the required subset of the data is queried from the SQLite data base and passed to `rpart::rpart()`:
 ```{r}
 rr = resample(task, learner, resampling, measures = measures)
 print(rr)
