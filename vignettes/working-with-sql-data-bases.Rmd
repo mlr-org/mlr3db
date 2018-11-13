@@ -124,7 +124,7 @@ We create the following mlr3 objects:
 task = TaskRegr$new("flights_sqlite", b, target = "arr_delay")
 learner = mlr_learners$get("regr.rpart")
 resampling = mlr_resamplings$get("subsampling")
-resampling$par_vals = list(repeats = 3, ratio = 0.1)
+resampling$param_vals = list(repeats = 3, ratio = 0.1)
 measures = mlr_measures$mget("mse")
 ```
 
