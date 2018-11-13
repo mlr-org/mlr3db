@@ -20,9 +20,9 @@ set.seed(1)
 
 First, make sure that you have the following packages installed on your system:
 ```{r}
-library(mlr3)
-library(mlr3db)
-library(dplyr)
+suppressPackageStartupMessages(library(mlr3))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(mlr3db))
 
 # Abstraction for various data bases
 if (!requireNamespace("dbplyr", quietly = TRUE))
@@ -133,3 +133,11 @@ In each iteration, only the required subset of the data is queried from the SQLi
 rr = resample(task, learner, resampling, measures = measures)
 print(rr)
 ```
+
+## Cleanup
+Finally, we remove the `tbl` object and close the connection.
+```{r}
+rm(tbl)
+DBI::dbDisconnect(con)
+```
+

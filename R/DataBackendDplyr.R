@@ -53,6 +53,10 @@
 #'
 #' # Note that SQLite does not support factors, column Species has been converted to character
 #' lapply(b$head(), class)
+#'
+#' # Cleanup
+#' rm(tbl)
+#' DBI::dbDisconnect(con)
 NULL
 
 #' @importFrom mlr3 DataBackend
