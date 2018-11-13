@@ -22,6 +22,7 @@ First, make sure that you have the following packages installed on your system:
 ```{r}
 library(mlr3)
 library(mlr3db)
+library(dplyr)
 
 # Abstraction for various data bases
 if (!requireNamespace("dbplyr", quietly = TRUE))
@@ -68,7 +69,7 @@ We store the SQLite data base in the temporary directory and then copy over the 
 ```{r}
 path = tempfile("flights", fileext = ".sqlite")
 con = DBI::dbConnect(RSQLite::SQLite(), path)
-tbl = dplyr::copy_to(con, flights)
+tbl = copy_to(con, flights)
 ```
 We now continue to work on the data set stored on the file system, referenced by `tbl`, and can remove the in-memory copy.
 ```{r}
@@ -77,32 +78,30 @@ rm(flights) # remove the in-memory data set
 
 ## Create a DataBackend
 
-We remove some columns from the `tbl` where the regression tree would have problems without proper preprocessing:
+We reduce the data set to only keep a subset of features where the regression tree will have no problems:
 ```{r}
-keep = colnames(tbl)
-
-# date column
-keep = setdiff(keep, "time_hour")
-
-# character column with many unique values
-keep = setdiff(keep, c("origin", "dest", "tailnum"))
-
-tbl = dplyr::select(tbl, keep)
+keep = c("row_id", "year", "month", "day", "hour", "minute", "dep_time", "arr_time", "carrier", "flight", "air_time", "distance", "arr_delay")
+tbl = select(tbl, keep)
 colnames(tbl)
 ```
 Additionally, we remove those observations where the arrival delay (`arr_delay`) has a missing value:
 ```{r}
-tbl = dplyr::filter(tbl, !is.na(arr_delay))
+tbl = filter(tbl, !is.na(arr_delay))
 ```
 And to keep the runtimes reasonable for this toy example, we filter the data to only use every second row:
 ```{r}
-tbl = dplyr::filter(tbl, row_id %% 2 == 0)
+tbl = filter(tbl, row_id %% 2 == 0)
+```
+Finally, we merge the factor levels of feature `carrier` so that infrequent carriers are replaced by level "other":
+```{r}
+tbl = mutate(tbl, carrier = case_when(carrier %in% c("OO", "HA", "YV", "F9", "AS", "FL", "VX", "WN") ~ "other", TRUE ~ carrier))
 ```
 
 This subsetted table is now used to create a `mlr3db::DataBackendDplyr`.
 ```{r}
-b = DataBackendDplyr$new(tbl, primary_key = "row_id")
+b = as_data_backend(tbl, primary_key = "row_id")
 ```
+
 We can now use the interface of `mlr3::DataBackend` to query the data:
 ```{r}
 b$nrow

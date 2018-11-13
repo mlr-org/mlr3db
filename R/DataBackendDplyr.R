@@ -55,6 +55,7 @@
 #' lapply(b$head(), class)
 NULL
 
+#' @importFrom mlr3 DataBackend
 #' @export
 DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
@@ -119,3 +120,9 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
     tbl = NULL
   )
 )
+
+#' @importFrom mlr3 as_data_backend
+#' @export
+as_data_backend.tbl = function(data, primary_key) {
+  DataBackendDplyr$new(data, primary_key)
+}
