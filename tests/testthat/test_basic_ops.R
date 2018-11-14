@@ -12,4 +12,5 @@ test_that("valid DataBackend (tbl/sqlite)", {
   b = DataBackendDplyr$new(data, "row_id")
   expect_backend(b)
   expect_iris_backend(b)
+  DBI::dbDisconnect(data$src$con)
 })

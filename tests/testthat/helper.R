@@ -9,7 +9,7 @@ as_tbl = function(data, primary_key = "row_id") {
 as_sqlite = function(data, primary_key = "row_id") {
   data[[primary_key]] = seq_len(nrow(data))
 
-  con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  con = DBI::dbConnect(RSQLite::SQLite(), ":memory:")
   dplyr::copy_to(con, data)
   dplyr::tbl(con, "data")
 }

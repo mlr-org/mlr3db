@@ -9,16 +9,17 @@
 #' @section Usage:
 #' ```
 #' # Construction
-#' b = DataBackendDplyr$new(tbl, primary_key)
+#' b = DataBackendDplyr$new(data, primary_key)
+#' b = as_data_backend(data, primary_key)
 #' ```
 #' The interface is described in [mlr3::DataBackend].
 #'
 #' @section Arguments:
-#' * `tbl` \[[`tbl`][dplyr::tbl()]\]\cr
+#' * `data` \[[`tbl`][dplyr::tbl()]\]\cr
 #'   See [dplyr::tbl()] for construction.
 #'   Also note that all [`tibbles`][tibble::tibble()] inherit from `tbl`.
 #' * `primary_key` \[`character(1)`\]:\cr
-#'   Name of the column in `tbl` which represents a unique row identifier (as integer or character).
+#'   Name of the column in `data` which represents a unique row identifier (as integer or character).
 #'
 #' @name DataBackendDplyr
 #' @examples
@@ -63,65 +64,55 @@ NULL
 #' @export
 DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
-    primary_key = NULL,
-
-    initialize = function(tbl, primary_key) {
-      if (!dplyr::is.tbl(tbl))
+    initialize = function(data, primary_key) {
+      if (!dplyr::is.tbl(data))
         stop("Argument 'tbl' must be of class 'tbl'")
-
-      self$primary_key = assert_string(primary_key)
-      assert_names(colnames(tbl), must.include = primary_key)
-      assert_atomic_vector(dplyr::collect(dplyr::select_at(tbl, primary_key))[[1L]], any.missing = FALSE, unique = TRUE)
-
-      private$tbl = tbl
+      super$initialize(data, primary_key)
+      assert_choice(primary_key, colnames(data))
     },
 
     data = function(rows, cols) {
       assert_atomic_vector(rows)
       assert_names(cols, type = "unique")
-      cols = intersect(cols, colnames(private$tbl))
+      cols = intersect(cols, colnames(private$.data))
 
       res = setDT(dplyr::collect(dplyr::select_at(
-          dplyr::filter_at(private$tbl, self$primary_key, dplyr::all_vars(. %in% rows)),
+          dplyr::filter_at(private$.data, self$primary_key, dplyr::all_vars(. %in% rows)),
           union(cols, self$primary_key))))
 
       res[list(rows), cols, nomatch = 0L, with = FALSE, on = self$primary_key]
     },
 
     head = function(n = 6L) {
-      setDT(dplyr::collect(head(private$tbl, n)))[]
+      setDT(dplyr::collect(head(private$.data, n)))[]
     },
 
     distinct = function(cols) {
       distinct = function(col) {
-        x = dplyr::collect(dplyr::distinct(dplyr::select_at(private$tbl, col)))[[1L]]
+        x = dplyr::collect(dplyr::distinct(dplyr::select_at(private$.data, col)))[[1L]]
         if (is.factor(x)) as.character(x) else x
       }
-      cols = intersect(cols, colnames(private$tbl))
+      cols = intersect(cols, colnames(private$.data))
       setNames(lapply(cols, distinct), cols)
     }
   ),
 
   active = list(
     rownames = function() {
-      dplyr::collect(dplyr::select_at(private$tbl, self$primary_key))[[1L]]
+      dplyr::collect(dplyr::select_at(private$.data, self$primary_key))[[1L]]
     },
 
     colnames = function() {
-      colnames(private$tbl)
+      colnames(private$.data)
     },
 
     nrow = function() {
-      dplyr::collect(dplyr::tally(private$tbl))[[1L]]
+      dplyr::collect(dplyr::tally(private$.data))[[1L]]
     },
 
     ncol = function() {
-      ncol(private$tbl)
+      ncol(private$.data)
     }
-  ),
-
-  private = list(
-    tbl = NULL
   )
 )
 

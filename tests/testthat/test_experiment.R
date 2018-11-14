@@ -1,7 +1,7 @@
 context("experiment")
 
 data = as_sqlite(iris)
-b = DataBackendDplyr$new(data, "row_id")
+b = as_data_backend(data, "row_id")
 task = mlr3::TaskClassif$new("iris_sqlite", b, "Species")
 learner = mlr3::mlr_learners$get("classif.dummy")
 
@@ -18,3 +18,5 @@ test_that("resample work", {
   rr = mlr3::resample(task, learner, resampling)
   expect_resample_result(rr)
 })
+
+DBI::dbDisconnect(data$src$con)
