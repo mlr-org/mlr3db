@@ -79,7 +79,7 @@ rm(flights) # remove the in-memory data set
 ## Create a DataBackend
 
 We reduce the data set to only keep a subset of features where the regression tree will have no problems:
-```{r, tidy=TRUE}
+```{r}
 keep = c("row_id", "year", "month", "day", "hour", "minute", "dep_time",
   "arr_time", "carrier", "flight", "air_time", "distance", "arr_delay")
 tbl = select(tbl, keep)
