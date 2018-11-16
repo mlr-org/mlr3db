@@ -61,45 +61,46 @@
 NULL
 
 #' @importFrom mlr3 DataBackend
+#' @importFrom dplyr is.tbl collect select_at filter_at all_vars distinct tally
 #' @export
 DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
     initialize = function(data, primary_key) {
-      if (!dplyr::is.tbl(data))
+      if (!is.tbl(data))
         stop("Argument 'tbl' must be of class 'tbl'")
       super$initialize(data, primary_key)
       assert_choice(primary_key, colnames(data))
     },
 
-    data = function(rows, cols) {
+    data = function(rows, cols, format = self$formats[1L]) {
       assert_atomic_vector(rows)
       assert_names(cols, type = "unique")
       cols = intersect(cols, colnames(private$.data))
 
-      res = setDT(dplyr::collect(dplyr::select_at(
-          dplyr::filter_at(private$.data, self$primary_key, dplyr::all_vars(. %in% rows)),
+      res = setDT(collect(select_at(
+          filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
           union(cols, self$primary_key))))
 
       res[list(rows), cols, nomatch = 0L, with = FALSE, on = self$primary_key]
     },
 
     head = function(n = 6L) {
-      setDT(dplyr::collect(head(private$.data, n)))[]
+      setDT(collect(head(private$.data, n)))[]
     },
 
     distinct = function(cols) {
-      distinct = function(col) {
-        x = dplyr::collect(dplyr::distinct(dplyr::select_at(private$.data, col)))[[1L]]
+      get_distinct = function(col) {
+        x = collect(distinct(select_at(private$.data, col)))[[1L]]
         if (is.factor(x)) as.character(x) else x
       }
       cols = intersect(cols, colnames(private$.data))
-      setNames(lapply(cols, distinct), cols)
+      setNames(lapply(cols, get_distinct), cols)
     }
   ),
 
   active = list(
     rownames = function() {
-      dplyr::collect(dplyr::select_at(private$.data, self$primary_key))[[1L]]
+      collect(select_at(private$.data, self$primary_key))[[1L]]
     },
 
     colnames = function() {
@@ -107,7 +108,7 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
     },
 
     nrow = function() {
-      dplyr::collect(dplyr::tally(private$.data))[[1L]]
+      collect(tally(private$.data))[[1L]]
     },
 
     ncol = function() {

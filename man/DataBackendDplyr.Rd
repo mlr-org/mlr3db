@@ -11,7 +11,8 @@ Returns an object of class \link[mlr3:DataBackend]{mlr3::DataBackend}.
 }
 \section{Usage}{
 \preformatted{# Construction
-b = DataBackendDplyr$new(tbl, primary_key)
+b = DataBackendDplyr$new(data, primary_key)
+b = as_data_backend(data, primary_key)
 }
 
 The interface is described in \link[mlr3:DataBackend]{mlr3::DataBackend}.
@@ -20,11 +21,11 @@ The interface is described in \link[mlr3:DataBackend]{mlr3::DataBackend}.
 \section{Arguments}{
 
 \itemize{
-\item \code{tbl} [\code{\link[dplyr:tbl]{tbl}}]\cr
+\item \code{data} [\code{\link[dplyr:tbl]{tbl}}]\cr
 See \code{\link[dplyr:tbl]{dplyr::tbl()}} for construction.
 Also note that all \code{\link[tibble:tibble]{tibbles}} inherit from \code{tbl}.
 \item \code{primary_key} [\code{character(1)}]:\cr
-Name of the column in \code{tbl} which represents a unique row identifier (as integer or character).
+Name of the column in \code{data} which represents a unique row identifier (as integer or character).
 }
 }
 
