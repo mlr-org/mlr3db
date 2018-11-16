@@ -3,7 +3,7 @@ context("experiment")
 data = as_sqlite(iris)
 b = as_data_backend(data, "row_id")
 task = mlr3::TaskClassif$new("iris_sqlite", b, "Species")
-learner = mlr3::mlr_learners$get("classif.dummy")
+learner = mlr3::mlr_learners$get("classif.featureless")
 
 test_that("simple experiments work", {
   e = mlr3::Experiment$new(task, learner)
