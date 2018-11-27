@@ -25,6 +25,7 @@
 #' @examples
 #' # Backend using a in-memory tibble
 #' data = tibble::as.tibble(iris)
+#' data$Sepal.Length[1:30] = NA
 #' data$row_id = 1:150
 #' b = DataBackendDplyr$new(data, primary_key = "row_id")
 #'
@@ -52,6 +53,12 @@
 #' b = DataBackendDplyr$new(tbl, primary_key = "row_id")
 #' print(b)
 #'
+#' # Query disinct values
+#' b$distinct("Species")
+#'
+#' # Query number of missing values
+#' b$missing(b$rownames, b$colnames)
+#'
 #' # Note that SQLite does not support factors, column Species has been converted to character
 #' lapply(b$head(), class)
 #'
@@ -61,7 +68,7 @@
 NULL
 
 #' @importFrom mlr3 DataBackend
-#' @importFrom dplyr is.tbl collect select_at filter_at all_vars distinct tally
+#' @importFrom dplyr is.tbl collect select_at filter_at summarize_at all_vars distinct tally funs
 #' @export
 DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
@@ -93,8 +100,26 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
         x = collect(distinct(select_at(private$.data, col)))[[1L]]
         if (is.factor(x)) as.character(x) else x
       }
-      cols = intersect(cols, colnames(private$.data))
+      assert_names(cols, type = "unique")
+      cols = intersect(cols, self$colnames)
       setNames(lapply(cols, get_distinct), cols)
+    },
+
+    missing = function(rows, cols) {
+      assert_atomic_vector(rows)
+      assert_names(cols, type = "unique")
+
+      cols = intersect(cols, self$colnames)
+      if (length(cols) == 0L)
+        return(setNames(integer(0L), character(0L)))
+
+      res = collect(summarize_at(
+        filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
+        cols, funs(sum(is.na(.), na.rm = TRUE))))
+
+      if (nrow(res) == 0L)
+        return(setNames(integer(length(cols)), cols))
+      unlist(res, recursive = FALSE)
     }
   ),
 

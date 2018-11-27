@@ -32,6 +32,7 @@ Name of the column in \code{data} which represents a unique row identifier (as i
 \examples{
 # Backend using a in-memory tibble
 data = tibble::as.tibble(iris)
+data$Sepal.Length[1:30] = NA
 data$row_id = 1:150
 b = DataBackendDplyr$new(data, primary_key = "row_id")
 
@@ -58,6 +59,12 @@ tbl = dplyr::select_at(tbl, setdiff(colnames(tbl), "Sepal.Width")) # do not use 
 tbl = dplyr::filter(tbl, row_id \%in\% 1:120) # Use only first 120 rows
 b = DataBackendDplyr$new(tbl, primary_key = "row_id")
 print(b)
+
+# Query disinct values
+b$distinct("Species")
+
+# Query number of missing values
+b$missing(b$rownames, b$colnames)
 
 # Note that SQLite does not support factors, column Species has been converted to character
 lapply(b$head(), class)
