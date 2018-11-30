@@ -4,8 +4,8 @@
 \alias{DataBackendDplyr}
 \title{DataBackend for dplyr/dbplyr}
 \description{
-A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{\link[dplyr:tbl]{tbl}} from packages \pkg{dplyr}/\pkg{dbplyr}.
-Allows to connect a \link[mlr3:Task]{Task} to a out-of-memory data base.
+A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{\link[dplyr:tbl]{dplyr::tbl()}} from packages \pkg{dplyr}/\pkg{dbplyr}.
+Allows to connect a \link[mlr3:Task]{mlr3::Task} to a out-of-memory data base.
 
 Returns an object of class \link[mlr3:DataBackend]{mlr3::DataBackend}.
 }
@@ -21,10 +21,10 @@ The interface is described in \link[mlr3:DataBackend]{mlr3::DataBackend}.
 \section{Arguments}{
 
 \itemize{
-\item \code{data} [\code{\link[dplyr:tbl]{tbl}}]\cr
+\item \code{data} (\code{\link[dplyr:tbl]{dplyr::tbl()}}):\cr
 See \code{\link[dplyr:tbl]{dplyr::tbl()}} for construction.
 Also note that all \code{\link[tibble:tibble]{tibbles}} inherit from \code{tbl}.
-\item \code{primary_key} [\code{character(1)}]:\cr
+\item \code{primary_key} (\code{character(1)}):\cr
 Name of the column in \code{data} which represents a unique row identifier (as integer or character).
 }
 }

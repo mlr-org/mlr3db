@@ -1,8 +1,8 @@
 #' @title DataBackend for dplyr/dbplyr
 #'
 #' @description
-#' A [mlr3::DataBackend] using [`tbl`][dplyr::tbl()] from packages \pkg{dplyr}/\pkg{dbplyr}.
-#' Allows to connect a [Task][mlr3::Task] to a out-of-memory data base.
+#' A [mlr3::DataBackend] using [dplyr::tbl()] from packages \pkg{dplyr}/\pkg{dbplyr}.
+#' Allows to connect a [mlr3::Task] to a out-of-memory data base.
 #'
 #' Returns an object of class [mlr3::DataBackend].
 #'
@@ -15,10 +15,10 @@
 #' The interface is described in [mlr3::DataBackend].
 #'
 #' @section Arguments:
-#' * `data` \[[`tbl`][dplyr::tbl()]\]\cr
+#' * `data` ([dplyr::tbl()]):\cr
 #'   See [dplyr::tbl()] for construction.
 #'   Also note that all [`tibbles`][tibble::tibble()] inherit from `tbl`.
-#' * `primary_key` \[`character(1)`\]:\cr
+#' * `primary_key` (`character(1)`):\cr
 #'   Name of the column in `data` which represents a unique row identifier (as integer or character).
 #'
 #' @name DataBackendDplyr
