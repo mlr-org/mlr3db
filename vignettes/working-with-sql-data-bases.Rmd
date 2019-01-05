@@ -128,13 +128,12 @@ task = TaskRegr$new("flights_sqlite", b, target = "arr_delay")
 learner = mlr_learners$get("regr.rpart")
 resampling = mlr_resamplings$get("subsampling")
 resampling$param_vals = list(repeats = 3, ratio = 0.1)
-measures = mlr_measures$mget("mse")
 ```
 
 We pass all these objects to `mlr3::resample()` to perform a simple resampling with three iterations.
 In each iteration, only the required subset of the data is queried from the SQLite data base and passed to `rpart::rpart()`:
 ```{r}
-rr = resample(task, learner, resampling, measures = measures)
+rr = resample(task, learner, resampling)
 print(rr)
 ```
 
@@ -144,4 +143,3 @@ Finally, we remove the `tbl` object and close the connection.
 rm(tbl)
 DBI::dbDisconnect(con)
 ```
-
