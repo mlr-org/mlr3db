@@ -139,6 +139,12 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
     ncol = function() {
       ncol(private$.data)
     }
+  ),
+
+  private = list(
+    .calculate_hash = function() {
+      digest(private$.data$ops, algo = "xxhash64")
+    }
   )
 )
 
