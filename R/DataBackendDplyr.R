@@ -1,27 +1,33 @@
 #' @title DataBackend for dplyr/dbplyr
 #'
+#' @usage NULL
+#' @format [R6::R6Class] object inheriting from [mlr3::DataBackend].
+#'
 #' @description
-#' A [mlr3::DataBackend] using [dplyr::tbl()] from packages \pkg{dplyr}/\pkg{dbplyr}.
+#' A [mlr3::DataBackend] using [dplyr::tbl()] from packages \CRANpkg{dplyr}/\CRANpkg{dbplyr}.
+#' This includes [`tibbles`][tibble::tibble()].
 #' Allows to connect a [mlr3::Task] to a out-of-memory data base.
 #'
-#' Returns an object of class [mlr3::DataBackend].
-#'
-#' @section Usage:
+#' @section Construction:
 #' ```
-#' # Construction
-#' b = DataBackendDplyr$new(data, primary_key)
-#' b = as_data_backend(data, primary_key)
+#' DataBackendDplyr$new(data, primary_key = NULL)
 #' ```
-#' The interface is described in [mlr3::DataBackend].
 #'
-#' @section Arguments:
-#' * `data` ([dplyr::tbl()]):\cr
-#'   See [dplyr::tbl()] for construction.
-#'   Also note that all [`tibbles`][tibble::tibble()] inherit from `tbl`.
-#' * `primary_key` (`character(1)`):\cr
-#'   Name of the column in `data` which represents a unique row identifier (as integer or character).
+#' * `data` :: [data.table::data.table()]\cr
+#'   The input [data.table::data.table()] (as reference).
 #'
-#' @name DataBackendDplyr
+#' * `primary_key` :: `character(1)`\cr
+#'   Name of the primary key column.
+#'
+#' Alternatively, use [as_data_backend] on a [dplyr::tbl()] which will
+#' construct a [DataBackend] with a copy of the data.
+#'
+#' @inheritSection mlr3::DataBackend Fields
+#' @inheritSection mlr3::DataBackend Methods
+#'
+#' @importFrom mlr3 DataBackend
+#' @importFrom dplyr is.tbl collect select_at filter_at summarize_at all_vars distinct tally funs
+#' @export
 #' @examples
 #' # Backend using a in-memory tibble
 #' data = tibble::as.tibble(iris)
@@ -65,11 +71,6 @@
 #' # Cleanup
 #' rm(tbl)
 #' DBI::dbDisconnect(con)
-NULL
-
-#' @importFrom mlr3 DataBackend
-#' @importFrom dplyr is.tbl collect select_at filter_at summarize_at all_vars distinct tally funs
-#' @export
 DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
     initialize = function(data, primary_key) {
@@ -143,7 +144,11 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
 
   private = list(
     .calculate_hash = function() {
-      digest(private$.data$ops, algo = "xxhash64")
+      if (inherits(private$.data, "tbl_lazy")) {
+        digest(list(private$.data$ops, private$.data$con), algo = "xxhash64")
+      } else {
+        digest(private$.data, algo = "xxhash64")
+      }
     }
   )
 )

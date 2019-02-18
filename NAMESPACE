@@ -3,7 +3,7 @@
 S3method(as_data_backend,tbl)
 export(DataBackendDplyr)
 import(checkmate)
-import(data.table)
+import(data.table, except = transpose)
 importFrom(R6,R6Class)
 importFrom(digest,digest)
 importFrom(dplyr,all_vars)

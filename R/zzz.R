@@ -1,5 +1,5 @@
+#' @rawNamespace import(data.table, except = transpose)
 #' @import checkmate
-#' @import data.table
 #' @importFrom stats setNames
 #' @importFrom R6 R6Class
 #' @importFrom digest digest
