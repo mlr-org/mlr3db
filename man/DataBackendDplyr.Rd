@@ -52,14 +52,16 @@ Returns a slice of the data in a specific format.
 Currently, the only supported format is "data.table".
 The rows must be addressed as vector of primary key values, columns must be referred to via column names.
 Non-existing rows and columns are silently ignored.
-\item \code{distinct(cols)}\cr
-\code{character()} -> named \code{list()}\cr
+\item \code{distinct(rows, cols)}\cr
+(\code{integer()} | \code{character()}, \code{character()}) -> named \code{list()}\cr
 Returns a named list of vectors of distinct values for each column specified.
 Non-existing columns are silently ignored.
+If \code{rows} is \code{NULL}, all possible distinct values will be returned, even if they do not occur.
+This affects factor-like variables with empty levels.
 \item \code{head(n = 6)}\cr
 \code{integer(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns the first up-to \code{n} rows of the data as \code{\link[data.table:data.table]{data.table::data.table()}}.
-\item \code{missing(rows, cols)}\cr
+\item \code{missings(rows, cols)}\cr
 (\code{integer()} | \code{character()}, \code{character()}) -> named \code{integer()}\cr
 Returns the number of missing values per column in the specified slice of data.
 Non-existing rows and columns are silently ignored.
@@ -80,7 +82,7 @@ b$nrow
 b$ncol
 b$colnames
 b$data(rows = 100:101, cols = "Species")
-b$distinct("Species")
+b$distinct(b$rownames, "Species")
 
 # Classification task using this backend
 task = mlr3::TaskClassif$new(id = "iris_tibble", backend = b, target = "Species")
@@ -99,10 +101,10 @@ b = DataBackendDplyr$new(tbl, primary_key = "row_id")
 print(b)
 
 # Query disinct values
-b$distinct("Species")
+b$distinct(b$rownames, "Species")
 
 # Query number of missing values
-b$missing(b$rownames, b$colnames)
+b$missings(b$rownames, b$colnames)
 
 # Note that SQLite does not support factors, column Species has been converted to character
 lapply(b$head(), class)

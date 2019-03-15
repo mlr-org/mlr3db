@@ -41,7 +41,7 @@
 #' b$ncol
 #' b$colnames
 #' b$data(rows = 100:101, cols = "Species")
-#' b$distinct("Species")
+#' b$distinct(b$rownames, "Species")
 #'
 #' # Classification task using this backend
 #' task = mlr3::TaskClassif$new(id = "iris_tibble", backend = b, target = "Species")
@@ -60,10 +60,10 @@
 #' print(b)
 #'
 #' # Query disinct values
-#' b$distinct("Species")
+#' b$distinct(b$rownames, "Species")
 #'
 #' # Query number of missing values
-#' b$missing(b$rownames, b$colnames)
+#' b$missings(b$rownames, b$colnames)
 #'
 #' # Note that SQLite does not support factors, column Species has been converted to character
 #' lapply(b$head(), class)
@@ -96,17 +96,23 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
       setDT(collect(head(private$.data, n)))[]
     },
 
-    distinct = function(cols) {
-      get_distinct = function(col) {
-        x = collect(distinct(select_at(private$.data, col)))[[1L]]
-        if (is.factor(x)) as.character(x) else x
-      }
+    distinct = function(rows, cols) {
+      # TODO: what does dplyr::disinct return for enums?
       assert_names(cols, type = "unique")
       cols = intersect(cols, self$colnames)
+
+      tbl = private$.data
+      if (!is.null(rows))
+        tbl = filter_at(tbl, self$primary_key, all_vars(. %in% rows))
+
+      get_distinct = function(col) {
+        x = collect(distinct(select_at(tbl, col)))[[1L]]
+        if (is.factor(x)) as.character(x) else x
+      }
       setNames(lapply(cols, get_distinct), cols)
     },
 
-    missing = function(rows, cols) {
+    missings = function(rows, cols) {
       assert_atomic_vector(rows)
       assert_names(cols, type = "unique")
 
