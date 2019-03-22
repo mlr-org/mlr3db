@@ -80,7 +80,8 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
       assert_choice(primary_key, colnames(data))
     },
 
-    data = function(rows, cols, format = self$formats[1L]) {
+    data = function(rows, cols, data_format = "data.table") {
+      assert_choice(data_format, self$data_formats)
       assert_atomic_vector(rows)
       assert_names(cols, type = "unique")
       cols = intersect(cols, colnames(private$.data))
