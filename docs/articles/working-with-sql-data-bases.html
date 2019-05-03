@@ -218,24 +218,24 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">b =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr3/topics/as_data_backend">as_data_backend</a></span>(tbl, <span class="dt">primary_key =</span> <span class="st">"row_id"</span>)</a></code></pre></div>
 <p>We can now use the interface of <code><a href="https://www.rdocumentation.org/packages/mlr3/topics/DataBackend">mlr3::DataBackend</a></code> to query the data:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">b<span class="op">$</span>nrow</a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="co">#&gt; [1] 163699</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co">#&gt; [1] 163597</span></a>
 <a class="sourceLine" id="cb11-3" title="3">b<span class="op">$</span>ncol</a>
 <a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt; [1] 13</span></a>
 <a class="sourceLine" id="cb11-5" title="5">b<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>()</a>
 <a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt;    row_id year month day hour minute dep_time arr_time carrier flight</span></a>
-<a class="sourceLine" id="cb11-7" title="7"><span class="co">#&gt; 1: 305860 2013     1   1    5     45      544     1004      B6    725</span></a>
-<a class="sourceLine" id="cb11-8" title="8"><span class="co">#&gt; 2: 302552 2013     1   1    5     58      554      740      UA   1696</span></a>
-<a class="sourceLine" id="cb11-9" title="9"><span class="co">#&gt; 3: 211866 2013     1   1    6      0      557      838      B6     79</span></a>
-<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt; 4:  20808 2013     1   1    6      0      558      753      AA    301</span></a>
-<a class="sourceLine" id="cb11-11" title="11"><span class="co">#&gt; 5:  69366 2013     1   1    6      0      558      849      B6     49</span></a>
-<a class="sourceLine" id="cb11-12" title="12"><span class="co">#&gt; 6: 129352 2013     1   1    6      0      558      923      UA   1124</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co">#&gt; 1:  24388 2013     1   1    5     15      517      830      UA   1545</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="co">#&gt; 2: 331730 2013     1   1    5     40      542      923      AA   1141</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="co">#&gt; 3: 294762 2013     1   1    5     58      554      740      UA   1696</span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt; 4: 284450 2013     1   1    6      0      558      849      B6     49</span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="co">#&gt; 5: 104830 2013     1   1    6      0      558      853      B6     71</span></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="co">#&gt; 6:  12204 2013     1   1    6      0      558      924      UA    194</span></a>
 <a class="sourceLine" id="cb11-13" title="13"><span class="co">#&gt;    air_time distance arr_delay</span></a>
-<a class="sourceLine" id="cb11-14" title="14"><span class="co">#&gt; 1:      183     1576       -18</span></a>
-<a class="sourceLine" id="cb11-15" title="15"><span class="co">#&gt; 2:      150      719        12</span></a>
-<a class="sourceLine" id="cb11-16" title="16"><span class="co">#&gt; 3:      140      944        -8</span></a>
-<a class="sourceLine" id="cb11-17" title="17"><span class="co">#&gt; 4:      138      733         8</span></a>
-<a class="sourceLine" id="cb11-18" title="18"><span class="co">#&gt; 5:      149     1028        -2</span></a>
-<a class="sourceLine" id="cb11-19" title="19"><span class="co">#&gt; 6:      361     2565       -14</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co">#&gt; 1:      227     1400        11</span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="co">#&gt; 2:      160     1089        33</span></a>
+<a class="sourceLine" id="cb11-16" title="16"><span class="co">#&gt; 3:      150      719        12</span></a>
+<a class="sourceLine" id="cb11-17" title="17"><span class="co">#&gt; 4:      149     1028        -2</span></a>
+<a class="sourceLine" id="cb11-18" title="18"><span class="co">#&gt; 5:      158     1005        -3</span></a>
+<a class="sourceLine" id="cb11-19" title="19"><span class="co">#&gt; 6:      345     2475         7</span></a></code></pre></div>
 <p>Note that the <code><a href="https://www.rdocumentation.org/packages/mlr3/topics/DataBackend">mlr3::DataBackend</a></code> just does not know about any rows or columns we have filtered out with <code>dplyr</code> before creating the <code><a href="https://www.rdocumentation.org/packages/mlr3/topics/DataBackend">mlr3::DataBackend</a></code>.</p>
 </div>
 <div id="create-a-regression-task-and-fit-regression-trees" class="section level2">
@@ -260,8 +260,8 @@
 <a class="sourceLine" id="cb13-4" title="4"><span class="co">#&gt; INFO [mlr3] Running learner 'regr.rpart' on task 'flights_sqlite' (iteration 3/3)'</span></a>
 <a class="sourceLine" id="cb13-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(rr)</a>
 <a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt; &lt;ResampleResult&gt; of learner 'flights_sqlite' on task 'regr.rpart' with 3 iterations</span></a>
-<a class="sourceLine" id="cb13-7" title="7"><span class="co">#&gt;   Measure Min. 1st Qu. Median Mean 3rd Qu. Max.    Sd</span></a>
-<a class="sourceLine" id="cb13-8" title="8"><span class="co">#&gt;  regr.mse 1133    1154   1174 1171    1190 1205 36.08</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-7" title="7"><span class="co">#&gt;   Measure Min. 1st Qu. Median Mean 3rd Qu. Max. Sd</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="co">#&gt;  regr.mse 1185    1188   1190 1199    1206 1222 20</span></a></code></pre></div>
 </div>
 <div id="cleanup" class="section level2">
 <h2 class="hasAnchor">
