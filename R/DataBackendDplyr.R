@@ -74,8 +74,9 @@
 DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
     initialize = function(data, primary_key) {
-      if (!is.tbl(data))
+      if (!is.tbl(data)) {
         stop("Argument 'tbl' must be of class 'tbl'")
+      }
       super$initialize(data, primary_key)
       assert_choice(primary_key, colnames(data))
     },
@@ -87,8 +88,8 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
       cols = intersect(cols, colnames(private$.data))
 
       res = setDT(collect(select_at(
-          filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
-          union(cols, self$primary_key))))
+        filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
+        union(cols, self$primary_key))))
 
       res[list(rows), cols, nomatch = 0L, with = FALSE, on = self$primary_key]
     },
@@ -103,8 +104,9 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
       cols = intersect(cols, self$colnames)
 
       tbl = private$.data
-      if (!is.null(rows))
+      if (!is.null(rows)) {
         tbl = filter_at(tbl, self$primary_key, all_vars(. %in% rows))
+      }
 
       get_distinct = function(col) {
         x = collect(distinct(select_at(tbl, col)))[[1L]]
@@ -114,22 +116,24 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
     },
 
     missings = function(rows, cols) {
+
       assert_atomic_vector(rows)
       assert_names(cols, type = "unique")
 
       cols = intersect(cols, self$colnames)
-      if (length(cols) == 0L)
+      if (length(cols) == 0L) {
         return(setNames(integer(0L), character(0L)))
+      }
 
       res = collect(summarize_at(
         filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
         cols, funs(sum(is.na(.), na.rm = TRUE))))
 
-      if (nrow(res) == 0L)
+      if (nrow(res) == 0L) {
         return(setNames(integer(length(cols)), cols))
+      }
       unlist(res, recursive = FALSE)
-    }
-  ),
+    }),
 
   active = list(
     rownames = function() {
@@ -146,8 +150,7 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
 
     ncol = function() {
       ncol(private$.data)
-    }
-  ),
+    }),
 
   private = list(
     .calculate_hash = function() {
@@ -156,8 +159,7 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
       } else {
         digest(private$.data, algo = "xxhash64")
       }
-    }
-  )
+    })
 )
 
 #' @importFrom mlr3 as_data_backend
