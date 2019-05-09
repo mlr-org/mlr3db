@@ -51,7 +51,7 @@ A specific format of these supported formats can be picked in the \code{$data()}
 \itemize{
 \item \code{data(rows = NULL, cols = NULL, format = "data.table")}\cr
 (\code{integer()} | \code{character()}, \code{character()}) -> \code{any}\cr
-Returns a slice of the data in a specific format.
+Returns a slice of the data in the specified format.
 Currently, the only supported format is "data.table".
 The rows must be addressed as vector of primary key values, columns must be referred to via column names.
 Non-existing rows and columns are silently ignored.
