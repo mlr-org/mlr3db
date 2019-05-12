@@ -133,7 +133,8 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
         return(setNames(integer(length(cols)), cols))
       }
       unlist(res, recursive = FALSE)
-    }),
+    }
+  ),
 
   active = list(
     rownames = function() {
@@ -150,7 +151,8 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
 
     ncol = function() {
       ncol(private$.data)
-    }),
+    }
+  ),
 
   private = list(
     .calculate_hash = function() {
@@ -159,7 +161,8 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
       } else {
         digest(private$.data, algo = "xxhash64")
       }
-    })
+    }
+  )
 )
 
 #' @importFrom mlr3 as_data_backend
