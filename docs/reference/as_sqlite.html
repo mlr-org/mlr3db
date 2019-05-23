@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google Site Verification -->
 <meta name="google-site-verification" content="BrjL5fpoyHZu1rR8rwnnM2MBO3u3iIFB8NsmSuOsY84" />
-<title>Function reference • mlr3db</title>
+<title>Convert to use a SQLite Backend — as_sqlite • mlr3db</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,7 +28,16 @@
 <script src="../pkgdown.js"></script>
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Convert to use a SQLite Backend — as_sqlite" />
+
+<meta property="og:description" content="Converts objects to use a SQLite backend, depending on the input type:
+data.frame: Converts to a DataBackendDplyr. The primary key column can be provided.
+If this column does not exists, it will be created.
+[mlr3::DataBackend]: Creates a new DataBackendDplyr using the data of the provided mlr3::DataBackend.
+[mlr3::Task]: Replaces the DataBackend in slot $task with a new backend. Only active columns and
+rows are considered.
+" />
+<meta name="twitter:card" content="summary" />
 
 
 <!-- mathjax -->
@@ -47,7 +56,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -105,55 +114,58 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Convert to use a SQLite Backend</h1>
+    <small>Source: <a href='https://github.com/mlr-org/mlr3db/blob/master/R/as_sqlite.R'><code>R/as_sqlite.R</code></a></small>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    
+    <p>Converts objects to use a SQLite backend, depending on the input type:</p><ul>
+<li><p><code>data.frame</code>: Converts to a <a href='DataBackendDplyr.html'>DataBackendDplyr</a>. The primary key column can be provided.
+If this column does not exists, it will be created.</p></li>
+<li><p><code>[mlr3::DataBackend]</code>: Creates a new <a href='DataBackendDplyr.html'>DataBackendDplyr</a> using the data of the provided <a href='https://www.rdocumentation.org/packages/mlr3/topics/DataBackend'>mlr3::DataBackend</a>.</p></li>
+<li><p><code>[mlr3::Task]</code>: Replaces the DataBackend in slot <code>$task</code> with a new backend. Only active columns and
+rows are considered.</p></li>
+</ul>
+    
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <pre class="usage"><span class='fu'>as_sqlite</span>(<span class='no'>data</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>(<code>data.frame</code> | <a href='https://www.rdocumentation.org/packages/mlr3/topics/DataBackend'>mlr3::DataBackend</a> | <a href='https://www.rdocumentation.org/packages/mlr3/topics/Task'>mlr3::Task</a>)<br />
+See description.</p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>(<code>NULL</code> | <code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code>)<br />
+Path for the SQLite data base. Defaults to a temporary file in the R session directory, see <code><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>primary_key</th>
+      <td><p>(<code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code>)<br />
+Name of the primary key column.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="DataBackendDplyr.html">DataBackendDplyr</a></code> </p>
-          </td>
-          <td><p>DataBackend for dplyr/dbplyr</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="as_sqlite.html">as_sqlite()</a></code> </p>
-          </td>
-          <td><p>Convert to use a SQLite Backend</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="mlr3db-package.html">mlr3db-package</a></code> </p>
-          </td>
-          <td><p>mlr3db: Data Base Backend for mlr3</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <p>DataBackendDbplyr.</p>
+    
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 
