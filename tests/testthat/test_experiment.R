@@ -1,6 +1,6 @@
 context("experiment")
 
-data = as_sqlite(iris)
+data = as_sqlite_tbl(iris)
 b = as_data_backend(data, "row_id")
 task = mlr3::TaskClassif$new("iris_sqlite", b, "Species")
 learner = mlr3::mlr_learners$get("classif.featureless")

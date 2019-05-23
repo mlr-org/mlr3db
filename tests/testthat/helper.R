@@ -6,7 +6,7 @@ as_tbl = function(data, primary_key = "row_id") {
   dplyr::as.tbl(data)
 }
 
-as_sqlite = function(data, primary_key = "row_id") {
+as_sqlite_tbl = function(data, primary_key = "row_id") {
   data[[primary_key]] = seq_len(nrow(data))
 
   con = DBI::dbConnect(RSQLite::SQLite(), ":memory:")
