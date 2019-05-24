@@ -194,9 +194,6 @@ Non-existing rows and columns are silently ignored.</p></li>
 
 <span class='co'># Object supports all accessors of DataBackend</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>b</span>)</div><div class='output co'>#&gt; &lt;DataBackendDbplyr&gt; (150x6)
-#&gt; 
-#&gt; Public: colnames, data_formats, data(), distinct(), hash, head(),
-#&gt;   missings(), ncol, nrow, primary_key, rownames
 #&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width Species row_id
 #&gt; 1:           NA         3.5          1.4         0.2  setosa      1
 #&gt; 2:           NA         3.0          1.4         0.2  setosa      2
@@ -214,15 +211,7 @@ Non-existing rows and columns are silently ignored.</p></li>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>task</span>)</div><div class='output co'>#&gt; &lt;TaskClassif:iris_tibble&gt; (150 x 5)
 #&gt; Target: Species
 #&gt; Features (4):
-#&gt; * dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width
-#&gt; 
-#&gt; Public: backend, cbind(), class_n, class_names, clone(), col_info,
-#&gt;   col_roles, data_formats, data(), droplevels(), feature_names,
-#&gt;   feature_types, filter(), formula(), groups, hash, head(), id,
-#&gt;   levels(), measures, missings(), ncol, negative, nrow, positive,
-#&gt;   properties, rbind(), replace_features(), row_ids, row_roles,
-#&gt;   select(), set_col_role(), set_row_role(), target_names, task_type,
-#&gt;   truth(), weights</div><div class='input'><span class='no'>task</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>()</div><div class='output co'>#&gt;    Species Petal.Length Petal.Width Sepal.Length Sepal.Width
+#&gt; * dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width</div><div class='input'><span class='no'>task</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>()</div><div class='output co'>#&gt;    Species Petal.Length Petal.Width Sepal.Length Sepal.Width
 #&gt; 1:  setosa          1.4         0.2           NA         3.5
 #&gt; 2:  setosa          1.4         0.2           NA         3.0
 #&gt; 3:  setosa          1.3         0.2           NA         3.2
@@ -239,9 +228,6 @@ Non-existing rows and columns are silently ignored.</p></li>
 <span class='no'>tbl</span> <span class='kw'>=</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>tbl</span>, <span class='no'>row_id</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>120</span>) <span class='co'># Use only first 120 rows</span>
 <span class='no'>b</span> <span class='kw'>=</span> <span class='no'>DataBackendDplyr</span>$<span class='fu'>new</span>(<span class='no'>tbl</span>, <span class='kw'>primary_key</span> <span class='kw'>=</span> <span class='st'>"row_id"</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>b</span>)</div><div class='output co'>#&gt; &lt;DataBackendDbplyr&gt; (120x5)
-#&gt; 
-#&gt; Public: colnames, data_formats, data(), distinct(), hash, head(),
-#&gt;   missings(), ncol, nrow, primary_key, rownames
 #&gt;    Sepal.Length Petal.Length Petal.Width Species row_id
 #&gt; 1:           NA          1.4         0.2  setosa      1
 #&gt; 2:           NA          1.4         0.2  setosa      2
