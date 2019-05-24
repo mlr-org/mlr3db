@@ -7,23 +7,22 @@
 as_sqlite(data, path = NULL, ...)
 }
 \arguments{
-\item{data}{(\code{data.frame} | \link[mlr3:DataBackend]{mlr3::DataBackend} | \link[mlr3:Task]{mlr3::Task})\cr
+\item{data}{(\code{data.frame()} | \link[mlr3:DataBackend]{mlr3::DataBackend} | \link[mlr3:Task]{mlr3::Task})\cr
 See description.}
 
 \item{path}{(\code{NULL} | \code{character(1)})\cr
 Path for the SQLite data base. Defaults to a temporary file in the R session directory, see \code{\link[=tempfile]{tempfile()}}.}
 
-\item{primary_key}{(\code{character(1)})\cr
-Name of the primary key column.}
+\item{...}{(any)\cr
+Additional arguments, currently ignored.}
 }
 \value{
-\link{DataBackendDbplyr}.
+\link{DataBackendDplyr}.
 }
 \description{
 Converts objects to use a SQLite backend, depending on the input type:
 \itemize{
-\item \code{data.frame}: Converts to a \link{DataBackendDplyr}. The primary key column can be provided.
-If this column does not exists, it will be created.
+\item \code{data.frame}: Converts to a \link{DataBackendDplyr}.
 \item \code{[mlr3::DataBackend]}: Creates a new \link{DataBackendDplyr} using the data of the provided \link[mlr3:DataBackend]{mlr3::DataBackend}.
 \item \code{[mlr3::Task]}: Replaces the \link{DataBackend} in slot \code{$task} with a new backend. Only active columns and
 rows are considered.

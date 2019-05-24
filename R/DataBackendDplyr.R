@@ -71,7 +71,7 @@
 #' # Cleanup
 #' rm(tbl)
 #' DBI::dbDisconnect(con)
-DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable = FALSE,
+DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
     initialize = function(data, primary_key) {
       if (!is.tbl(data)) {
@@ -167,6 +167,6 @@ DataBackendDplyr = R6Class("DataBackendDbplyr", inherit = DataBackend, cloneable
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.tbl = function(data, primary_key) {
+as_data_backend.tbl = function(data, primary_key, strings_as_factors = TRUE) {
   DataBackendDplyr$new(data, primary_key)
 }

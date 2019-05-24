@@ -2,20 +2,19 @@
 #'
 #' @description
 #' Converts objects to use a SQLite backend, depending on the input type:
-#' * `data.frame`: Converts to a [DataBackendDplyr]. The primary key column can be provided.
-#'   If this column does not exists, it will be created.
+#' * `data.frame`: Converts to a [DataBackendDplyr].
 #' * `[mlr3::DataBackend]`: Creates a new [DataBackendDplyr] using the data of the provided [mlr3::DataBackend].
 #' * `[mlr3::Task]`: Replaces the [DataBackend] in slot `$task` with a new backend. Only active columns and
 #'    rows are considered.
 #'
-#' @param data (`data.frame` | [mlr3::DataBackend] | [mlr3::Task])\cr
+#' @param data (`data.frame()` | [mlr3::DataBackend] | [mlr3::Task])\cr
 #'   See description.
 #' @param path (`NULL` | `character(1)`)\cr
 #'   Path for the SQLite data base. Defaults to a temporary file in the R session directory, see [tempfile()].
-#' @param primary_key (`character(1)`)\cr
-#'   Name of the primary key column.
+#' @param ... (any)\cr
+#'   Additional arguments, currently ignored.
 #'
-#' @return [DataBackendDbplyr].
+#' @return [DataBackendDplyr].
 #' @export
 as_sqlite = function(data, path = NULL, ...) {
   UseMethod("as_sqlite")
