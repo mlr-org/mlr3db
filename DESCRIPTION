@@ -28,6 +28,7 @@ Suggests:
     RSQLite,
     dbplyr,
     knitr,
+    lgr,
     nycflights13,
     rmarkdown,
     rpart,
