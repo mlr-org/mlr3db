@@ -10,7 +10,7 @@ test_that("simple experiments work", {
   expect_experiment(e)
   e$train()$predict()$score()
   expect_experiment(e)
-  expect_false(e$has_errors)
+  expect_false(any(e$has_errors))
 })
 
 test_that("resample work", {
