@@ -127,7 +127,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
       res = collect(summarize_at(
         filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
-        cols, funs(sum(is.na(.), na.rm = TRUE))))
+        cols, list(~ sum(is.na(.), na.rm = TRUE))))
 
       if (nrow(res) == 0L) {
         return(setNames(integer(length(cols)), cols))
