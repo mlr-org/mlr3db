@@ -135,6 +135,7 @@ In each iteration, only the required subset of the data is queried from the SQLi
 ```{r}
 rr = resample(task, learner, resampling)
 print(rr)
+rr$aggregate("regr.mse")
 ```
 
 ## Cleanup
