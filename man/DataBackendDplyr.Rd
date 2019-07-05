@@ -20,7 +20,7 @@ The input \code{\link[data.table:data.table]{data.table::data.table()}} (as refe
 Name of the primary key column.
 }
 
-Alternatively, use \link{as_data_backend} on a \code{\link[dplyr:tbl]{dplyr::tbl()}} which will
+Alternatively, use \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}} which will
 construct a \link{DataBackend} with a copy of the data.
 }
 

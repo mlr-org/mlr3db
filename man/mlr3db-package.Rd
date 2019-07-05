@@ -6,13 +6,14 @@
 \alias{mlr3db-package}
 \title{mlr3db: Data Base Backend for mlr3}
 \description{
-Extends the mlr3 package with a data backend to transparently work
-    with data bases. Internally relies on the abstraction of `dbplyr`.
+Extends the mlr3 package with a data backend to
+    transparently work with data bases. Internally relies on the
+    abstraction of `dbplyr`.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/mlr-org/mlr3db}
+  \item \url{https:///mlr3db.mlr-org.com}
   \item Report bugs at \url{https://github.com/mlr-org/mlr3db/issues}
 }
 

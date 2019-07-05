@@ -19,7 +19,7 @@
 #' * `primary_key` :: `character(1)`\cr
 #'   Name of the primary key column.
 #'
-#' Alternatively, use [as_data_backend] on a [dplyr::tbl()] which will
+#' Alternatively, use [mlr3::as_data_backend()] on a [dplyr::tbl()] which will
 #' construct a [DataBackend] with a copy of the data.
 #'
 #' @inheritSection mlr3::DataBackend Fields
