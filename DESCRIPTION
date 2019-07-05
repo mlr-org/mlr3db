@@ -2,18 +2,17 @@ Package: mlr3db
 Title: Data Base Backend for mlr3
 Version: 0.1.0
 Authors@R:
-    c(person(given = "Michel",
-             family = "Lang",
-             role = c("cre", "aut"),
-             email = "michellang@gmail.com",
-             comment = c(ORCID = "0000-0001-9754-0393")))
-Description: Extends the mlr3 package with a data backend to transparently work
-    with data bases. Internally relies on the abstraction of `dbplyr`.
+    person(given = "Michel",
+           family = "Lang",
+           role = c("cre", "aut"),
+           email = "michellang@gmail.com",
+           comment = c(ORCID = "0000-0001-9754-0393"))
+Description: Extends the mlr3 package with a data backend to
+    transparently work with data bases. Internally relies on the
+    abstraction of `dbplyr`.
 License: LGPL-3
-Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+URL: https:///mlr3db.mlr-org.com
+BugReports: https://github.com/mlr-org/mlr3db/issues
 Depends:
     R (>= 3.1.0)
 Imports:
@@ -21,16 +20,17 @@ Imports:
     data.table,
     digest,
     dplyr,
-    mlr3
-    R6,
+    mlr3,
+    R6
 Suggests:
     DBI,
-    RSQLite,
     dbplyr,
     lgr,
+    RSQLite,
     testthat,
     tibble
 Remotes:
     mlr-org/mlr3
-URL: https:///mlr3db.mlr-org.com
-BugReports: https://github.com/mlr-org/mlr3db/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
