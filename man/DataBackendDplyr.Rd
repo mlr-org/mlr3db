@@ -15,7 +15,7 @@ Allows to let a \link[mlr3:Task]{mlr3::Task} interface an out-of-memory data bas
 }
 \itemize{
 \item \code{data} :: \code{\link[dplyr:tbl]{dplyr::tbl()}}\cr
-The input table \code{\link[data.table:data.table]{data.table::data.table()}}.
+The data object.
 \item \code{primary_key} :: \code{character(1)}\cr
 Name of the primary key column.
 }

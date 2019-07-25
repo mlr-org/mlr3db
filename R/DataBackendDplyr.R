@@ -14,7 +14,7 @@
 #' ```
 #'
 #' * `data` :: [dplyr::tbl()]\cr
-#'   The input table [data.table::data.table()].
+#'   The data object.
 #'
 #' * `primary_key` :: `character(1)`\cr
 #'   Name of the primary key column.

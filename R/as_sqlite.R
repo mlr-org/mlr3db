@@ -1,7 +1,8 @@
 #' @title Convert to use a SQLite Backend
 #'
 #' @description
-#' Converts objects to use a SQLite backend, depending on the input type:
+#' Converts to a [DataBackendDplyr] using a \CRANpkg{RSQLite} data base, depending on the input type:
+#'
 #' * `data.frame`: Converts to a [DataBackendDplyr].
 #' * `[mlr3::DataBackend]`: Creates a new [DataBackendDplyr] using the data of the provided [mlr3::DataBackend].
 #' * `[mlr3::Task]`: Replaces the [DataBackend] in slot `$task` with a new backend. Only active columns and
@@ -10,7 +11,7 @@
 #' @param data (`data.frame()` | [mlr3::DataBackend] | [mlr3::Task])\cr
 #'   See description.
 #' @param path (`NULL` | `character(1)`)\cr
-#'   Path for the SQLite data base. Defaults to a temporary file in the R session directory, see [tempfile()].
+#'   Path for the SQLite data base. Defaults to a file in the temporary directory of the R session, see [tempfile()].
 #' @param ... (any)\cr
 #'   Additional arguments, currently ignored.
 #'

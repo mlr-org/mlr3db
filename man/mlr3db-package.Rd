@@ -8,7 +8,8 @@
 \description{
 Extends the 'mlr3' package with a backend to
     transparently work with data bases. Internally relies on the
-    abstraction of `dbplyr` to interact with one of the many supported DBMS.
+    abstraction of package 'dbplyr' to interact with one of the many
+    supported DBMS.
 }
 \seealso{
 Useful links:

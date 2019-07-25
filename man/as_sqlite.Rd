@@ -11,7 +11,7 @@ as_sqlite(data, path = NULL, ...)
 See description.}
 
 \item{path}{(\code{NULL} | \code{character(1)})\cr
-Path for the SQLite data base. Defaults to a temporary file in the R session directory, see \code{\link[=tempfile]{tempfile()}}.}
+Path for the SQLite data base. Defaults to a file in the temporary directory of the R session, see \code{\link[=tempfile]{tempfile()}}.}
 
 \item{...}{(any)\cr
 Additional arguments, currently ignored.}
@@ -20,7 +20,7 @@ Additional arguments, currently ignored.}
 \link{DataBackendDplyr}.
 }
 \description{
-Converts objects to use a SQLite backend, depending on the input type:
+Converts to a \link{DataBackendDplyr} using a \CRANpkg{RSQLite} data base, depending on the input type:
 \itemize{
 \item \code{data.frame}: Converts to a \link{DataBackendDplyr}.
 \item \code{[mlr3::DataBackend]}: Creates a new \link{DataBackendDplyr} using the data of the provided \link[mlr3:DataBackend]{mlr3::DataBackend}.
