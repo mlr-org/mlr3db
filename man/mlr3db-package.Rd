@@ -4,11 +4,11 @@
 \name{mlr3db-package}
 \alias{mlr3db}
 \alias{mlr3db-package}
-\title{mlr3db: Data Base Backend for mlr3}
+\title{mlr3db: Data Base Backend for 'mlr3'}
 \description{
-Extends the mlr3 package with a data backend to
+Extends the 'mlr3' package with a backend to
     transparently work with data bases. Internally relies on the
-    abstraction of `dbplyr`.
+    abstraction of `dbplyr` to interact with one of the many supported DBMS.
 }
 \seealso{
 Useful links:

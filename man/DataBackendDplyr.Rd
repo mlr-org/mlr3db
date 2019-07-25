@@ -8,20 +8,20 @@
 \description{
 A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{\link[dplyr:tbl]{dplyr::tbl()}} from packages \CRANpkg{dplyr}/\CRANpkg{dbplyr}.
 This includes \code{\link[tibble:tibble]{tibbles}}.
-Allows to connect a \link[mlr3:Task]{mlr3::Task} to a out-of-memory data base.
+Allows to let a \link[mlr3:Task]{mlr3::Task} interface an out-of-memory data base.
 }
 \section{Construction}{
 \preformatted{DataBackendDplyr$new(data, primary_key = NULL)
 }
 \itemize{
-\item \code{data} :: \code{\link[data.table:data.table]{data.table::data.table()}}\cr
-The input \code{\link[data.table:data.table]{data.table::data.table()}} (as reference).
+\item \code{data} :: \code{\link[dplyr:tbl]{dplyr::tbl()}}\cr
+The input table \code{\link[data.table:data.table]{data.table::data.table()}}.
 \item \code{primary_key} :: \code{character(1)}\cr
 Name of the primary key column.
 }
 
 Alternatively, use \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}} which will
-construct a \link{DataBackend} with a copy of the data.
+construct a \link{DataBackend} for you.
 }
 
 \section{Fields}{
@@ -34,7 +34,7 @@ Number of rows (observations).
 Number of columns (variables), including the primary key column.
 \item \code{colnames} :: \code{character()}\cr
 Returns vector of all column names, including the primary key column.
-\item \code{rownames} :: \code{integer()} | \code{character()}\cr
+\item \code{rownames} :: (\code{integer()} | \code{character()})\cr
 Returns vector of all distinct row identifiers, i.e. the primary key column.
 \item \code{hash} :: \code{character(1)}\cr
 Returns a unique hash for this backend. This hash is cached.

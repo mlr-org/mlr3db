@@ -6,21 +6,21 @@
 #' @description
 #' A [mlr3::DataBackend] using [dplyr::tbl()] from packages \CRANpkg{dplyr}/\CRANpkg{dbplyr}.
 #' This includes [`tibbles`][tibble::tibble()].
-#' Allows to connect a [mlr3::Task] to a out-of-memory data base.
+#' Allows to let a [mlr3::Task] interface an out-of-memory data base.
 #'
 #' @section Construction:
 #' ```
 #' DataBackendDplyr$new(data, primary_key = NULL)
 #' ```
 #'
-#' * `data` :: [data.table::data.table()]\cr
-#'   The input [data.table::data.table()] (as reference).
+#' * `data` :: [dplyr::tbl()]\cr
+#'   The input table [data.table::data.table()].
 #'
 #' * `primary_key` :: `character(1)`\cr
 #'   Name of the primary key column.
 #'
 #' Alternatively, use [mlr3::as_data_backend()] on a [dplyr::tbl()] which will
-#' construct a [DataBackend] with a copy of the data.
+#' construct a [DataBackend] for you.
 #'
 #' @inheritSection mlr3::DataBackend Fields
 #' @inheritSection mlr3::DataBackend Methods
@@ -75,7 +75,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
   public = list(
     initialize = function(data, primary_key) {
       if (!is.tbl(data)) {
-        stop("Argument 'tbl' must be of class 'tbl'")
+        stop("Argument 'data' must be of class 'tbl'")
       }
       super$initialize(data, primary_key)
       assert_choice(primary_key, colnames(data))
