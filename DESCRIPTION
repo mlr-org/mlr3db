@@ -29,8 +29,6 @@ Suggests:
     RSQLite,
     testthat,
     tibble
-Remotes:
-    mlr-org/mlr3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
