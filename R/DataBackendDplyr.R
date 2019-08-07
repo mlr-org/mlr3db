@@ -98,7 +98,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
       setDT(collect(head(private$.data, n)))[]
     },
 
-    distinct = function(rows, cols) {
+    distinct = function(rows, cols, na_rm = TRUE) {
       # TODO: what does dplyr::disinct return for enums?
       assert_names(cols, type = "unique")
       cols = intersect(cols, self$colnames)
@@ -112,7 +112,9 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         x = collect(distinct(select_at(tbl, col)))[[1L]]
         if (is.factor(x))
           x = as.character(x)
-        x[!is.na(x)]
+        if (na_rm)
+          x = x[!is.na(x)]
+        x
       }
       setNames(lapply(cols, get_distinct), cols)
     },
