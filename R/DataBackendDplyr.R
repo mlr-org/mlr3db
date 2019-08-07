@@ -110,7 +110,9 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
       get_distinct = function(col) {
         x = collect(distinct(select_at(tbl, col)))[[1L]]
-        if (is.factor(x)) as.character(x) else x
+        if (is.factor(x))
+          x = as.character(x)
+        x[!is.na(x)]
       }
       setNames(lapply(cols, get_distinct), cols)
     },
