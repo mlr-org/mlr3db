@@ -15,6 +15,7 @@ Extends the 'mlr3' package with a backend to
 Useful links:
 \itemize{
   \item \url{https:///mlr3db.mlr-org.com}
+  \item \url{https://github.com/mlr-org/mlr3db}
   \item Report bugs at \url{https://github.com/mlr-org/mlr3db/issues}
 }
 
