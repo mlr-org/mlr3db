@@ -12,7 +12,8 @@ Description: Extends the 'mlr3' package with a backend to
     abstraction of package 'dbplyr' to interact with one of the many
     supported data base management systems (DBMS).
 License: LGPL-3
-URL: https:///mlr3db.mlr-org.com, https://github.com/mlr-org/mlr3db
+URL: https:///mlr3db.mlr-org.com,
+    https://github.com/mlr-org/mlr3db
 BugReports: https://github.com/mlr-org/mlr3db/issues
 Depends:
     R (>= 3.1.0)
