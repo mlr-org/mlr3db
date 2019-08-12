@@ -44,12 +44,15 @@ as_sqlite.data.frame = function(data, path = NULL, primary_key = "..row_id", ...
 }
 
 sqlite_backend_from_data = function(data, path, primary_key) {
+
   if (is.null(path)) {
     path = tempfile("backend_", fileext = ".sqlite")
   }
 
   assert_path_for_output(path)
-  on.exit( { if (file.exists(path)) file.remove(path) } )
+  on.exit({
+    if (file.exists(path)) file.remove(path)
+  })
 
   con = DBI::dbConnect(RSQLite::SQLite(), dbname = path, flags = RSQLite::SQLITE_RWC)
   DBI::dbWriteTable(con, "data", data)
