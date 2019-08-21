@@ -12,7 +12,7 @@ test_that("single step train + predict", {
 })
 
 test_that("resample work", {
-  rr = mlr3::resample(task, learner, "cv3")
+  rr = mlr3::resample(task, learner, mlr3::rsmp("cv", folds = 3))
   expect_resample_result(rr)
 })
 
