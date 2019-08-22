@@ -19,10 +19,10 @@ test_that("valid DataBackend (tbl/sqlite)", {
   DBI::dbDisconnect(data$src$con)
 })
 
-test_that("valid DataBackend (as_sqlite)", {
+test_that("valid DataBackend (as_sqlite_backend)", {
   data = iris
   data$Petal.Length[91:120] = NA
-  b = as_sqlite(data)
+  b = as_sqlite_backend(data)
   expect_backend(b)
   expect_iris_backend(b, n_missing = 30L)
   DBI::dbDisconnect(private(b)$.data$src$con)

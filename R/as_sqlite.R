@@ -17,23 +17,23 @@
 #'
 #' @return [DataBackendDplyr].
 #' @export
-as_sqlite = function(data, path = NULL, ...) {
-  UseMethod("as_sqlite")
+as_sqlite_backend = function(data, path = NULL, ...) {
+  UseMethod("as_sqlite_backend")
 }
 
 #' @export
-as_sqlite.Task = function(data, path = NULL, ...) {
+as_sqlite_backend.Task = function(data, path = NULL, ...) {
   data$backend = sqlite_backend_from_data(cbind(data$data(), data.table(..row_id = data$row_ids)), path, "..row_id")
   data
 }
 
 #' @export
-as_sqlite.DataBackend = function(data, path = NULL, ...) {
+as_sqlite_backend.DataBackend = function(data, path = NULL, ...) {
   sqlite_backend_from_data(data$head(Inf), path, data$primary_key)
 }
 
 #' @export
-as_sqlite.data.frame = function(data, path = NULL, primary_key = "..row_id", ...) {
+as_sqlite_backend.data.frame = function(data, path = NULL, primary_key = "..row_id", ...) {
   assert_string(primary_key)
   if (primary_key %in% names(data)) {
     assert_atomic_vector(data[[primary_key]], unique = TRUE)
@@ -44,7 +44,6 @@ as_sqlite.data.frame = function(data, path = NULL, primary_key = "..row_id", ...
 }
 
 sqlite_backend_from_data = function(data, path, primary_key) {
-
   if (is.null(path)) {
     path = tempfile("backend_", fileext = ".sqlite")
   }
