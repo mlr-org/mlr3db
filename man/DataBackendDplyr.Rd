@@ -78,7 +78,7 @@ Non-existing rows and columns are silently ignored.
 
 \examples{
 # Backend using a in-memory tibble
-data = tibble::as.tibble(iris)
+data = tibble::as_tibble(iris)
 data$Sepal.Length[1:30] = NA
 data$row_id = 1:150
 b = DataBackendDplyr$new(data, primary_key = "row_id")
