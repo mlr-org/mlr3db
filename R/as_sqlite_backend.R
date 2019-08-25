@@ -12,7 +12,7 @@
 #'   See description.
 #' @param path (`NULL` | `character(1)`)\cr
 #'   Path for the SQLite data base. Defaults to a file in the temporary directory of the R session, see [tempfile()].
-#' @param ... (any)\cr
+#' @param ... (`any`)\cr
 #'   Additional arguments, currently ignored.
 #'
 #' @return [DataBackendDplyr].

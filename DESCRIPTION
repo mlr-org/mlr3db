@@ -22,7 +22,7 @@ Imports:
     data.table,
     digest,
     dplyr,
-    mlr3,
+    mlr3 (>= 0.1.2),
     R6
 Suggests:
     DBI,
