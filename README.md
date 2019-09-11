@@ -1,7 +1,7 @@
 # mlr3db
 
 [![Travis build status](https://travis-ci.org/mlr-org/mlr3db.svg?branch=master)](https://travis-ci.org/mlr-org/mlr3db)
-[![CRAN](https://www.r-pkg.org/badges/version/mlr3db)](https://cran.r-project.org/package=mlr3db)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/mlr3db)](https://cran.r-project.org/package=mlr3db)
 [![codecov](https://codecov.io/gh/mlr-org/mlr3db/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/mlr3db)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 
