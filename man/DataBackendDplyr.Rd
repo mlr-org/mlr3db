@@ -11,13 +11,17 @@ This includes \code{\link[tibble:tibble]{tibbles}}.
 Allows to let a \link[mlr3:Task]{mlr3::Task} interface an out-of-memory data base.
 }
 \section{Construction}{
-\preformatted{DataBackendDplyr$new(data, primary_key = NULL)
+\preformatted{DataBackendDplyr$new(data, primary_key = NULL, strings_as_factors = TRUE)
 }
 \itemize{
 \item \code{data} :: \code{\link[dplyr:tbl]{dplyr::tbl()}}\cr
 The data object.
 \item \code{primary_key} :: \code{character(1)}\cr
 Name of the primary key column.
+\item strings_as_factors :: \code{logical(1)} || \code{character()}\cr
+Either a character vector of column names to convert to factors, or a single logical flag:
+if \code{FALSE}, no column will be converted, if \code{TRUE} all string columns (except the primary key).
+The backend is queried for distinct values of the respective columns and their levels are stored in \code{$levels}.
 }
 
 Alternatively, use \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}} which will
@@ -26,54 +30,17 @@ construct a \link{DataBackend} for you.
 
 \section{Fields}{
 
-
+All fields from \link[mlr3:DataBackend]{mlr3::DataBackend}, and additionally:
 \itemize{
-\item \code{nrow} :: \code{integer(1)}\cr
-Number of rows (observations).
-\item \code{ncol} :: \code{integer(1)}\cr
-Number of columns (variables), including the primary key column.
-\item \code{colnames} :: \code{character()}\cr
-Returns vector of all column names, including the primary key column.
-\item \code{rownames} :: (\code{integer()} | \code{character()})\cr
-Returns vector of all distinct row identifiers, i.e. the primary key column.
-\item \code{hash} :: \code{character(1)}\cr
-Returns a unique hash for this backend. This hash is cached.
-\item \code{data_formats} :: \code{character()}\cr
-Vector of supported data formats.
-A specific format can be chosen in the \code{$data()} method.
+\item \code{levels} :: named \code{list()}\cr
+List of factor levels, named with column names.
+The columns get automatically converted to factors in \code{$data()} and \code{head()}.
 }
-
 }
 
 \section{Methods}{
 
-
-\itemize{
-\item \code{data(rows = NULL, cols = NULL, format = "data.table")}\cr
-(\code{integer()} | \code{character()}, \code{character()}) -> \code{any}\cr
-Returns a slice of the data in the specified format.
-Currently, the only supported formats are \code{"data.table"} and \code{"Matrix"}.
-The rows must be addressed as vector of primary key values, columns must be referred to via column names.
-Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
-Rows are guaranteed to be returned in the same order as \code{rows}, columns may be returned in an arbitrary order.
-Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
-\item \code{distinct(rows, cols, na_rm = TRUE)}\cr
-(\code{integer()} | \code{character()}, \code{character()}, \code{logical(1)}) -> named \code{list()}\cr
-Returns a named list of vectors of distinct values for each column specified.
-If \code{na_rm} is \code{TRUE}, missing values are removed from the returned vectors of distinct values.
-Non-existing rows and columns are silently ignored.
-
-If \code{rows} is \code{NULL}, all possible distinct values will be returned, even if the value is not present in the data.
-This affects factor-like variables with empty levels, if supported by the backend.
-\item \code{head(n = 6)}\cr
-\code{integer(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
-Returns the first up-to \code{n} rows of the data as \code{\link[data.table:data.table]{data.table::data.table()}}.
-\item \code{missings(rows, cols)}\cr
-(\code{integer()} | \code{character()}, \code{character()}) -> named \code{integer()}\cr
-Returns the number of missing values per column in the specified slice of data.
-Non-existing rows and columns are silently ignored.
-}
-
+All methods from \link[mlr3:DataBackend]{mlr3::DataBackend}.
 }
 
 \examples{

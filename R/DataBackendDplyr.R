@@ -10,7 +10,7 @@
 #'
 #' @section Construction:
 #' ```
-#' DataBackendDplyr$new(data, primary_key = NULL)
+#' DataBackendDplyr$new(data, primary_key = NULL, strings_as_factors = TRUE)
 #' ```
 #'
 #' * `data` :: [dplyr::tbl()]\cr
@@ -19,11 +19,23 @@
 #' * `primary_key` :: `character(1)`\cr
 #'   Name of the primary key column.
 #'
+#' * strings_as_factors :: `logical(1)` || `character()`\cr
+#'   Either a character vector of column names to convert to factors, or a single logical flag:
+#'   if `FALSE`, no column will be converted, if `TRUE` all string columns (except the primary key).
+#'   The backend is queried for distinct values of the respective columns and their levels are stored in `$levels`.
+#'
 #' Alternatively, use [mlr3::as_data_backend()] on a [dplyr::tbl()] which will
 #' construct a [DataBackend] for you.
 #'
-#' @inheritSection mlr3::DataBackend Fields
-#' @inheritSection mlr3::DataBackend Methods
+#' @section Fields:
+#' All fields from [mlr3::DataBackend], and additionally:
+#'
+#' * `levels` :: named `list()`\cr
+#'   List of factor levels, named with column names.
+#'   The columns get automatically converted to factors in `$data()` and `head()`.
+#'
+#' @section Methods:
+#' All methods from [mlr3::DataBackend].
 #'
 #' @importFrom mlr3 DataBackend
 #' @importFrom dplyr is.tbl collect select_at filter_at summarize_at all_vars distinct tally funs
@@ -73,12 +85,28 @@
 #' DBI::dbDisconnect(con)
 DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
-    initialize = function(data, primary_key) {
+    levels = NULL,
+    initialize = function(data, primary_key, strings_as_factors = TRUE) {
       if (!is.tbl(data)) {
         stop("Argument 'data' must be of class 'tbl'")
       }
       super$initialize(data, primary_key)
       assert_choice(primary_key, colnames(data))
+
+      if (isFALSE(strings_as_factors)) {
+        self$levels = list()
+      } else {
+        h = self$head(1L)
+        string_cols = setdiff(names(h)[vapply(h, is.character, NA)], self$primary_key)
+
+        if (isTRUE(strings_as_factors)) {
+          strings_as_factors = string_cols
+        } else {
+          assert_subset(strings_as_factors, string_cols)
+        }
+
+        self$levels = self$distinct(rows = NULL, cols = strings_as_factors)
+      }
     },
 
     data = function(rows, cols, data_format = "data.table") {
@@ -91,11 +119,11 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
         union(cols, self$primary_key))))
 
-      res[list(rows), cols, nomatch = 0L, with = FALSE, on = self$primary_key]
+      private$.recode(res[list(rows), cols, nomatch = 0L, with = FALSE, on = self$primary_key])
     },
 
     head = function(n = 6L) {
-      setDT(collect(head(private$.data, n)))[]
+      private$.recode(setDT(collect(head(private$.data, n))))
     },
 
     distinct = function(rows, cols, na_rm = TRUE) {
@@ -122,7 +150,6 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     },
 
     missings = function(rows, cols) {
-
       assert_atomic_vector(rows)
       assert_names(cols, type = "unique")
 
@@ -167,6 +194,13 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
       } else {
         digest(private$.data, algo = "xxhash64")
       }
+    },
+
+    .recode = function(tab) {
+      for (col in intersect(names(tab), names(self$levels))) {
+        set(tab, i = NULL, j = col, value = factor(tab[[col]], levels = self$levels[[col]]))
+      }
+      tab[]
     }
   )
 )

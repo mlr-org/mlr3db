@@ -1,3 +1,9 @@
+# mlr3db 0.1.3
+* During construction of `DataBackendDplyr` you can now select columns to be
+  converted from string to factor. This simplies the work with SQL databases
+  which do not naturally support factor types (or where the level information is
+  lost in the transaction).
+
 # mlr3db 0.1.2
 
 * Fixed `$distinct()` to not return missing values per default.
