@@ -23,8 +23,8 @@ Additional arguments, currently ignored.}
 Converts to a \link{DataBackendDplyr} using a \CRANpkg{RSQLite} data base, depending on the input type:
 \itemize{
 \item \code{data.frame}: Converts to a \link{DataBackendDplyr}.
-\item \code{[mlr3::DataBackend]}: Creates a new \link{DataBackendDplyr} using the data of the provided \link[mlr3:DataBackend]{mlr3::DataBackend}.
-\item \code{[mlr3::Task]}: Replaces the \link{DataBackend} in slot \code{$task} with a new backend. Only active columns and
+\item \verb{[mlr3::DataBackend]}: Creates a new \link{DataBackendDplyr} using the data of the provided \link[mlr3:DataBackend]{mlr3::DataBackend}.
+\item \verb{[mlr3::Task]}: Replaces the \link{DataBackend} in slot \verb{$task} with a new backend. Only active columns and
 rows are considered.
 }
 }
