@@ -7,7 +7,6 @@ test_that("valid DataBackend (tbl/tibble)", {
   b = DataBackendDplyr$new(data, "row_id")
   expect_backend(b)
   expect_iris_backend(b, n_missing = 30L)
-  b$disconnect()
 })
 
 test_that("valid DataBackend (tbl/sqlite)", {
@@ -26,26 +25,25 @@ test_that("valid DataBackend (as_sqlite_backend)", {
   b = as_sqlite_backend(data)
   expect_backend(b)
   expect_iris_backend(b, n_missing = 30L)
-  b$disconnect()
 })
 
 test_that("strings_as_factors", {
   data = iris
-  tbl = as_sqlite_tbl(data)
 
+  tbl = as_sqlite_tbl(data)
   b = DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = FALSE)
   expect_character(b$head()$Species, any.missing = FALSE)
   expect_character(b$data(b$rownames[1], "Species")$Species, any.missing = FALSE)
 
+  tbl = as_sqlite_tbl(data)
   b = DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = TRUE)
   expect_factor(b$head()$Species, any.missing = FALSE)
   expect_factor(b$data(b$rownames[1], "Species")$Species, any.missing = FALSE)
 
+  tbl = as_sqlite_tbl(data)
   b = DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = "Species")
   expect_factor(b$head()$Species, any.missing = FALSE)
   expect_factor(b$data(b$rownames[1], "Species")$Species, any.missing = FALSE)
 
   expect_error(DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = "Sepal.Length"))
-
-  b$disconnect()
 })

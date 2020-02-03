@@ -48,12 +48,17 @@
 #' * `connector` :: `function()`\cr
 #'   Function which is called to re-connect in case the connection became invalid.
 #'
+#' * `valid` :: `logical(1)`\cr
+#'   Returns `NA` if the data does not inherits from `"tbl_sql"` (i.e., it is not a remote SQL data base).
+#'   Returns the result of [DBI::dbIsValid()] otherwise.
+#'
 #' @section Methods:
 #' All methods from [mlr3::DataBackend], and additionally:
 #'
-#' * `disconnect()`\cr
+#' * `finalize()`\cr
 #'   () -> `logical(1)`\cr
-#'   Disconnects the stored connection.
+#'   Finalizer which disconnects from the data base.
+#'   Is called during garbage collection, but may also be called manually.
 #'
 #' @importFrom mlr3 DataBackend
 #' @importFrom dplyr is.tbl collect select_at filter_at summarize_at all_vars distinct tally funs
@@ -136,6 +141,12 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
       self$connector = assert_function(connector, args = character(), null.ok = TRUE)
     },
 
+    finalize = function() {
+      if (isTRUE(self$valid)) {
+        DBI::dbDisconnect(private$.data$src$con)
+      }
+    },
+
     data = function(rows, cols, data_format = "data.table") {
       private$.reconnect()
       assert_choice(data_format, self$data_formats)
@@ -197,13 +208,6 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         return(setNames(integer(length(cols)), cols))
       }
       unlist(res, recursive = FALSE)
-    },
-
-    disconnect = function() {
-      if (inherits(private$.data, "tbl_sql")) {
-        DBI::dbDisconnect(private$.data$src$con)
-      }
-      invisible(TRUE)
     }
   ),
 
@@ -226,6 +230,20 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     ncol = function() {
       private$.reconnect()
       ncol(private$.data)
+    },
+
+    valid = function() {
+      if (!inherits(private$.data, "tbl_sql")) {
+        return(NA)
+      }
+
+      requireNamespace("DBI")
+      requireNamespace("dbplyr")
+
+      # workaround for https://github.com/r-dbi/DBI/issues/302
+      force(names(private$.data$src$con))
+
+      DBI::dbIsValid(private$.data$src$con)
     }
   ),
 
@@ -247,24 +265,14 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     },
 
     .reconnect = function() {
-      if (!inherits(private$.data, "tbl_sql")) {
-        return(TRUE)
-      }
-
-      requireNamespace("dbplyr")
-      src = private$.data$src
-      # workaround for https://github.com/r-dbi/DBI/issues/302
-      force(names(src$con))
-      valid = DBI::dbIsValid(src$con)
-
-      if (!valid) {
+      if (isFALSE(self$valid)) {
         if (is.null(self$connector)) {
           stop("Invalid connection. Provide a connector during construction to automatically reconnect", call. = FALSE)
         }
 
         con = self$connector()
 
-        if (!all(class(src$con) == class(con))) {
+        if (!all(class(private$.data$src$con) == class(con))) {
           stop(sprintf("Reconnecting failed. Expected a connection of class %s, but got %s",
               paste0(class(src$con), collapse = "/"), paste0(class(con), collapse = "/")), call. = FALSE)
         }

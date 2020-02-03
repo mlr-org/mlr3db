@@ -1,6 +1,8 @@
 # mlr3db 0.1.4
 
 * Connections can now be automatically re-connected via a user-provided function.
+* `DataBackendDplyr` now has a finalizer which automatically disconnects the
+  data base connection during garbage collection.
 
 
 # mlr3db 0.1.3

@@ -46,6 +46,9 @@ List of factor levels, named with column names.
 Referenced columns get automatically converted to factors in \verb{$data()} and \verb{$head()}.
 \item \code{connector} :: \verb{function()}\cr
 Function which is called to re-connect in case the connection became invalid.
+\item \code{valid} :: \code{logical(1)}\cr
+Returns \code{NA} if the data does not inherits from \code{"tbl_sql"} (i.e., it is not a remote SQL data base).
+Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.
 }
 }
 
@@ -53,9 +56,10 @@ Function which is called to re-connect in case the connection became invalid.
 
 All methods from \link[mlr3:DataBackend]{mlr3::DataBackend}, and additionally:
 \itemize{
-\item \code{disconnect()}\cr
+\item \code{finalize()}\cr
 () -> \code{logical(1)}\cr
-Disconnects the stored connection.
+Finalizer which disconnects from the data base.
+Is called during garbage collection, but may also be called manually.
 }
 }
 

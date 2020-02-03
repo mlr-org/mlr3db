@@ -22,7 +22,6 @@ test_that("expectations", {
 
   expect_backend(b)
   expect_iris_backend(b)
-  b$disconnect()
 })
 
 test_that("resampling", {
@@ -47,14 +46,11 @@ test_that("resampling", {
   })
   expect_resample_result(rr)
   expect_data_table(rr$errors, nrows = 0L)
-
-  b$disconnect()
 })
 
 test_that("filtered tbl", {
   path = tempfile("db_", fileext = "sqlite")
   b = as_sqlite_backend(cbind(iris, data.frame(row_id = 1:150)), path = path)
-  b$disconnect()
 
   keep = c("row_id", "Sepal.Length", "Petal.Length", "Species")
   con = DBI::dbConnect(RSQLite::SQLite(), path)
@@ -80,6 +76,4 @@ test_that("filtered tbl", {
   expect_equal(b$nrow, 50)
   expect_equal(b$ncol, 4)
   expect_set_equal(b$colnames, keep)
-
-  DBI::dbDisconnect(con)
 })
