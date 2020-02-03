@@ -7,7 +7,7 @@ Relies internally on the abstraction of [dplyr](https://dplyr.tidyverse.org/) an
 
 See [mlr3book](https://mlr3book.mlr-org.com) for a short introduction.
 
-[![Build Status](https://img.shields.io/travis/mlr-org/mlr3dbtuning/master?label=Linux&logo=travis&style=flat-square)](https://travis-ci.org/mlr-org/mlr3dbtuning)
-[![CRAN Status Badge](https://www.r-pkg.org/badges/version-ago/mlr3dbtuning)](https://cran.r-project.org/package=mlr3dbtuning)
-[![Coverage Status](https://coveralls.io/repos/github/mlr-org/mlr3dbtuning/badge.svg?branch=master)](https://coveralls.io/github/mlr-org/mlr3dbtuning?branch=master)
+[![Build Status](https://img.shields.io/travis/mlr-org/mlr3db/master?label=Linux&logo=travis&style=flat-square)](https://travis-ci.org/mlr-org/mlr3db)
+[![CRAN Status Badge](https://www.r-pkg.org/badges/version-ago/mlr3db)](https://cran.r-project.org/package=mlr3db)
+[![Coverage Status](https://coveralls.io/repos/github/mlr-org/mlr3db/badge.svg?branch=master)](https://coveralls.io/github/mlr-org/mlr3db?branch=master)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3db-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3db)
