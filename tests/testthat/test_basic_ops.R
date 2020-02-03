@@ -7,6 +7,7 @@ test_that("valid DataBackend (tbl/tibble)", {
   b = DataBackendDplyr$new(data, "row_id")
   expect_backend(b)
   expect_iris_backend(b, n_missing = 30L)
+  b$disconnect()
 })
 
 test_that("valid DataBackend (tbl/sqlite)", {
@@ -25,7 +26,7 @@ test_that("valid DataBackend (as_sqlite_backend)", {
   b = as_sqlite_backend(data)
   expect_backend(b)
   expect_iris_backend(b, n_missing = 30L)
-  DBI::dbDisconnect(private(b)$.data$src$con)
+  b$disconnect()
 })
 
 test_that("strings_as_factors", {
@@ -46,5 +47,5 @@ test_that("strings_as_factors", {
 
   expect_error(DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = "Sepal.Length"))
 
-  DBI::dbDisconnect(private(b)$.data$src$con)
+  b$disconnect()
 })

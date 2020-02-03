@@ -6,24 +6,34 @@
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3:DataBackend]{mlr3::DataBackend}.}
 \description{
 A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{\link[dplyr:tbl]{dplyr::tbl()}} from packages \CRANpkg{dplyr}/\CRANpkg{dbplyr}.
-This includes \code{\link[tibble:tibble]{tibbles}}.
-Allows to let a \link[mlr3:Task]{mlr3::Task} interface an out-of-memory data base.
+This includes \code{\link[tibble:tibble]{tibbles}} and abstract data base connections interfaced by \CRANpkg{dbplyr}.
+The latter allows \link[mlr3:Task]{mlr3::Task}s to interface an out-of-memory data base.
 }
 \section{Construction}{
-\preformatted{DataBackendDplyr$new(data, primary_key = NULL, strings_as_factors = TRUE)
+\preformatted{DataBackendDplyr$new(data, primary_key = NULL, strings_as_factors = TRUE, connector = NULL)
 }
 \itemize{
 \item \code{data} :: \code{\link[dplyr:tbl]{dplyr::tbl()}}\cr
 The data object.
 \item \code{primary_key} :: \code{character(1)}\cr
 Name of the primary key column.
-\item strings_as_factors :: \code{logical(1)} || \code{character()}\cr
+\item \code{strings_as_factors} :: \code{logical(1)} || \code{character()}\cr
 Either a character vector of column names to convert to factors, or a single logical flag:
 if \code{FALSE}, no column will be converted, if \code{TRUE} all string columns (except the primary key).
 The backend is queried for distinct values of the respective columns and their levels are stored in \verb{$levels}.
+\item \code{connector} :: \verb{function()}\cr
+If not \code{NULL}, a function which re-connects to the data base in case the connection has become invalid.
+Database connections can become invalid due to timeouts or if the backend is serialized to the file system and then de-serialized again.
+This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
+\code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} is called to validate the connection.
+The function must return just the connection, not a \code{\link[dplyr:tbl]{dplyr::tbl()}} object!
+
+Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
+These can be retrieved from the stored \link[mlr3:DataBackend]{mlr3::DataBackend}/\link[mlr3:Task]{mlr3::Task}.
+To protect your credentials, it is recommended to use the \CRANpkg{secret} package.
 }
 
-Alternatively, use \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}} which will
+Alternatively, use \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}} to
 construct a \link{DataBackend} for you.
 }
 
@@ -33,13 +43,20 @@ All fields from \link[mlr3:DataBackend]{mlr3::DataBackend}, and additionally:
 \itemize{
 \item \code{levels} :: named \code{list()}\cr
 List of factor levels, named with column names.
-The columns get automatically converted to factors in \verb{$data()} and \code{head()}.
+Referenced columns get automatically converted to factors in \verb{$data()} and \verb{$head()}.
+\item \code{connector} :: \verb{function()}\cr
+Function which is called to re-connect in case the connection became invalid.
 }
 }
 
 \section{Methods}{
 
-All methods from \link[mlr3:DataBackend]{mlr3::DataBackend}.
+All methods from \link[mlr3:DataBackend]{mlr3::DataBackend}, and additionally:
+\itemize{
+\item \code{disconnect()}\cr
+() -> \code{logical(1)}\cr
+Disconnects the stored connection.
+}
 }
 
 \examples{

@@ -26,9 +26,12 @@ Imports:
     R6
 Suggests:
     DBI,
-    dbplyr,
-    lgr,
     RSQLite,
+    dbplyr,
+    future,
+    future.apply,
+    future.callr,
+    lgr,
     testthat,
     tibble
 Encoding: UTF-8

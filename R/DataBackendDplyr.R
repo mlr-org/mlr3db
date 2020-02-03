@@ -5,12 +5,12 @@
 #'
 #' @description
 #' A [mlr3::DataBackend] using [dplyr::tbl()] from packages \CRANpkg{dplyr}/\CRANpkg{dbplyr}.
-#' This includes [`tibbles`][tibble::tibble()].
-#' Allows to let a [mlr3::Task] interface an out-of-memory data base.
+#' This includes [`tibbles`][tibble::tibble()] and abstract data base connections interfaced by \CRANpkg{dbplyr}.
+#' The latter allows [mlr3::Task]s to interface an out-of-memory data base.
 #'
 #' @section Construction:
 #' ```
-#' DataBackendDplyr$new(data, primary_key = NULL, strings_as_factors = TRUE)
+#' DataBackendDplyr$new(data, primary_key = NULL, strings_as_factors = TRUE, connector = NULL)
 #' ```
 #'
 #' * `data` :: [dplyr::tbl()]\cr
@@ -19,12 +19,23 @@
 #' * `primary_key` :: `character(1)`\cr
 #'   Name of the primary key column.
 #'
-#' * strings_as_factors :: `logical(1)` || `character()`\cr
+#' * `strings_as_factors` :: `logical(1)` || `character()`\cr
 #'   Either a character vector of column names to convert to factors, or a single logical flag:
 #'   if `FALSE`, no column will be converted, if `TRUE` all string columns (except the primary key).
 #'   The backend is queried for distinct values of the respective columns and their levels are stored in `$levels`.
 #'
-#' Alternatively, use [mlr3::as_data_backend()] on a [dplyr::tbl()] which will
+#' * `connector` :: `function()`\cr
+#'   If not `NULL`, a function which re-connects to the data base in case the connection has become invalid.
+#'   Database connections can become invalid due to timeouts or if the backend is serialized to the file system and then de-serialized again.
+#'   This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
+#'   [DBI::dbIsValid()] is called to validate the connection.
+#'   The function must return just the connection, not a [dplyr::tbl()] object!
+#'
+#'   Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
+#'   These can be retrieved from the stored [mlr3::DataBackend]/[mlr3::Task].
+#'   To protect your credentials, it is recommended to use the \CRANpkg{secret} package.
+#'
+#' Alternatively, use [mlr3::as_data_backend()] on a [dplyr::tbl()] to
 #' construct a [DataBackend] for you.
 #'
 #' @section Fields:
@@ -32,10 +43,17 @@
 #'
 #' * `levels` :: named `list()`\cr
 #'   List of factor levels, named with column names.
-#'   The columns get automatically converted to factors in `$data()` and `head()`.
+#'   Referenced columns get automatically converted to factors in `$data()` and `$head()`.
+#'
+#' * `connector` :: `function()`\cr
+#'   Function which is called to re-connect in case the connection became invalid.
 #'
 #' @section Methods:
-#' All methods from [mlr3::DataBackend].
+#' All methods from [mlr3::DataBackend], and additionally:
+#'
+#' * `disconnect()`\cr
+#'   () -> `logical(1)`\cr
+#'   Disconnects the stored connection.
 #'
 #' @importFrom mlr3 DataBackend
 #' @importFrom dplyr is.tbl collect select_at filter_at summarize_at all_vars distinct tally funs
@@ -86,7 +104,9 @@
 DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
     levels = NULL,
-    initialize = function(data, primary_key, strings_as_factors = TRUE) {
+    connector = NULL,
+
+    initialize = function(data, primary_key, strings_as_factors = TRUE, connector = NULL) {
       if (!is.tbl(data)) {
         stop("Argument 'data' must be of class 'tbl'")
       }
@@ -107,9 +127,12 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
         self$levels = self$distinct(rows = NULL, cols = strings_as_factors)
       }
+
+      self$connector = assert_function(connector, args = character(), null.ok = TRUE)
     },
 
     data = function(rows, cols, data_format = "data.table") {
+      private$.reconnect()
       assert_choice(data_format, self$data_formats)
       assert_atomic_vector(rows)
       assert_names(cols, type = "unique")
@@ -123,10 +146,12 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     },
 
     head = function(n = 6L) {
+      private$.reconnect()
       private$.recode(setDT(collect(head(private$.data, n))))
     },
 
     distinct = function(rows, cols, na_rm = TRUE) {
+      private$.reconnect()
       # TODO: what does dplyr::disinct return for enums?
       assert_names(cols, type = "unique")
       cols = intersect(cols, self$colnames)
@@ -150,6 +175,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     },
 
     missings = function(rows, cols) {
+      private$.reconnect()
       assert_atomic_vector(rows)
       assert_names(cols, type = "unique")
 
@@ -166,29 +192,41 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         return(setNames(integer(length(cols)), cols))
       }
       unlist(res, recursive = FALSE)
+    },
+
+    disconnect = function() {
+      if (inherits(private$.data, "tbl_sql")) {
+        DBI::dbDisconnect(private$.data$src$con)
+      }
+      invisible(TRUE)
     }
   ),
 
   active = list(
     rownames = function() {
+      private$.reconnect()
       collect(select_at(private$.data, self$primary_key))[[1L]]
     },
 
     colnames = function() {
+      private$.reconnect()
       colnames(private$.data)
     },
 
     nrow = function() {
+      private$.reconnect()
       collect(tally(private$.data))[[1L]]
     },
 
     ncol = function() {
+      private$.reconnect()
       ncol(private$.data)
     }
   ),
 
   private = list(
     .calculate_hash = function() {
+      private$.reconnect()
       if (inherits(private$.data, "tbl_lazy")) {
         digest(list(private$.data$ops, private$.data$con), algo = "xxhash64")
       } else {
@@ -201,6 +239,33 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         set(tab, i = NULL, j = col, value = factor(tab[[col]], levels = self$levels[[col]]))
       }
       tab[]
+    },
+
+    .reconnect = function() {
+      if (!inherits(private$.data, "tbl_sql")) {
+        return(TRUE)
+      }
+
+      requireNamespace("dbplyr")
+      src = private$.data$src
+      # workaround for https://github.com/r-dbi/DBI/issues/302
+      force(names(src$con))
+      valid = DBI::dbIsValid(src$con)
+
+      if (!valid) {
+        if (is.null(self$connector)) {
+          stop("Invalid connection. Provide a connector during construction to automatically reconnect", call. = FALSE)
+        }
+
+        con = self$connector()
+
+        if (!all(class(src$con) == class(con))) {
+          stop(sprintf("Reconnecting failed. Expected a connection of class %s, but got %s",
+              paste0(class(src$con), collapse = "/"), paste0(class(con), collapse = "/")))
+        }
+
+        private$.data$src$con = con
+      }
     }
   )
 )
