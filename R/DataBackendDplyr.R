@@ -110,6 +110,11 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
       if (!is.tbl(data)) {
         stop("Argument 'data' must be of class 'tbl'")
       }
+
+      if (inherits(data, "tbl_sql")) {
+        requireNamespace("dbplyr")
+      }
+
       super$initialize(data, primary_key)
       assert_choice(primary_key, colnames(data))
 
@@ -261,7 +266,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
         if (!all(class(src$con) == class(con))) {
           stop(sprintf("Reconnecting failed. Expected a connection of class %s, but got %s",
-              paste0(class(src$con), collapse = "/"), paste0(class(con), collapse = "/")))
+              paste0(class(src$con), collapse = "/"), paste0(class(con), collapse = "/")), call. = FALSE)
         }
 
         private$.data$src$con = con
