@@ -4,7 +4,6 @@
 * `DataBackendDplyr` now has a finalizer which automatically disconnects the
   data base connection during garbage collection.
 
-
 # mlr3db 0.1.3
 
 * During construction of `DataBackendDplyr`, you can now select columns to be
