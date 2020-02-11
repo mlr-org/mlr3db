@@ -47,3 +47,15 @@ test_that("strings_as_factors", {
 
   expect_error(DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = "Sepal.Length"))
 })
+
+test_that("as_data_backend", {
+  skip_if_not_installed("tibble")
+  data = iris
+  data$row_id = 1:150
+  data = tibble::as_tibble(data)
+  expect_is(as_data_backend(data, primary_key = "row_id"), "DataBackendDataTable")
+
+  data = as_sqlite_tbl(data = data, primary_key = "row_id")
+  expect_is(as_data_backend(data, primary_key = "row_id"), "DataBackendDplyr")
+  DBI::dbDisconnect(data$src$con)
+})

@@ -33,8 +33,9 @@ These can be retrieved from the stored \link[mlr3:DataBackend]{mlr3::DataBackend
 To protect your credentials, it is recommended to use the \CRANpkg{secret} package.
 }
 
-Alternatively, use \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}} to
-construct a \link{DataBackend} for you.
+Alternatively, use \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}} to construct a \link{DataBackend} for you.
+Note that only objects of class \code{"tbl_lazy"} will be converted to a \link{DataBackendDplyr} (this includes all connectors from \CRANpkg{dbplyr}).
+Local \code{"tbl"} objects such as \code{\link[tibble:tibble]{tibbles}} will converted to a \link[mlr3:DataBackendDataTable]{DataBackendDataTable}.
 }
 
 \section{Fields}{

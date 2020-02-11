@@ -5,6 +5,7 @@ learner = mlr3::mlr_learners$get("classif.featureless")
 
 test_that("single step train + predict", {
   expect_learner(learner$train(task, 1:120))
+  expect_is(b, "DataBackendDplyr")
   p = learner$predict(task, 121:150)
   expect_prediction(p)
   expect_data_table(data.table::as.data.table(p), nrows = 30)

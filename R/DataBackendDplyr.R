@@ -35,8 +35,9 @@
 #'   These can be retrieved from the stored [mlr3::DataBackend]/[mlr3::Task].
 #'   To protect your credentials, it is recommended to use the \CRANpkg{secret} package.
 #'
-#' Alternatively, use [mlr3::as_data_backend()] on a [dplyr::tbl()] to
-#' construct a [DataBackend] for you.
+#' Alternatively, use [mlr3::as_data_backend()] on a [dplyr::tbl()] to construct a [DataBackend] for you.
+#' Note that only objects of class `"tbl_lazy"` will be converted to a [DataBackendDplyr] (this includes all connectors from \CRANpkg{dbplyr}).
+#' Local `"tbl"` objects such as [`tibbles`][tibble::tibble()] will converted to a [DataBackendDataTable][mlr3::DataBackendDataTable].
 #'
 #' @section Fields:
 #' All fields from [mlr3::DataBackend], and additionally:
@@ -285,6 +286,6 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.tbl = function(data, primary_key, strings_as_factors = TRUE) {
+as_data_backend.tbl_lazy = function(data, primary_key, strings_as_factors = TRUE) {
   DataBackendDplyr$new(data, primary_key)
 }
