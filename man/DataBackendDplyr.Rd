@@ -48,7 +48,7 @@ Referenced columns get automatically converted to factors in \verb{$data()} and 
 \item \code{connector} :: \verb{function()}\cr
 Function which is called to re-connect in case the connection became invalid.
 \item \code{valid} :: \code{logical(1)}\cr
-Returns \code{NA} if the data does not inherits from \code{"tbl_sql"} (i.e., it is not a remote SQL data base).
+Returns \code{NA} if the data does not inherits from \code{"tbl_sql"} (i.e., it is not a real SQL data base).
 Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.
 }
 }

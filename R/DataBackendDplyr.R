@@ -50,7 +50,7 @@
 #'   Function which is called to re-connect in case the connection became invalid.
 #'
 #' * `valid` :: `logical(1)`\cr
-#'   Returns `NA` if the data does not inherits from `"tbl_sql"` (i.e., it is not a remote SQL data base).
+#'   Returns `NA` if the data does not inherits from `"tbl_sql"` (i.e., it is not a real SQL data base).
 #'   Returns the result of [DBI::dbIsValid()] otherwise.
 #'
 #' @section Methods:
