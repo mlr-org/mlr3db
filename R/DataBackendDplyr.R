@@ -159,7 +159,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
         union(cols, self$primary_key))))
 
-      private$.recode(res[list(rows), cols, nomatch = 0L, with = FALSE, on = self$primary_key])
+      private$.recode(res[list(rows), cols, nomatch = NULL, with = FALSE, on = self$primary_key])
     },
 
     head = function(n = 6L) {
