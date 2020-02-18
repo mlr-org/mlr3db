@@ -2,8 +2,8 @@
 
 * `as_data_backend()` method to construct a `DataBackendDplyr` now specialized
   to operate on objects of type `"tbl_lazy"` (was `"tbl"` before). This way,
-  local `"tbl"` objects such as tibbles are converted to the faster
-  `DataBackendDataTable` by `mlr3::as_data_backend.data.frame()` in mlr3.
+  local `"tbl"` objects such as tibbles are converted to a
+  `DataBackendDataTable` by `mlr3::as_data_backend.data.frame()`.
 
 # mlr3db 0.1.4
 
