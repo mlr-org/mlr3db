@@ -152,62 +152,178 @@ The latter allows <a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::T
 
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
-    <p><a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> object inheriting from <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>.</p>
-    <h2 class="hasAnchor" id="construction"><a class="anchor" href="#construction"></a>Construction</h2>
+    <p><code><a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a></code> -&gt; <code>DataBackendDplyr</code></p>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
+
+    <p><div class="r6-fields"></p><dl class='dl-horizontal'>
+<dt><code>levels</code></dt><dd><p>(named <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>)<br />
+List (named with column names) of factor levels as <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>.
+Used to auto-convert character columns to factor variables.</p></dd>
+
+<dt><code>connector</code></dt><dd><p>(<code>function()</code>)<br />
+Function which is called to re-connect in case the connection became invalid.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
+
+    <p><div class="r6-active-bindings"></p><dl class='dl-horizontal'>
+<dt><code>rownames</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>)<br />
+Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.</p></dd>
+
+<dt><code>colnames</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>)<br />
+Returns vector of all column names, including the primary key column.</p></dd>
+
+<dt><code>nrow</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
+Number of rows (observations).</p></dd>
+
+<dt><code>ncol</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
+Number of columns (variables), including the primary key column.</p></dd>
+
+<dt><code>valid</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>)<br />
+Returns <code>NA</code> if the data does not inherits from <code>"tbl_sql"</code> (i.e., it is not a real SQL data base).
+Returns the result of <code><a href='https://dbi.r-dbi.org/reference/dbIsValid.html'>DBI::dbIsValid()</a></code> otherwise.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<pre>DataBackendDplyr$new(data, primary_key = NULL, strings_as_factors = TRUE, connector = NULL)
-</pre>
+<h3>Public methods</h3>
+
 <ul>
-<li><p><code>data</code> :: <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code><br />
-The data object.</p></li>
-<li><p><code>primary_key</code> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Name of the primary key column.</p></li>
-<li><p><code>strings_as_factors</code> :: <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> || <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code><br />
+<li><p><a href='#method-new'><code>DataBackendDplyr$new()</code></a></p></li>
+<li><p><a href='#method-finalize'><code>DataBackendDplyr$finalize()</code></a></p></li>
+<li><p><a href='#method-data'><code>DataBackendDplyr$data()</code></a></p></li>
+<li><p><a href='#method-head'><code>DataBackendDplyr$head()</code></a></p></li>
+<li><p><a href='#method-distinct'><code>DataBackendDplyr$distinct()</code></a></p></li>
+<li><p><a href='#method-missings'><code>DataBackendDplyr$missings()</code></a></p></li>
+</ul>
+<p><details open ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href='../../mlr3/html/DataBackend.html#method-format'><code>mlr3::DataBackend$format()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href='../../mlr3/html/DataBackend.html#method-print'><code>mlr3::DataBackend$print()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<p>Creates a connection for a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> object.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>DataBackendDplyr$new(
+  data,
+  primary_key,
+  strings_as_factors = TRUE,
+  connector = NULL
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>data</code></dt><dd><p>(<code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code>)<br />
+The data object.</p></dd>
+
+<dt><code>primary_key</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>)<br />
+Name of the primary key column.</p></dd>
+
+<dt><code>strings_as_factors</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> || <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>)<br />
 Either a character vector of column names to convert to factors, or a single logical flag:
 if <code>FALSE</code>, no column will be converted, if <code>TRUE</code> all string columns (except the primary key).
-The backend is queried for distinct values of the respective columns and their levels are stored in <code>$levels</code>.</p></li>
-<li><p><code>connector</code> :: <code>function()</code><br />
+For conversion, the backend is queried for distinct values of the respective columns on construction and their levels are stored in <code>$levels</code>.</p></dd>
+
+<dt><code>connector</code></dt><dd><p>(<code>function()</code>)<br />
 If not <code>NULL</code>, a function which re-connects to the data base in case the connection has become invalid.
 Database connections can become invalid due to timeouts or if the backend is serialized to the file system and then de-serialized again.
 This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
 <code><a href='https://dbi.r-dbi.org/reference/dbIsValid.html'>DBI::dbIsValid()</a></code> is called to validate the connection.
-The function must return just the connection, not a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> object!</p>
-<p>Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
+The function must return just the connection, not a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> object!Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
 These can be retrieved from the stored <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>/<a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::Task</a>.
-To protect your credentials, it is recommended to use the <a href='https://CRAN.R-project.org/package=secret'><span class="pkg">secret</span></a> package.</p></li>
-</ul>
-
-<p>Alternatively, use <code><a href='https://mlr3.mlr-org.com/reference/as_data_backend.html'>mlr3::as_data_backend()</a></code> on a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> to construct a DataBackend for you.
+To protect your credentials, it is recommended to use the <a href='https://CRAN.R-project.org/package=secret'><span class="pkg">secret</span></a> package.Instead of calling the constructor yourself, you can call <code><a href='https://mlr3.mlr-org.com/reference/as_data_backend.html'>mlr3::as_data_backend()</a></code> on a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code>.
 Note that only objects of class <code>"tbl_lazy"</code> will be converted to a DataBackendDplyr (this includes all connectors from <a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>).
-Local <code>"tbl"</code> objects such as <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code> will converted to a <a href='https://mlr3.mlr-org.com/reference/DataBackendDataTable.html'>DataBackendDataTable</a>.</p>
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+Local <code>"tbl"</code> objects such as <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code> will converted to a <a href='https://mlr3.mlr-org.com/reference/DataBackendDataTable.html'>DataBackendDataTable</a>.</p></dd>
 
-    
+</dl><p></div></p>
+<p><hr>
+<a id="method-finalize"></a></p><h3>Method <code>finalize()</code></h3>
+<p>Finalizer which disconnects from the data base.
+This is called during garbage collection of the instance.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>DataBackendDplyr$finalize()</pre><p></div></p>
 
-<p>All fields from <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>, and additionally:</p><ul>
-<li><p><code>levels</code> :: named <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code><br />
-List of factor levels, named with column names.
-Referenced columns get automatically converted to factors in <code>$data()</code> and <code>$head()</code>.</p></li>
-<li><p><code>connector</code> :: <code>function()</code><br />
-Function which is called to re-connect in case the connection became invalid.</p></li>
-<li><p><code>valid</code> :: <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
-Returns <code>NA</code> if the data does not inherits from <code>"tbl_sql"</code> (i.e., it is not a real SQL data base).
-Returns the result of <code><a href='https://dbi.r-dbi.org/reference/dbIsValid.html'>DBI::dbIsValid()</a></code> otherwise.</p></li>
-</ul>
+<h3>Returns</h3>
+<p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>, the return value of <code><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>DBI::dbDisconnect()</a></code>.</p>
+<p><hr>
+<a id="method-data"></a></p><h3>Method <code><a href='https://rdrr.io/r/utils/data.html'>data()</a></code></h3>
+<p>Returns a slice of the data.
+Calls <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code> on the table and converts it to a <code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table::data.table()</a></code>.</p>
+<p>The rows must be addressed as vector of primary key values, columns must be referred to via column names.
+Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
+Rows are guaranteed to be returned in the same order as <code>rows</code>, columns may be returned in an arbitrary order.
+Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>DataBackendDplyr$data(rows, cols, data_format = "data.table")</pre><p></div></p>
 
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>rows</code></dt><dd><p><code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code><br />
+Row indices.</p></dd>
 
-    
+<dt><code>cols</code></dt><dd><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code><br />
+Column names.</p></dd>
 
-<p>All methods from <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>, and additionally:</p><ul>
-<li><p><code>finalize()</code><br />
-() -&gt; <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
-Finalizer which disconnects from the data base.
-Is called during garbage collection, but may also be called manually.</p></li>
-</ul>
+<dt><code>data_format</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>)<br />
+Desired data format, e.g. <code>"data.table"</code> or <code>"Matrix"</code>.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-head"></a></p><h3>Method <code><a href='https://rdrr.io/r/utils/head.html'>head()</a></code></h3>
+<p>Retrieve the first <code>n</code> rows.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>DataBackendDplyr$head(n = 6L)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>n</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
+Number of rows.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table::data.table()</a></code> of the first <code>n</code> rows.</p>
+<p><hr>
+<a id="method-distinct"></a></p><h3>Method <code>distinct()</code></h3>
+<p>Returns a named list of vectors of distinct values for each column
+specified. If <code>na_rm</code> is <code>TRUE</code>, missing values are removed from the
+returned vectors of distinct values. Non-existing rows and columns are
+silently ignored.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>DataBackendDplyr$distinct(rows, cols, na_rm = TRUE)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>rows</code></dt><dd><p><code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code><br />
+Row indices.</p></dd>
+
+<dt><code>cols</code></dt><dd><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code><br />
+Column names.</p></dd>
+
+<dt><code>na_rm</code></dt><dd><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
+Whether to remove NAs or not.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p>Named <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of distinct values.</p>
+<p><hr>
+<a id="method-missings"></a></p><h3>Method <code>missings()</code></h3>
+<p>Returns the number of missing values per column in the specified slice
+of data. Non-existing rows and columns are silently ignored.</p><h3>Usage</h3>
+<p><div class="r"></p><pre>DataBackendDplyr$missings(rows, cols)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl class='dl-horizontal'>
+<dt><code>rows</code></dt><dd><p><code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code><br />
+Row indices.</p></dd>
+
+<dt><code>cols</code></dt><dd><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code><br />
+Column names.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p>Total of missing values per column (named <code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>).</p>
+
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -293,9 +409,9 @@ Is called during garbage collection, but may also be called manually.</p></li>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#construction">Construction</a></li>
-      <li><a href="#fields">Fields</a></li>
+      <li><a href="#super-class">Super class</a></li>
+      <li><a href="#public-fields">Public fields</a></li>
+      <li><a href="#active-bindings">Active bindings</a></li>
       <li><a href="#methods">Methods</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
