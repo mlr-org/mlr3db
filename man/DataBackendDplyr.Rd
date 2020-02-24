@@ -3,67 +3,11 @@
 \name{DataBackendDplyr}
 \alias{DataBackendDplyr}
 \title{DataBackend for dplyr/dbplyr}
-\format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3:DataBackend]{mlr3::DataBackend}.}
 \description{
 A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{\link[dplyr:tbl]{dplyr::tbl()}} from packages \CRANpkg{dplyr}/\CRANpkg{dbplyr}.
 This includes \code{\link[tibble:tibble]{tibbles}} and abstract data base connections interfaced by \CRANpkg{dbplyr}.
 The latter allows \link[mlr3:Task]{mlr3::Task}s to interface an out-of-memory data base.
 }
-\section{Construction}{
-\preformatted{DataBackendDplyr$new(data, primary_key = NULL, strings_as_factors = TRUE, connector = NULL)
-}
-\itemize{
-\item \code{data} :: \code{\link[dplyr:tbl]{dplyr::tbl()}}\cr
-The data object.
-\item \code{primary_key} :: \code{character(1)}\cr
-Name of the primary key column.
-\item \code{strings_as_factors} :: \code{logical(1)} || \code{character()}\cr
-Either a character vector of column names to convert to factors, or a single logical flag:
-if \code{FALSE}, no column will be converted, if \code{TRUE} all string columns (except the primary key).
-The backend is queried for distinct values of the respective columns and their levels are stored in \verb{$levels}.
-\item \code{connector} :: \verb{function()}\cr
-If not \code{NULL}, a function which re-connects to the data base in case the connection has become invalid.
-Database connections can become invalid due to timeouts or if the backend is serialized to the file system and then de-serialized again.
-This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
-\code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} is called to validate the connection.
-The function must return just the connection, not a \code{\link[dplyr:tbl]{dplyr::tbl()}} object!
-
-Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
-These can be retrieved from the stored \link[mlr3:DataBackend]{mlr3::DataBackend}/\link[mlr3:Task]{mlr3::Task}.
-To protect your credentials, it is recommended to use the \CRANpkg{secret} package.
-}
-
-Alternatively, use \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}} to construct a \link{DataBackend} for you.
-Note that only objects of class \code{"tbl_lazy"} will be converted to a \link{DataBackendDplyr} (this includes all connectors from \CRANpkg{dbplyr}).
-Local \code{"tbl"} objects such as \code{\link[tibble:tibble]{tibbles}} will converted to a \link[mlr3:DataBackendDataTable]{DataBackendDataTable}.
-}
-
-\section{Fields}{
-
-All fields from \link[mlr3:DataBackend]{mlr3::DataBackend}, and additionally:
-\itemize{
-\item \code{levels} :: named \code{list()}\cr
-List of factor levels, named with column names.
-Referenced columns get automatically converted to factors in \verb{$data()} and \verb{$head()}.
-\item \code{connector} :: \verb{function()}\cr
-Function which is called to re-connect in case the connection became invalid.
-\item \code{valid} :: \code{logical(1)}\cr
-Returns \code{NA} if the data does not inherits from \code{"tbl_sql"} (i.e., it is not a real SQL data base).
-Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.
-}
-}
-
-\section{Methods}{
-
-All methods from \link[mlr3:DataBackend]{mlr3::DataBackend}, and additionally:
-\itemize{
-\item \code{finalize()}\cr
-() -> \code{logical(1)}\cr
-Finalizer which disconnects from the data base.
-Is called during garbage collection, but may also be called manually.
-}
-}
-
 \examples{
 # Backend using a in-memory tibble
 data = tibble::as_tibble(iris)
@@ -107,4 +51,220 @@ lapply(b$head(), class)
 # Cleanup
 rm(tbl)
 DBI::dbDisconnect(con)
+}
+\section{Super class}{
+\code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendDplyr}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{levels}}{(named \code{list()})\cr
+List (named with column names) of factor levels as \code{character()}.
+Used to auto-convert character columns to factor variables.}
+
+\item{\code{connector}}{(\verb{function()})\cr
+Function which is called to re-connect in case the connection became invalid.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{rownames}}{(\code{integer()})\cr
+Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.}
+
+\item{\code{colnames}}{(\code{character()})\cr
+Returns vector of all column names, including the primary key column.}
+
+\item{\code{nrow}}{(\code{integer(1)})\cr
+Number of rows (observations).}
+
+\item{\code{ncol}}{(\code{integer(1)})\cr
+Number of columns (variables), including the primary key column.}
+
+\item{\code{valid}}{(\code{logical(1)})\cr
+Returns \code{NA} if the data does not inherits from \code{"tbl_sql"} (i.e., it is not a real SQL data base).
+Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{DataBackendDplyr$new()}}
+\item \href{#method-finalize}{\code{DataBackendDplyr$finalize()}}
+\item \href{#method-data}{\code{DataBackendDplyr$data()}}
+\item \href{#method-head}{\code{DataBackendDplyr$head()}}
+\item \href{#method-distinct}{\code{DataBackendDplyr$distinct()}}
+\item \href{#method-missings}{\code{DataBackendDplyr$missings()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format">}\href{../../mlr3/html/DataBackend.html#method-format}{\code{mlr3::DataBackend$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print">}\href{../../mlr3/html/DataBackend.html#method-print}{\code{mlr3::DataBackend$print()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+Creates a connection for a \code{\link[dplyr:tbl]{dplyr::tbl()}} object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$new(
+  data,
+  primary_key,
+  strings_as_factors = TRUE,
+  connector = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{(\code{\link[dplyr:tbl]{dplyr::tbl()}})\cr
+The data object.}
+
+\item{\code{primary_key}}{(\code{character(1)})\cr
+Name of the primary key column.}
+
+\item{\code{strings_as_factors}}{(\code{logical(1)} || \code{character()})\cr
+Either a character vector of column names to convert to factors, or a single logical flag:
+if \code{FALSE}, no column will be converted, if \code{TRUE} all string columns (except the primary key).
+For conversion, the backend is queried for distinct values of the respective columns on construction and their levels are stored in \verb{$levels}.}
+
+\item{\code{connector}}{(\verb{function()})\cr
+If not \code{NULL}, a function which re-connects to the data base in case the connection has become invalid.
+Database connections can become invalid due to timeouts or if the backend is serialized to the file system and then de-serialized again.
+This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
+\code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} is called to validate the connection.
+The function must return just the connection, not a \code{\link[dplyr:tbl]{dplyr::tbl()}} object!
+
+Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
+These can be retrieved from the stored \link[mlr3:DataBackend]{mlr3::DataBackend}/\link[mlr3:Task]{mlr3::Task}.
+To protect your credentials, it is recommended to use the \CRANpkg{secret} package.
+
+Instead of calling the constructor yourself, you can call \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}}.
+Note that only objects of class \code{"tbl_lazy"} will be converted to a \link{DataBackendDplyr} (this includes all connectors from \CRANpkg{dbplyr}).
+Local \code{"tbl"} objects such as \code{\link[tibble:tibble]{tibbles}} will converted to a \link[mlr3:DataBackendDataTable]{DataBackendDataTable}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-finalize"></a>}}
+\subsection{Method \code{finalize()}}{
+Finalizer which disconnects from the data base.
+This is called during garbage collection of the instance.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$finalize()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+\code{logical(1)}, the return value of \code{\link[DBI:dbDisconnect]{DBI::dbDisconnect()}}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-data"></a>}}
+\subsection{Method \code{data()}}{
+Returns a slice of the data.
+Calls \code{\link[dplyr:filter]{dplyr::filter()}} and \code{\link[dplyr:select]{dplyr::select()}} on the table and converts it to a \code{\link[data.table:data.table]{data.table::data.table()}}.
+
+The rows must be addressed as vector of primary key values, columns must be referred to via column names.
+Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
+Rows are guaranteed to be returned in the same order as \code{rows}, columns may be returned in an arbitrary order.
+Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$data(rows, cols, data_format = "data.table")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rows}}{\code{integer()}\cr
+Row indices.}
+
+\item{\code{cols}}{\code{character()}\cr
+Column names.}
+
+\item{\code{data_format}}{(\code{character(1)})\cr
+Desired data format, e.g. \code{"data.table"} or \code{"Matrix"}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-head"></a>}}
+\subsection{Method \code{head()}}{
+Retrieve the first \code{n} rows.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$head(n = 6L)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n}}{(\code{integer(1)})\cr
+Number of rows.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link[data.table:data.table]{data.table::data.table()}} of the first \code{n} rows.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-distinct"></a>}}
+\subsection{Method \code{distinct()}}{
+Returns a named list of vectors of distinct values for each column
+specified. If \code{na_rm} is \code{TRUE}, missing values are removed from the
+returned vectors of distinct values. Non-existing rows and columns are
+silently ignored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$distinct(rows, cols, na_rm = TRUE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rows}}{\code{integer()}\cr
+Row indices.}
+
+\item{\code{cols}}{\code{character()}\cr
+Column names.}
+
+\item{\code{na_rm}}{\code{logical(1)}\cr
+Whether to remove NAs or not.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Named \code{list()} of distinct values.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-missings"></a>}}
+\subsection{Method \code{missings()}}{
+Returns the number of missing values per column in the specified slice
+of data. Non-existing rows and columns are silently ignored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$missings(rows, cols)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rows}}{\code{integer()}\cr
+Row indices.}
+
+\item{\code{cols}}{\code{character()}\cr
+Column names.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Total of missing values per column (named \code{numeric()}).
+}
+}
 }
