@@ -1,7 +1,8 @@
 # mlr3db
 
-[![Build Status](https://img.shields.io/travis/mlr-org/mlr3db/master?label=Linux&logo=travis&style=flat-square)](https://travis-ci.org/mlr-org/mlr3db)
+[![R build status](https://github.com/mlr-org/mlr3db/workflows/R-CMD-check/badge.svg)](https://github.com/mlr-org/mlr3db/actions)
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version-ago/mlr3db)](https://cran.r-project.org/package=mlr3db)
+[![Cran Checks](https://cranchecks.info/badges/worst/mlr3db)](https://cran.r-project.org/web/checks/check_results_mlr3db.html)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 
 Package website: [release](https://mlr3db.mlr-org.com/) | [dev](https://mlr3db.mlr-org.com/dev)
