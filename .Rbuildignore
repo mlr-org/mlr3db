@@ -9,3 +9,6 @@
 ^man-roxygen$
 ^docs$
 ^pkgdown$
+^\.ccache$
+^\.github$
+^tic\.R$
