@@ -17,4 +17,4 @@ test_that("resample work", {
   expect_resample_result(rr)
 })
 
-DBI::dbDisconnect(data$src$con)
+disconnect(data)

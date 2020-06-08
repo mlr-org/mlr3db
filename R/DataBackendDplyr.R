@@ -151,9 +151,9 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #'
     data = function(rows, cols, data_format = "data.table") {
       private$.reconnect()
-      assert_choice(data_format, self$data_formats)
-      assert_atomic_vector(rows)
+      rows = assert_integerish(rows, coerce = TRUE)
       assert_names(cols, type = "unique")
+      assert_choice(data_format, self$data_formats)
       cols = intersect(cols, colnames(private$.data))
 
       res = setDT(collect(select_at(
@@ -213,7 +213,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #' @return Total of missing values per column (named `numeric()`).
     missings = function(rows, cols) {
       private$.reconnect()
-      assert_atomic_vector(rows)
+      rows = assert_integerish(rows, coerce = TRUE)
       assert_names(cols, type = "unique")
 
       cols = intersect(cols, self$colnames)

@@ -15,6 +15,7 @@ reconnector = function(path) {
 test_that("expectations", {
   path = tempfile("db_", fileext = "sqlite")
   b = as_sqlite_backend(iris, path = path)
+  on.exit(disconnect(b))
   b$connector = reconnector(path)
 
   b = roundtrip(b)
@@ -27,6 +28,7 @@ test_that("expectations", {
 test_that("resampling", {
   path = tempfile("db_", fileext = "sqlite")
   b = as_sqlite_backend(iris, path = path)
+  on.exit(disconnect(b))
   b$connector = reconnector(path)
 
   task = mlr3::TaskClassif$new("iris-sqlite", b, target = "Species")
@@ -51,6 +53,7 @@ test_that("resampling", {
 test_that("filtered tbl", {
   path = tempfile("db_", fileext = "sqlite")
   b = as_sqlite_backend(cbind(iris, data.frame(row_id = 1:150)), path = path)
+  on.exit(disconnect(b))
 
   keep = c("row_id", "Sepal.Length", "Petal.Length", "Species")
   con = DBI::dbConnect(RSQLite::SQLite(), path)

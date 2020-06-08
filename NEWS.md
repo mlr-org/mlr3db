@@ -1,5 +1,8 @@
 # mlr3db (development version)
 
+* Set a primary key for SQLite data bases generated from data frames.
+* Resolved a warning signaled by dplyr-1.0.0.
+
 # mlr3db 0.1.5
 
 * `as_data_backend()` method to construct a `DataBackendDplyr` now specialized

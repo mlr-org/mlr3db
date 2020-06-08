@@ -109,6 +109,7 @@ Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a connection for a \code{\link[dplyr:tbl]{dplyr::tbl()}} object.
 \subsection{Usage}{
@@ -154,6 +155,7 @@ Local \code{"tbl"} objects such as \code{\link[tibble:tibble]{tibbles}} will con
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 Finalizer which disconnects from the data base.
 This is called during garbage collection of the instance.
@@ -167,6 +169,7 @@ This is called during garbage collection of the instance.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-data"></a>}}
+\if{latex}{\out{\hypertarget{method-data}{}}}
 \subsection{Method \code{data()}}{
 Returns a slice of the data.
 Calls \code{\link[dplyr:filter]{dplyr::filter()}} and \code{\link[dplyr:select]{dplyr::select()}} on the table and converts it to a \code{\link[data.table:data.table]{data.table::data.table()}}.
@@ -196,6 +199,7 @@ Desired data format, e.g. \code{"data.table"} or \code{"Matrix"}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-head"></a>}}
+\if{latex}{\out{\hypertarget{method-head}{}}}
 \subsection{Method \code{head()}}{
 Retrieve the first \code{n} rows.
 \subsection{Usage}{
@@ -216,6 +220,7 @@ Number of rows.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-distinct"></a>}}
+\if{latex}{\out{\hypertarget{method-distinct}{}}}
 \subsection{Method \code{distinct()}}{
 Returns a named list of vectors of distinct values for each column
 specified. If \code{na_rm} is \code{TRUE}, missing values are removed from the
@@ -245,6 +250,7 @@ Named \code{list()} of distinct values.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-missings"></a>}}
+\if{latex}{\out{\hypertarget{method-missings}{}}}
 \subsection{Method \code{missings()}}{
 Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.

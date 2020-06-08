@@ -16,7 +16,7 @@ test_that("valid DataBackend (tbl/sqlite)", {
   b = DataBackendDplyr$new(data, "row_id")
   expect_backend(b)
   expect_iris_backend(b, n_missing = 30L)
-  DBI::dbDisconnect(data$src$con)
+  disconnect(data)
 })
 
 test_that("valid DataBackend (as_sqlite_backend)", {
@@ -57,5 +57,5 @@ test_that("as_data_backend", {
 
   data = as_sqlite_tbl(data = data, primary_key = "row_id")
   expect_is(as_data_backend(data, primary_key = "row_id"), "DataBackendDplyr")
-  DBI::dbDisconnect(data$src$con)
+  disconnect(data)
 })
