@@ -23,7 +23,7 @@ Imports:
     data.table,
     digest,
     dplyr,
-    mlr3 (>= 0.1.4),
+    mlr3 (>= 0.3.0),
     R6
 Suggests:
     DBI,
