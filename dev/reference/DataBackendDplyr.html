@@ -161,16 +161,16 @@ The latter allows mlr3::Tasks to interface an out-of-memory data base." />
     </div>
 
     <div class="ref-description">
-    <p>A <a href='https://rdrr.io/pkg/mlr3/man/DataBackend.html'>mlr3::DataBackend</a> using <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> from packages <a href='https://CRAN.R-project.org/package=dplyr'><span class="pkg">dplyr</span></a>/<a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>.
+    <p>A <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a> using <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> from packages <a href='https://CRAN.R-project.org/package=dplyr'><span class="pkg">dplyr</span></a>/<a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>.
 This includes <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code> and abstract data base connections interfaced by <a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>.
-The latter allows <a href='https://rdrr.io/pkg/mlr3/man/Task.html'>mlr3::Task</a>s to interface an out-of-memory data base.</p>
+The latter allows <a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::Task</a>s to interface an out-of-memory data base.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/mlr3/man/DataBackend.html'>mlr3::DataBackend</a></code> -&gt; <code>DataBackendDplyr</code></p>
+    <p><code><a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a></code> -&gt; <code>DataBackendDplyr</code></p>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
     <p><div class="r6-fields"></p><dl'>
@@ -251,10 +251,10 @@ Database connections can become invalid due to timeouts or if the backend is ser
 This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
 <code><a href='https://dbi.r-dbi.org/reference/dbIsValid.html'>DBI::dbIsValid()</a></code> is called to validate the connection.
 The function must return just the connection, not a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> object!Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
-These can be retrieved from the stored <a href='https://rdrr.io/pkg/mlr3/man/DataBackend.html'>mlr3::DataBackend</a>/<a href='https://rdrr.io/pkg/mlr3/man/Task.html'>mlr3::Task</a>.
-To protect your credentials, it is recommended to use the <a href='https://CRAN.R-project.org/package=secret'><span class="pkg">secret</span></a> package.Instead of calling the constructor yourself, you can call <code><a href='https://rdrr.io/pkg/mlr3/man/as_data_backend.html'>mlr3::as_data_backend()</a></code> on a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code>.
+These can be retrieved from the stored <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>/<a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::Task</a>.
+To protect your credentials, it is recommended to use the <a href='https://CRAN.R-project.org/package=secret'><span class="pkg">secret</span></a> package.Instead of calling the constructor yourself, you can call <code><a href='https://mlr3.mlr-org.com/reference/as_data_backend.html'>mlr3::as_data_backend()</a></code> on a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code>.
 Note that only objects of class <code>"tbl_lazy"</code> will be converted to a DataBackendDplyr (this includes all connectors from <a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>).
-Local <code>"tbl"</code> objects such as <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code> will converted to a <a href='https://rdrr.io/pkg/mlr3/man/DataBackendDataTable.html'>DataBackendDataTable</a>.</p></dd>
+Local <code>"tbl"</code> objects such as <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code> will converted to a <a href='https://mlr3.mlr-org.com/reference/DataBackendDataTable.html'>DataBackendDataTable</a>.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -365,7 +365,7 @@ Column names.</p></dd>
 #&gt; [1] "setosa"     "versicolor" "virginica" 
 #&gt; </div><div class='input'>
 <span class='co'># Classification task using this backend</span>
-<span class='no'>task</span> <span class='kw'>=</span> <span class='kw pkg'>mlr3</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/mlr3/man/TaskClassif.html'>TaskClassif</a></span>$<span class='fu'>new</span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"iris_tibble"</span>, <span class='kw'>backend</span> <span class='kw'>=</span> <span class='no'>b</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"Species"</span>)
+<span class='no'>task</span> <span class='kw'>=</span> <span class='kw pkg'>mlr3</span><span class='kw ns'>::</span><span class='no'><a href='https://mlr3.mlr-org.com/reference/TaskClassif.html'>TaskClassif</a></span>$<span class='fu'>new</span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"iris_tibble"</span>, <span class='kw'>backend</span> <span class='kw'>=</span> <span class='no'>b</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"Species"</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>task</span>)</div><div class='output co'>#&gt; &lt;TaskClassif:iris_tibble&gt; (150 x 5)
 #&gt; * Target: Species
 #&gt; * Properties: multiclass
