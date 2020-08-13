@@ -22,18 +22,18 @@ as_sqlite_backend = function(data, path = NULL, ...) {
 }
 
 #' @export
-as_sqlite_backend.Task = function(data, path = NULL, ...) {
+as_sqlite_backend.Task = function(data, path = NULL, ...) { # nolint
   data$backend = sqlite_backend_from_data(cbind(data$data(), data.table(..row_id = data$row_ids)), path, "..row_id")
   data
 }
 
 #' @export
-as_sqlite_backend.DataBackend = function(data, path = NULL, ...) {
+as_sqlite_backend.DataBackend = function(data, path = NULL, ...) { # nolint
   sqlite_backend_from_data(data$head(Inf), path, data$primary_key)
 }
 
 #' @export
-as_sqlite_backend.data.frame = function(data, path = NULL, primary_key = "..row_id", ...) {
+as_sqlite_backend.data.frame = function(data, path = NULL, primary_key = "..row_id", ...) { # nolint
   assert_string(primary_key)
   if (primary_key %in% names(data)) {
     assert_integerish(data[[primary_key]], any.missing = FALSE, unique = TRUE)

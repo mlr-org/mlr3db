@@ -84,22 +84,28 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #' @param strings_as_factors (`logical(1)` || `character()`)\cr
     #'   Either a character vector of column names to convert to factors, or a single logical flag:
     #'   if `FALSE`, no column will be converted, if `TRUE` all string columns (except the primary key).
-    #'   For conversion, the backend is queried for distinct values of the respective columns on construction and their levels are stored in `$levels`.
+    #'   For conversion, the backend is queried for distinct values of the respective columns
+    #'   on construction and their levels are stored in `$levels`.
     #'
     #' @param connector (`function()`)\cr
     #'   If not `NULL`, a function which re-connects to the data base in case the connection has become invalid.
-    #'   Database connections can become invalid due to timeouts or if the backend is serialized to the file system and then de-serialized again.
+    #'   Database connections can become invalid due to timeouts or if the backend is serialized
+    #'   to the file system and then de-serialized again.
     #'   This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
     #'   [DBI::dbIsValid()] is called to validate the connection.
     #'   The function must return just the connection, not a [dplyr::tbl()] object!
     #'
-    #'   Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
+    #'   Note that this this function is serialized together with the backend, including
+    #'   possible sensitive information such as login credentials.
     #'   These can be retrieved from the stored [mlr3::DataBackend]/[mlr3::Task].
     #'   To protect your credentials, it is recommended to use the \CRANpkg{secret} package.
     #'
-    #' Instead of calling the constructor yourself, you can call [mlr3::as_data_backend()] on a [dplyr::tbl()].
-    #' Note that only objects of class `"tbl_lazy"` will be converted to a [DataBackendDplyr] (this includes all connectors from \CRANpkg{dbplyr}).
-    #' Local `"tbl"` objects such as [`tibbles`][tibble::tibble()] will converted to a [DataBackendDataTable][mlr3::DataBackendDataTable].
+    #' Instead of calling the constructor yourself, you can call [mlr3::as_data_backend()]
+    #' on a [dplyr::tbl()].
+    #' Note that only objects of class `"tbl_lazy"` will be converted to a [DataBackendDplyr]
+    #' (this includes all connectors from \CRANpkg{dbplyr}).
+    #' Local `"tbl"` objects such as [`tibbles`][tibble::tibble()] will converted to a
+    #' [DataBackendDataTable][mlr3::DataBackendDataTable].
     initialize = function(data, primary_key, strings_as_factors = TRUE, connector = NULL) {
       if (!is.tbl(data)) {
         stop("Argument 'data' must be of class 'tbl'")
@@ -145,7 +151,8 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #' Calls [dplyr::filter()] and [dplyr::select()] on the table and converts it to a [data.table::data.table()].
     #'
     #' The rows must be addressed as vector of primary key values, columns must be referred to via column names.
-    #' Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
+    #' Queries for rows with no matching row id and queries for columns with no matching
+    #' column name are silently ignored.
     #' Rows are guaranteed to be returned in the same order as `rows`, columns may be returned in an arbitrary order.
     #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
     #'
@@ -317,6 +324,6 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.tbl_lazy = function(data, primary_key, strings_as_factors = TRUE) {
+as_data_backend.tbl_lazy = function(data, primary_key, strings_as_factors = TRUE) { # nolint
   DataBackendDplyr$new(data, primary_key)
 }
