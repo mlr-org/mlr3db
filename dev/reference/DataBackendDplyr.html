@@ -243,18 +243,24 @@ Name of the primary key column.</p></dd>
 <dt><code>strings_as_factors</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> || <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>)<br />
 Either a character vector of column names to convert to factors, or a single logical flag:
 if <code>FALSE</code>, no column will be converted, if <code>TRUE</code> all string columns (except the primary key).
-For conversion, the backend is queried for distinct values of the respective columns on construction and their levels are stored in <code>$levels</code>.</p></dd>
+For conversion, the backend is queried for distinct values of the respective columns
+on construction and their levels are stored in <code>$levels</code>.</p></dd>
 
 <dt><code>connector</code></dt><dd><p>(<code>function()</code>)<br />
 If not <code>NULL</code>, a function which re-connects to the data base in case the connection has become invalid.
-Database connections can become invalid due to timeouts or if the backend is serialized to the file system and then de-serialized again.
+Database connections can become invalid due to timeouts or if the backend is serialized
+to the file system and then de-serialized again.
 This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
 <code><a href='https://dbi.r-dbi.org/reference/dbIsValid.html'>DBI::dbIsValid()</a></code> is called to validate the connection.
-The function must return just the connection, not a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> object!Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
+The function must return just the connection, not a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> object!Note that this this function is serialized together with the backend, including
+possible sensitive information such as login credentials.
 These can be retrieved from the stored <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>/<a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::Task</a>.
-To protect your credentials, it is recommended to use the <a href='https://CRAN.R-project.org/package=secret'><span class="pkg">secret</span></a> package.Instead of calling the constructor yourself, you can call <code><a href='https://mlr3.mlr-org.com/reference/as_data_backend.html'>mlr3::as_data_backend()</a></code> on a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code>.
-Note that only objects of class <code>"tbl_lazy"</code> will be converted to a DataBackendDplyr (this includes all connectors from <a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>).
-Local <code>"tbl"</code> objects such as <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code> will converted to a <a href='https://mlr3.mlr-org.com/reference/DataBackendDataTable.html'>DataBackendDataTable</a>.</p></dd>
+To protect your credentials, it is recommended to use the <a href='https://CRAN.R-project.org/package=secret'><span class="pkg">secret</span></a> package.Instead of calling the constructor yourself, you can call <code><a href='https://mlr3.mlr-org.com/reference/as_data_backend.html'>mlr3::as_data_backend()</a></code>
+on a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code>.
+Note that only objects of class <code>"tbl_lazy"</code> will be converted to a DataBackendDplyr
+(this includes all connectors from <a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>).
+Local <code>"tbl"</code> objects such as <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code> will converted to a
+<a href='https://mlr3.mlr-org.com/reference/DataBackendDataTable.html'>DataBackendDataTable</a>.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -270,7 +276,8 @@ This is called during garbage collection of the instance.</p><h3>Usage</h3>
 <p>Returns a slice of the data.
 Calls <code><a href='https://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code> on the table and converts it to a <code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table::data.table()</a></code>.</p>
 <p>The rows must be addressed as vector of primary key values, columns must be referred to via column names.
-Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
+Queries for rows with no matching row id and queries for columns with no matching
+column name are silently ignored.
 Rows are guaranteed to be returned in the same order as <code>rows</code>, columns may be returned in an arbitrary order.
 Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>DataBackendDplyr</span>$<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>rows</span>, <span class='no'>cols</span>, <span class='kw'>data_format</span> <span class='kw'>=</span> <span class='st'>"data.table"</span>)</pre><p></div></p>
