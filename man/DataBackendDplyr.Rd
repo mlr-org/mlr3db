@@ -133,22 +133,28 @@ Name of the primary key column.}
 \item{\code{strings_as_factors}}{(\code{logical(1)} || \code{character()})\cr
 Either a character vector of column names to convert to factors, or a single logical flag:
 if \code{FALSE}, no column will be converted, if \code{TRUE} all string columns (except the primary key).
-For conversion, the backend is queried for distinct values of the respective columns on construction and their levels are stored in \verb{$levels}.}
+For conversion, the backend is queried for distinct values of the respective columns
+on construction and their levels are stored in \verb{$levels}.}
 
 \item{\code{connector}}{(\verb{function()})\cr
 If not \code{NULL}, a function which re-connects to the data base in case the connection has become invalid.
-Database connections can become invalid due to timeouts or if the backend is serialized to the file system and then de-serialized again.
+Database connections can become invalid due to timeouts or if the backend is serialized
+to the file system and then de-serialized again.
 This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
 \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} is called to validate the connection.
 The function must return just the connection, not a \code{\link[dplyr:tbl]{dplyr::tbl()}} object!
 
-Note that this this function is serialized together with the backend, including possible sensitive information such as login credentials.
+Note that this this function is serialized together with the backend, including
+possible sensitive information such as login credentials.
 These can be retrieved from the stored \link[mlr3:DataBackend]{mlr3::DataBackend}/\link[mlr3:Task]{mlr3::Task}.
 To protect your credentials, it is recommended to use the \CRANpkg{secret} package.
 
-Instead of calling the constructor yourself, you can call \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on a \code{\link[dplyr:tbl]{dplyr::tbl()}}.
-Note that only objects of class \code{"tbl_lazy"} will be converted to a \link{DataBackendDplyr} (this includes all connectors from \CRANpkg{dbplyr}).
-Local \code{"tbl"} objects such as \code{\link[tibble:tibble]{tibbles}} will converted to a \link[mlr3:DataBackendDataTable]{DataBackendDataTable}.}
+Instead of calling the constructor yourself, you can call \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}}
+on a \code{\link[dplyr:tbl]{dplyr::tbl()}}.
+Note that only objects of class \code{"tbl_lazy"} will be converted to a \link{DataBackendDplyr}
+(this includes all connectors from \CRANpkg{dbplyr}).
+Local \code{"tbl"} objects such as \code{\link[tibble:tibble]{tibbles}} will converted to a
+\link[mlr3:DataBackendDataTable]{DataBackendDataTable}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -175,7 +181,8 @@ Returns a slice of the data.
 Calls \code{\link[dplyr:filter]{dplyr::filter()}} and \code{\link[dplyr:select]{dplyr::select()}} on the table and converts it to a \code{\link[data.table:data.table]{data.table::data.table()}}.
 
 The rows must be addressed as vector of primary key values, columns must be referred to via column names.
-Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
+Queries for rows with no matching row id and queries for columns with no matching
+column name are silently ignored.
 Rows are guaranteed to be returned in the same order as \code{rows}, columns may be returned in an arbitrary order.
 Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
 \subsection{Usage}{
