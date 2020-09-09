@@ -12,3 +12,4 @@
 ^\.ccache$
 ^\.github$
 ^tic\.R$
+^.lintr$
