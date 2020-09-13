@@ -122,7 +122,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         self$levels = list()
       } else {
         h = self$head(1L)
-        string_cols = setdiff(names(h)[vapply(h, is.character, NA)], self$primary_key)
+        string_cols = setdiff(names(h)[mlr3misc::map_lgl(h, is.character)], self$primary_key)
 
         if (isTRUE(strings_as_factors)) {
           strings_as_factors = string_cols

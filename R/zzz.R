@@ -9,3 +9,5 @@
   # nocov start
   backports::import(pkgname)
 } # nocov end
+
+mlr3misc::leanify_package()

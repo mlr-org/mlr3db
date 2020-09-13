@@ -24,6 +24,7 @@ Imports:
     digest,
     dplyr,
     mlr3 (>= 0.3.0),
+    mlr3misc,
     R6
 Suggests:
     DBI,
