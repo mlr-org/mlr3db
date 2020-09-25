@@ -61,7 +61,15 @@ sqlite_backend_from_data = function(data, path, primary_key) {
 
   con = DBI::dbConnect(RSQLite::SQLite(), path, flags = RSQLite::SQLITE_RO)
   backend = DataBackendDplyr$new(dplyr::tbl(con, "data"), primary_key = primary_key)
+  backend$connector = sqlite_reconnector(path)
 
   on.exit()
   return(backend)
+}
+
+sqlite_reconnector = function(path) {
+  force(path)
+  function() {
+    DBI::dbConnect(RSQLite::SQLite(), path, flags = RSQLite::SQLITE_RO)
+  }
 }

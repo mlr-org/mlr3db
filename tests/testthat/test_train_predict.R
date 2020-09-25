@@ -1,5 +1,4 @@
-data = as_sqlite_tbl(iris)
-b = as_data_backend(data, "row_id")
+b = as_sqlite_backend(iris)
 task = mlr3::TaskClassif$new("iris_sqlite", b, "Species")
 learner = mlr3::mlr_learners$get("classif.featureless")
 
@@ -17,4 +16,4 @@ test_that("resample work", {
   expect_resample_result(rr)
 })
 
-disconnect(data)
+disconnect(b)

@@ -22,3 +22,9 @@ test_that("Task", {
   expect_backend(b)
   disconnect(b)
 })
+
+test_that("connector is automatically set", {
+  b = as_sqlite_backend(iris)
+  expect_function(b$connector)
+  expect_set_equal(ls(environment(b$connector), all.names = TRUE), "path")
+})

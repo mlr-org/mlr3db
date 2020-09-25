@@ -7,16 +7,11 @@ roundtrip = function(x) {
   readRDS(path)
 }
 
-reconnector = function(path) {
-  force(path)
-  function() DBI::dbConnect(RSQLite::SQLite(), path)
-}
-
 test_that("expectations", {
   path = tempfile("db_", fileext = "sqlite")
   b = as_sqlite_backend(iris, path = path)
   on.exit(disconnect(b))
-  b$connector = reconnector(path)
+  b$connector = sqlite_reconnector(path)
 
   b = roundtrip(b)
   expect_false(DBI::dbIsValid(private(b)$.data$src$con))
@@ -26,10 +21,11 @@ test_that("expectations", {
 })
 
 test_that("resampling", {
+  future::plan("multisession")
   path = tempfile("db_", fileext = "sqlite")
   b = as_sqlite_backend(iris, path = path)
   on.exit(disconnect(b))
-  b$connector = reconnector(path)
+  b$connector = sqlite_reconnector(path)
 
   task = mlr3::TaskClassif$new("iris-sqlite", b, target = "Species")
   learner = mlr3::lrn("classif.featureless")
@@ -67,7 +63,7 @@ test_that("filtered tbl", {
   expect_equal(b$nrow, 50)
   expect_set_equal(b$colnames, keep)
 
-  b$connector = reconnector(path)
+  b$connector = sqlite_reconnector(path)
   roundtrip = function(x) {
     path = tempfile()
     on.exit(file.remove(path))

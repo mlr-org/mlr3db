@@ -2,6 +2,7 @@
 
 * Set a primary key for SQLite data bases generated from data frames.
 * Resolved a warning signaled by dplyr-1.0.0.
+* SQLite backends now automatically reconnects.
 
 # mlr3db 0.1.5
 
