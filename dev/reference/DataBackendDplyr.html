@@ -225,12 +225,12 @@ Returns the result of <code><a href='https://dbi.r-dbi.org/reference/dbIsValid.h
 <hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 <p>Creates a connection for a <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> object.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>new</span>(
-  <span class='kw'>data</span>,
-  <span class='kw'>primary_key</span>,
-  strings_as_factors = <span class='fl'>TRUE</span>,
-  connector = <span class='kw'>NULL</span>
-)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>primary_key</span>,
+  strings_as_factors <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  connector <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -267,7 +267,7 @@ Local <code>"tbl"</code> objects such as <code><a href='https://tibble.tidyverse
 <a id="method-finalize"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>finalize()</code></h3>
 <p>Finalizer which disconnects from the data base.
 This is called during garbage collection of the instance.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>finalize</span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>finalize</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>, the return value of <code><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>DBI::dbDisconnect()</a></code>.</p>
@@ -280,7 +280,7 @@ Queries for rows with no matching row id and queries for columns with no matchin
 column name are silently ignored.
 Rows are guaranteed to be returned in the same order as <code>rows</code>, columns may be returned in an arbitrary order.
 Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>rows</span>, <span class='kw'>cols</span>, data_format = <span class='st'>"data.table"</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>data</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span>, data_format <span class='op'>=</span> <span class='st'>"data.table"</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -297,7 +297,7 @@ Desired data format, e.g. <code>"data.table"</code> or <code>"Matrix"</code>.</p
 <p><hr>
 <a id="method-head"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/utils/head.html'>head()</a></code></h3>
 <p>Retrieve the first <code>n</code> rows.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(n = <span class='fl'>6L</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>head</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>6L</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -313,7 +313,7 @@ Number of rows.</p></dd>
 specified. If <code>na_rm</code> is <code>TRUE</code>, missing values are removed from the
 returned vectors of distinct values. Non-existing rows and columns are
 silently ignored.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>distinct</span>(<span class='kw'>rows</span>, <span class='kw'>cols</span>, na_rm = <span class='fl'>TRUE</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>distinct</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span>, na_rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -333,7 +333,7 @@ Whether to remove NAs or not.</p></dd>
 <a id="method-missings"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>missings()</code></h3>
 <p>Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>missings</span>(<span class='kw'>rows</span>, <span class='kw'>cols</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>missings</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -351,13 +351,13 @@ Column names.</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Backend using a in-memory tibble</span>
-<span class='kw'>data</span> <span class='op'>=</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span>(<span class='kw'>iris</span>)
-<span class='kw'>data</span><span class='op'>$</span><span class='kw'>Sepal.Length</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>30</span>] <span class='op'>=</span> <span class='fl'>NA</span>
-<span class='kw'>data</span><span class='op'>$</span><span class='kw'>row_id</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>150</span>
-<span class='kw'>b</span> <span class='op'>=</span> <span class='kw'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>new</span>(<span class='kw'>data</span>, primary_key = <span class='st'>"row_id"</span>)
+<span class='va'>data</span> <span class='op'>=</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>as_tibble</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
+<span class='va'>data</span><span class='op'>$</span><span class='va'>Sepal.Length</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span>
+<span class='va'>data</span><span class='op'>$</span><span class='va'>row_id</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>150</span>
+<span class='va'>b</span> <span class='op'>=</span> <span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='st'>"row_id"</span><span class='op'>)</span>
 
 <span class='co'># Object supports all accessors of DataBackend</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='kw'>b</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;DataBackendDplyr&gt; (150x6)
 #&gt;  Sepal.Length Sepal.Width Petal.Length Petal.Width Species row_id
 #&gt;            NA         3.5          1.4         0.2  setosa      1
@@ -366,25 +366,25 @@ Column names.</p></dd>
 #&gt;            NA         3.1          1.5         0.2  setosa      4
 #&gt;            NA         3.6          1.4         0.2  setosa      5
 #&gt;            NA         3.9          1.7         0.4  setosa      6
-#&gt; [...] (144 rows omitted)</div><div class='input'><span class='kw'>b</span><span class='op'>$</span><span class='kw'>nrow</span>
-</div><div class='output co'>#&gt; [1] 150</div><div class='input'><span class='kw'>b</span><span class='op'>$</span><span class='kw'>ncol</span>
-</div><div class='output co'>#&gt; [1] 6</div><div class='input'><span class='kw'>b</span><span class='op'>$</span><span class='kw'>colnames</span>
+#&gt; [...] (144 rows omitted)</div><div class='input'><span class='va'>b</span><span class='op'>$</span><span class='va'>nrow</span>
+</div><div class='output co'>#&gt; [1] 150</div><div class='input'><span class='va'>b</span><span class='op'>$</span><span class='va'>ncol</span>
+</div><div class='output co'>#&gt; [1] 6</div><div class='input'><span class='va'>b</span><span class='op'>$</span><span class='va'>colnames</span>
 </div><div class='output co'>#&gt; [1] "Sepal.Length" "Sepal.Width"  "Petal.Length" "Petal.Width"  "Species"     
-#&gt; [6] "row_id"      </div><div class='input'><span class='kw'>b</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(rows = <span class='fl'>100</span><span class='op'>:</span><span class='fl'>101</span>, cols = <span class='st'>"Species"</span>)
+#&gt; [6] "row_id"      </div><div class='input'><span class='va'>b</span><span class='op'>$</span><span class='fu'>data</span><span class='op'>(</span>rows <span class='op'>=</span> <span class='fl'>100</span><span class='op'>:</span><span class='fl'>101</span>, cols <span class='op'>=</span> <span class='st'>"Species"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;       Species
 #&gt; 1: versicolor
-#&gt; 2:  virginica</div><div class='input'><span class='kw'>b</span><span class='op'>$</span><span class='fu'>distinct</span>(<span class='kw'>b</span><span class='op'>$</span><span class='kw'>rownames</span>, <span class='st'>"Species"</span>)
+#&gt; 2:  virginica</div><div class='input'><span class='va'>b</span><span class='op'>$</span><span class='fu'>distinct</span><span class='op'>(</span><span class='va'>b</span><span class='op'>$</span><span class='va'>rownames</span>, <span class='st'>"Species"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $Species
 #&gt; [1] "setosa"     "versicolor" "virginica" 
 #&gt; </div><div class='input'>
 <span class='co'># Classification task using this backend</span>
-<span class='kw'>task</span> <span class='op'>=</span> <span class='kw'>mlr3</span>::<span class='kw'><a href='https://mlr3.mlr-org.com/reference/TaskClassif.html'>TaskClassif</a></span><span class='op'>$</span><span class='fu'>new</span>(id = <span class='st'>"iris_tibble"</span>, backend = <span class='kw'>b</span>, target = <span class='st'>"Species"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='kw'>task</span>)
+<span class='va'>task</span> <span class='op'>=</span> <span class='fu'>mlr3</span><span class='fu'>::</span><span class='va'><a href='https://mlr3.mlr-org.com/reference/TaskClassif.html'>TaskClassif</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>id <span class='op'>=</span> <span class='st'>"iris_tibble"</span>, backend <span class='op'>=</span> <span class='va'>b</span>, target <span class='op'>=</span> <span class='st'>"Species"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>task</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;TaskClassif:iris_tibble&gt; (150 x 5)
 #&gt; * Target: Species
 #&gt; * Properties: multiclass
 #&gt; * Features (4):
-#&gt;   - dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width</div><div class='input'><span class='kw'>task</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>()
+#&gt;   - dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width</div><div class='input'><span class='va'>task</span><span class='op'>$</span><span class='fu'>head</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;    Species Petal.Length Petal.Width Sepal.Length Sepal.Width
 #&gt; 1:  setosa          1.4         0.2           NA         3.5
 #&gt; 2:  setosa          1.4         0.2           NA         3.0
@@ -393,15 +393,15 @@ Column names.</p></dd>
 #&gt; 5:  setosa          1.4         0.2           NA         3.6
 #&gt; 6:  setosa          1.7         0.4           NA         3.9</div><div class='input'>
 <span class='co'># Create a temporary SQLite data base</span>
-<span class='kw'>con</span> <span class='op'>=</span> <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw'>RSQLite</span>::<span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
-<span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to</a></span>(<span class='kw'>con</span>, <span class='kw'>data</span>)
-<span class='kw'>tbl</span> <span class='op'>=</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span>(<span class='kw'>con</span>, <span class='st'>"data"</span>)
+<span class='va'>con</span> <span class='op'>=</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='op'>(</span><span class='fu'>RSQLite</span><span class='fu'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>":memory:"</span><span class='op'>)</span>
+<span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to</a></span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>data</span><span class='op'>)</span>
+<span class='va'>tbl</span> <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span><span class='op'>(</span><span class='va'>con</span>, <span class='st'>"data"</span><span class='op'>)</span>
 
 <span class='co'># Define a backend on a subset of the data base</span>
-<span class='kw'>tbl</span> <span class='op'>=</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select_all.html'>select_at</a></span>(<span class='kw'>tbl</span>, <span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setdiff</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>tbl</span>), <span class='st'>"Sepal.Width"</span>)) <span class='co'># do not use column "Sepal.Width"</span>
-<span class='kw'>tbl</span> <span class='op'>=</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>tbl</span>, <span class='kw'>row_id</span> <span class='op'>%in%</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>120</span>) <span class='co'># Use only first 120 rows</span>
-<span class='kw'>b</span> <span class='op'>=</span> <span class='kw'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>new</span>(<span class='kw'>tbl</span>, primary_key = <span class='st'>"row_id"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='kw'>b</span>)
+<span class='va'>tbl</span> <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select_all.html'>select_at</a></span><span class='op'>(</span><span class='va'>tbl</span>, <span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span>, <span class='st'>"Sepal.Width"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># do not use column "Sepal.Width"</span>
+<span class='va'>tbl</span> <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>tbl</span>, <span class='va'>row_id</span> <span class='op'>%in%</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>120</span><span class='op'>)</span> <span class='co'># Use only first 120 rows</span>
+<span class='va'>b</span> <span class='op'>=</span> <span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>tbl</span>, primary_key <span class='op'>=</span> <span class='st'>"row_id"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; &lt;DataBackendDplyr&gt; (120x5)
 #&gt;  Sepal.Length Petal.Length Petal.Width Species row_id
 #&gt;            NA          1.4         0.2  setosa      1
@@ -412,16 +412,16 @@ Column names.</p></dd>
 #&gt;            NA          1.7         0.4  setosa      6
 #&gt; [...] (114 rows omitted)</div><div class='input'>
 <span class='co'># Query disinct values</span>
-<span class='kw'>b</span><span class='op'>$</span><span class='fu'>distinct</span>(<span class='kw'>b</span><span class='op'>$</span><span class='kw'>rownames</span>, <span class='st'>"Species"</span>)
+<span class='va'>b</span><span class='op'>$</span><span class='fu'>distinct</span><span class='op'>(</span><span class='va'>b</span><span class='op'>$</span><span class='va'>rownames</span>, <span class='st'>"Species"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $Species
 #&gt; [1] "setosa"     "versicolor" "virginica" 
 #&gt; </div><div class='input'>
 <span class='co'># Query number of missing values</span>
-<span class='kw'>b</span><span class='op'>$</span><span class='fu'>missings</span>(<span class='kw'>b</span><span class='op'>$</span><span class='kw'>rownames</span>, <span class='kw'>b</span><span class='op'>$</span><span class='kw'>colnames</span>)
+<span class='va'>b</span><span class='op'>$</span><span class='fu'>missings</span><span class='op'>(</span><span class='va'>b</span><span class='op'>$</span><span class='va'>rownames</span>, <span class='va'>b</span><span class='op'>$</span><span class='va'>colnames</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Sepal.Length Petal.Length  Petal.Width      Species       row_id 
 #&gt;           30            0            0            0            0 </div><div class='input'>
 <span class='co'># Note that SQLite does not support factors, column Species has been converted to character</span>
-<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>b</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(), <span class='kw'>class</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>$</span><span class='fu'>head</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>class</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $Sepal.Length
 #&gt; [1] "numeric"
 #&gt; 
@@ -438,8 +438,8 @@ Column names.</p></dd>
 #&gt; [1] "integer"
 #&gt; </div><div class='input'>
 <span class='co'># Cleanup</span>
-<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='kw'>tbl</span>)
-<span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>con</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span>
+<span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span><span class='op'>(</span><span class='va'>con</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
