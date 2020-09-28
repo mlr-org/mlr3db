@@ -22,9 +22,10 @@
 <link href="docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Data Base Backend for mlr3">
 <meta property="og:description" content="Extends the mlr3 package with a backend to
-    transparently work with data bases. Internally relies on the
-    abstraction of package dbplyr to interact with one of the many
-    supported data base management systems (DBMS).">
+    transparently work with data bases. Includes two extra backends:
+    One relies on relies on the abstraction of package dbplyr to interact with
+    one of the many supported data base management systems (DBMS). The other one
+    is specialized for package duckdb.">
 <meta name="twitter:card" content="summary">
 <meta name="robots" content="noindex">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -46,7 +47,7 @@
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org"></a>
-        <a class="navbar-brand" href="index.html">mlr3db <small>v0.1.5.9000</small></a>
+        <a class="navbar-brand" href="index.html">mlr3db <small>v0.2.0-9000</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">

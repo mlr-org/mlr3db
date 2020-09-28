@@ -57,7 +57,7 @@
 <meta property="og:description" content="Converts to a DataBackendDplyr using a RSQLite data base, depending on the input type:
 data.frame: Converts to a DataBackendDplyr.
 [mlr3::DataBackend]: Creates a new DataBackendDplyr using the data of the provided mlr3::DataBackend.
-[mlr3::Task]: Replaces the DataBackend in slot $task with a new backend. Only active columns and
+[mlr3::Task]: Replaces the DataBackend in slot $backend with a new backend. Only active columns and
 rows are considered.
 
 " />
@@ -94,7 +94,7 @@ rows are considered.
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">mlr3db <small>v0.1.5.9000</small></a>
+        <a class="navbar-brand" href="../index.html">mlr3db <small>v0.2.0-9000</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -168,7 +168,7 @@ rows are considered.
     <p>Converts to a <a href='DataBackendDplyr.html'>DataBackendDplyr</a> using a <a href='https://CRAN.R-project.org/package=RSQLite'><span class="pkg">RSQLite</span></a> data base, depending on the input type:</p><ul>
 <li><p><code>data.frame</code>: Converts to a <a href='DataBackendDplyr.html'>DataBackendDplyr</a>.</p></li>
 <li><p><code>[mlr3::DataBackend]</code>: Creates a new <a href='DataBackendDplyr.html'>DataBackendDplyr</a> using the data of the provided <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>.</p></li>
-<li><p><code>[mlr3::Task]</code>: Replaces the DataBackend in slot <code>$task</code> with a new backend. Only active columns and
+<li><p><code>[mlr3::Task]</code>: Replaces the DataBackend in slot <code>$backend</code> with a new backend. Only active columns and
 rows are considered.</p></li>
 </ul>
 
@@ -192,7 +192,7 @@ Path for the SQLite data base. Defaults to a file in the temporary directory of 
     <tr>
       <th>...</th>
       <td><p>(<code>any</code>)<br />
-Additional arguments, currently ignored.</p></td>
+Additional arguments, passed to <a href='DataBackendDplyr.html'>DataBackendDplyr</a>.</p></td>
     </tr>
     </table>
 

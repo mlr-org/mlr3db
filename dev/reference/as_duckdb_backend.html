@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • mlr3db</title>
+<title>Convert to use a DuckDB Backend — as_duckdb_backend • mlr3db</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -53,7 +53,15 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Convert to use a DuckDB Backend — as_duckdb_backend" />
+<meta property="og:description" content="Converts to a DataBackendDuckDB using the duckdb data base, depending on the input type:
+data.frame: Converts to a DataBackendDuckDB.
+[mlr3::DataBackend]: Creates a new DataBackendDuckDB using the data of the provided mlr3::DataBackend.
+[mlr3::Task]: Replaces the DataBackend in slot $backend with a new backend. Only active columns and
+rows are considered.
+
+" />
+<meta name="twitter:card" content="summary" />
 
 
 <meta name="robots" content="noindex">
@@ -72,7 +80,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -149,66 +157,50 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Convert to use a DuckDB Backend</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3db/blob/master/R/as_duckdb_backend.R'><code>R/as_duckdb_backend.R</code></a></small>
+    <div class="hidden name"><code>as_duckdb_backend.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Converts to a <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a> using the <a href='https://CRAN.R-project.org/package=duckdb'><span class="pkg">duckdb</span></a> data base, depending on the input type:</p><ul>
+<li><p><code>data.frame</code>: Converts to a <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a>.</p></li>
+<li><p><code>[mlr3::DataBackend]</code>: Creates a new <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a> using the data of the provided <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>.</p></li>
+<li><p><code>[mlr3::Task]</code>: Replaces the DataBackend in slot <code>$backend</code> with a new backend. Only active columns and
+rows are considered.</p></li>
+</ul>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    </div>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="DataBackendDplyr.html">DataBackendDplyr</a></code> </p>
-        </td>
-        <td><p>DataBackend for dplyr/dbplyr</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="DataBackendDuckDB.html">DataBackendDuckDB</a></code> </p>
-        </td>
-        <td><p>DataBackend for DuckDB</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_duckdb_backend.html">as_duckdb_backend()</a></code> </p>
-        </td>
-        <td><p>Convert to use a DuckDB Backend</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_sqlite_backend.html">as_sqlite_backend()</a></code> </p>
-        </td>
-        <td><p>Convert to use a SQLite Backend</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mlr3db-package.html">mlr3db-package</a></code> </p>
-        </td>
-        <td><p>mlr3db: Data Base Backend for 'mlr3'</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>as_duckdb_backend</span><span class='op'>(</span><span class='va'>data</span>, path <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>(<code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> | <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a> | <a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::Task</a>)<br />
+See description.</p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>(<code>NULL</code> | <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>)<br />
+Path for the DuckDB data base. Defaults to a file in the temporary directory of the R session, see <code><a href='https://rdrr.io/r/base/tempfile.html'>tempfile()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>(<code>any</code>)<br />
+Additional arguments, passed to <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a>.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><a href='DataBackendDuckDB.html'>DataBackendDuckDB</a>.</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
