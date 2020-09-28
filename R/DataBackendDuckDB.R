@@ -104,7 +104,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       tmp_tbl = write_temp_table(private$.data, rows)
 
       query = sprintf('SELECT %1$s FROM "%2$s" LEFT JOIN "%3$s" ON "%2$s"."row_id" = "%3$s"."%4$s"',
-        paste0(sprintf('"%s"."%s"', self$table, union(cols, self$primary_key)), collapse = ','),
+        paste0(sprintf('"%s"."%s"', self$table, union(cols, self$primary_key)), collapse = ","),
         tmp_tbl, self$table, self$primary_key)
 
       res = setDT(DBI::dbGetQuery(private$.data, query))

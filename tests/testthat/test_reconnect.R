@@ -1,8 +1,5 @@
 context("reconnect")
 
-skip_if_not_installed("dplyr")
-skip_if_not_installed("dbplyr")
-
 roundtrip = function(x) {
   path = tempfile()
   on.exit(file.remove(path))
@@ -11,6 +8,9 @@ roundtrip = function(x) {
 }
 
 test_that("expectations + dplyr", {
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("dbplyr")
+
   path = tempfile("db_", fileext = "sqlite")
   b = as_sqlite_backend(iris, path = path)
   on.exit(disconnect(b))
@@ -25,14 +25,20 @@ test_that("expectations + dplyr", {
 
 
 test_that("expectations + duckdb", {
+  skip_if_not_installed("duckdb")
+
   b = as_duckdb_backend(iris)
   b = roundtrip(b)
   expect_false(b$valid)
   expect_backend(b)
   expect_iris_backend(b)
+  disconnect(b)
 })
 
 test_that("filtered tbl", {
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("dbplyr")
+
   path = tempfile("db_", fileext = "sqlite")
   b = as_sqlite_backend(cbind(iris, data.frame(row_id = 1:150)), path = path)
   on.exit(disconnect(b))
@@ -61,4 +67,6 @@ test_that("filtered tbl", {
   expect_equal(b$nrow, 50)
   expect_equal(b$ncol, 4)
   expect_set_equal(b$colnames, keep)
+
+  disconnect(b)
 })
