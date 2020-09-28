@@ -5,7 +5,7 @@
 #'
 #' * `data.frame`: Converts to a [DataBackendDplyr].
 #' * `[mlr3::DataBackend]`: Creates a new [DataBackendDplyr] using the data of the provided [mlr3::DataBackend].
-#' * `[mlr3::Task]`: Replaces the [DataBackend] in slot `$task` with a new backend. Only active columns and
+#' * `[mlr3::Task]`: Replaces the [DataBackend] in slot `$backend` with a new backend. Only active columns and
 #'    rows are considered.
 #'
 #' @param data (`data.frame()` | [mlr3::DataBackend] | [mlr3::Task])\cr
@@ -13,7 +13,7 @@
 #' @param path (`NULL` | `character(1)`)\cr
 #'   Path for the SQLite data base. Defaults to a file in the temporary directory of the R session, see [tempfile()].
 #' @param ... (`any`)\cr
-#'   Additional arguments, currently ignored.
+#'   Additional arguments, passed to [DataBackendDplyr].
 #'
 #' @return [DataBackendDplyr].
 #' @export
@@ -23,13 +23,13 @@ as_sqlite_backend = function(data, path = NULL, ...) {
 
 #' @export
 as_sqlite_backend.Task = function(data, path = NULL, ...) { # nolint
-  data$backend = sqlite_backend_from_data(cbind(data$data(), data.table(..row_id = data$row_ids)), path, "..row_id")
+  data$backend = sqlite_backend_from_data(cbind(data$data(), data.table(..row_id = data$row_ids)), path, "..row_id", ...)
   data
 }
 
 #' @export
 as_sqlite_backend.DataBackend = function(data, path = NULL, ...) { # nolint
-  sqlite_backend_from_data(data$head(Inf), path, data$primary_key)
+  sqlite_backend_from_data(data$head(Inf), path, data$primary_key, ...)
 }
 
 #' @export
@@ -41,10 +41,10 @@ as_sqlite_backend.data.frame = function(data, path = NULL, primary_key = "..row_
     data[[primary_key]] = seq_len(nrow(data))
   }
 
-  sqlite_backend_from_data(data, path, "..row_id")
+  sqlite_backend_from_data(data, path, "..row_id", ...)
 }
 
-sqlite_backend_from_data = function(data, path, primary_key) {
+sqlite_backend_from_data = function(data, path, primary_key, ...) {
   if (is.null(path)) {
     path = tempfile("backend_", fileext = ".sqlite")
   }
@@ -60,7 +60,7 @@ sqlite_backend_from_data = function(data, path, primary_key) {
   DBI::dbDisconnect(con)
 
   con = DBI::dbConnect(RSQLite::SQLite(), path, flags = RSQLite::SQLITE_RO)
-  backend = DataBackendDplyr$new(dplyr::tbl(con, "data"), primary_key = primary_key)
+  backend = DataBackendDplyr$new(dplyr::tbl(con, "data"), primary_key = primary_key, ...)
   backend$connector = sqlite_reconnector(path)
 
   on.exit()

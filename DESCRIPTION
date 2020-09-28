@@ -1,6 +1,6 @@
 Package: mlr3db
 Title: Data Base Backend for 'mlr3'
-Version: 0.2.0
+Version: 0.2.0-9000
 Authors@R:
     person(given = "Michel",
            family = "Lang",
@@ -8,9 +8,10 @@ Authors@R:
            email = "michellang@gmail.com",
            comment = c(ORCID = "0000-0001-9754-0393"))
 Description: Extends the 'mlr3' package with a backend to
-    transparently work with data bases. Internally relies on the
-    abstraction of package 'dbplyr' to interact with one of the many
-    supported data base management systems (DBMS).
+    transparently work with data bases. Includes two extra backends:
+    One relies on relies on the abstraction of package 'dbplyr' to interact with
+    one of the many supported data base management systems (DBMS). The other one
+    is specialized for package 'duckdb'.
 License: LGPL-3
 URL: https:///mlr3db.mlr-org.com,
     https://github.com/mlr-org/mlr3db
@@ -22,13 +23,14 @@ Imports:
     checkmate,
     data.table,
     digest,
-    dplyr,
     mlr3 (>= 0.3.0),
     mlr3misc,
     R6
 Suggests:
     DBI,
     RSQLite,
+    duckdb,
+    dplyr,
     dbplyr,
     future,
     future.apply,

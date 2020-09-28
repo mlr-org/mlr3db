@@ -1,5 +1,8 @@
 context("basic ops")
 
+skip_if_not_installed("dplyr")
+skip_if_not_installed("dbplyr")
+
 test_that("valid DataBackend (tbl/tibble)", {
   data = iris
   data$Petal.Length[91:120] = NA
@@ -58,4 +61,13 @@ test_that("as_data_backend", {
   data = as_sqlite_tbl(data = data, primary_key = "row_id")
   expect_is(as_data_backend(data, primary_key = "row_id"), "DataBackendDplyr")
   disconnect(data)
+})
+
+test_that("distinct with NULL rows", {
+  b = as_sqlite_backend(iris)
+  expect_equal(
+    b$distinct(NULL, b$colnames),
+    b$distinct(b$rownames, b$colnames)
+  )
+  disconnect(b)
 })

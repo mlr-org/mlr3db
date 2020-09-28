@@ -15,8 +15,11 @@
 #' @param na_rm `logical(1)`\cr
 #'   Whether to remove NAs or not.
 #'
+#' @template param_primary_key
+#' @template param_strings_as_factors
+#' @template param_connector
+#'
 #' @importFrom mlr3 DataBackend
-#' @importFrom dplyr is.tbl collect select_at filter_at summarize_at all_vars distinct tally funs
 #' @export
 #' @examples
 #' # Backend using a in-memory tibble
@@ -63,42 +66,18 @@
 #' DBI::dbDisconnect(con)
 DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable = FALSE,
   public = list(
-    #' @field levels (named `list()`)\cr
-    #'   List (named with column names) of factor levels as `character()`.
-    #'   Used to auto-convert character columns to factor variables.
+    #' @template field_levels
     levels = NULL,
 
-    #' @field connector (`function()`)\cr
-    #'   Function which is called to re-connect in case the connection became invalid.
+    #' @template field_connector
     connector = NULL,
 
     #' @description
     #'
-    #' Creates a connection for a [dplyr::tbl()] object.
+    #' Creates a backend for a [dplyr::tbl()] object.
+    #'
     #' @param data ([dplyr::tbl()])\cr
     #'   The data object.
-    #'
-    #' @param primary_key (`character(1)`)\cr
-    #'   Name of the primary key column.
-    #'
-    #' @param strings_as_factors (`logical(1)` || `character()`)\cr
-    #'   Either a character vector of column names to convert to factors, or a single logical flag:
-    #'   if `FALSE`, no column will be converted, if `TRUE` all string columns (except the primary key).
-    #'   For conversion, the backend is queried for distinct values of the respective columns
-    #'   on construction and their levels are stored in `$levels`.
-    #'
-    #' @param connector (`function()`)\cr
-    #'   If not `NULL`, a function which re-connects to the data base in case the connection has become invalid.
-    #'   Database connections can become invalid due to timeouts or if the backend is serialized
-    #'   to the file system and then de-serialized again.
-    #'   This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
-    #'   [DBI::dbIsValid()] is called to validate the connection.
-    #'   The function must return just the connection, not a [dplyr::tbl()] object!
-    #'
-    #'   Note that this this function is serialized together with the backend, including
-    #'   possible sensitive information such as login credentials.
-    #'   These can be retrieved from the stored [mlr3::DataBackend]/[mlr3::Task].
-    #'   To protect your credentials, it is recommended to use the \CRANpkg{secret} package.
     #'
     #' Instead of calling the constructor yourself, you can call [mlr3::as_data_backend()]
     #' on a [dplyr::tbl()].
@@ -107,7 +86,10 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #' Local `"tbl"` objects such as [`tibbles`][tibble::tibble()] will converted to a
     #' [DataBackendDataTable][mlr3::DataBackendDataTable].
     initialize = function(data, primary_key, strings_as_factors = TRUE, connector = NULL) {
-      if (!is.tbl(data)) {
+      loadNamespace("DBI")
+      loadNamespace("dbplyr")
+
+      if (!dplyr::is.tbl(data)) {
         stop("Argument 'data' must be of class 'tbl'")
       }
 
@@ -155,7 +137,6 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #' column name are silently ignored.
     #' Rows are guaranteed to be returned in the same order as `rows`, columns may be returned in an arbitrary order.
     #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
-    #'
     data = function(rows, cols, data_format = "data.table") {
       private$.reconnect()
       rows = assert_integerish(rows, coerce = TRUE)
@@ -163,11 +144,12 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
       assert_choice(data_format, self$data_formats)
       cols = intersect(cols, colnames(private$.data))
 
-      res = setDT(collect(select_at(
-        filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
+      res = setDT(dplyr::collect(dplyr::select_at(
+        dplyr::filter_at(private$.data, self$primary_key, dplyr::all_vars(. %in% rows)),
         union(cols, self$primary_key))))
 
-      private$.recode(res[list(rows), cols, nomatch = NULL, with = FALSE, on = self$primary_key])
+      recode(res[list(rows), cols, nomatch = NULL, with = FALSE, on = self$primary_key],
+        self$levels)
     },
 
     #' @description
@@ -179,7 +161,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
       private$.reconnect()
-      private$.recode(setDT(collect(head(private$.data, n))))
+      recode(setDT(dplyr::collect(head(private$.data, n))), self$levels)
     },
 
     #' @description
@@ -197,11 +179,11 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
       tbl = private$.data
       if (!is.null(rows)) {
-        tbl = filter_at(tbl, self$primary_key, all_vars(. %in% rows))
+        tbl = dplyr::filter_at(tbl, self$primary_key, dplyr::all_vars(. %in% rows))
       }
 
       get_distinct = function(col) {
-        x = collect(distinct(select_at(tbl, col)))[[1L]]
+        x = dplyr::collect(dplyr::distinct(dplyr::select_at(tbl, col)))[[1L]]
         if (is.factor(x)) {
           x = as.character(x)
         }
@@ -228,8 +210,8 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         return(setNames(integer(0L), character(0L)))
       }
 
-      res = collect(summarize_at(
-        filter_at(private$.data, self$primary_key, all_vars(. %in% rows)),
+      res = dplyr::collect(dplyr::summarize_at(
+        dplyr::filter_at(private$.data, self$primary_key, dplyr::all_vars(. %in% rows)),
         cols, list(~ sum(is.na(.), na.rm = TRUE))))
 
       if (nrow(res) == 0L) {
@@ -244,7 +226,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
     rownames = function() {
       private$.reconnect()
-      collect(select_at(private$.data, self$primary_key))[[1L]]
+      dplyr::collect(dplyr::select_at(private$.data, self$primary_key))[[1L]]
     },
 
     #' @field colnames (`character()`)\cr
@@ -258,7 +240,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #' Number of rows (observations).
     nrow = function() {
       private$.reconnect()
-      collect(tally(private$.data))[[1L]]
+      dplyr::collect(dplyr::tally(private$.data))[[1L]]
     },
 
     #' @field ncol (`integer(1)`)\cr
@@ -276,8 +258,8 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         return(NA)
       }
 
-      requireNamespace("DBI")
-      requireNamespace("dbplyr")
+      loadNamespace("DBI")
+      loadNamespace("dbplyr")
 
       # workaround for https://github.com/r-dbi/DBI/issues/302
       force(names(private$.data$src$con))
@@ -294,13 +276,6 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
       } else {
         digest(private$.data, algo = "xxhash64")
       }
-    },
-
-    .recode = function(tab) {
-      for (col in intersect(names(tab), names(self$levels))) {
-        set(tab, i = NULL, j = col, value = factor(tab[[col]], levels = self$levels[[col]]))
-      }
-      tab[]
     },
 
     .reconnect = function() {

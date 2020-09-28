@@ -1,5 +1,8 @@
 context("reconnect")
 
+skip_if_not_installed("dplyr")
+skip_if_not_installed("dbplyr")
+
 roundtrip = function(x) {
   path = tempfile()
   on.exit(file.remove(path))
@@ -7,7 +10,7 @@ roundtrip = function(x) {
   readRDS(path)
 }
 
-test_that("expectations", {
+test_that("expectations + dplyr", {
   path = tempfile("db_", fileext = "sqlite")
   b = as_sqlite_backend(iris, path = path)
   on.exit(disconnect(b))
@@ -20,30 +23,13 @@ test_that("expectations", {
   expect_iris_backend(b)
 })
 
-test_that("resampling", {
-  future::plan("multisession")
-  path = tempfile("db_", fileext = "sqlite")
-  b = as_sqlite_backend(iris, path = path)
-  on.exit(disconnect(b))
-  b$connector = sqlite_reconnector(path)
 
-  task = mlr3::TaskClassif$new("iris-sqlite", b, target = "Species")
-  learner = mlr3::lrn("classif.featureless")
-  resampling = mlr3::rsmp("holdout")
-
-  rr = mlr3::resample(task, learner, resampling)
-  expect_resample_result(rr)
-  expect_data_table(rr$errors, nrows = 0L)
-
-  skip_if_not_installed("future")
-  skip_if_not_installed("future.apply")
-  skip_if_not_installed("future.callr")
-  requireNamespace("future.callr")
-  with_future(future.callr::callr, {
-    rr = mlr3::resample(task, learner, resampling)
-  })
-  expect_resample_result(rr)
-  expect_data_table(rr$errors, nrows = 0L)
+test_that("expectations + duckdb", {
+  b = as_duckdb_backend(iris)
+  b = roundtrip(b)
+  expect_false(b$valid)
+  expect_backend(b)
+  expect_iris_backend(b)
 })
 
 test_that("filtered tbl", {
@@ -56,7 +42,7 @@ test_that("filtered tbl", {
   tbl = dplyr::tbl(con, "data")
   tbl = dplyr::select_at(tbl, keep)
   tbl = dplyr::filter(tbl, Species == "setosa")
-  expect_data_frame(collect(tbl), nrows = 50, ncols = 4)
+  expect_data_frame(dplyr::collect(tbl), nrows = 50, ncols = 4)
 
   b = DataBackendDplyr$new(tbl, "row_id")
   expect_equal(b$ncol, 4)

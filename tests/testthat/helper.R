@@ -29,6 +29,6 @@ disconnect.SQLiteConnection = function(x) {
 registerS3method("disconnect", "SQLiteConnection", disconnect.SQLiteConnection)
 
 disconnect.DataBackend = function(x) {
-    disconnect(private(x)$.data)
+  x$finalize()
 }
 registerS3method("disconnect", "DataBackend", disconnect.DataBackend)

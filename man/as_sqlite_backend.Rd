@@ -14,7 +14,7 @@ See description.}
 Path for the SQLite data base. Defaults to a file in the temporary directory of the R session, see \code{\link[=tempfile]{tempfile()}}.}
 
 \item{...}{(\code{any})\cr
-Additional arguments, currently ignored.}
+Additional arguments, passed to \link{DataBackendDplyr}.}
 }
 \value{
 \link{DataBackendDplyr}.
@@ -24,7 +24,7 @@ Converts to a \link{DataBackendDplyr} using a \CRANpkg{RSQLite} data base, depen
 \itemize{
 \item \code{data.frame}: Converts to a \link{DataBackendDplyr}.
 \item \verb{[mlr3::DataBackend]}: Creates a new \link{DataBackendDplyr} using the data of the provided \link[mlr3:DataBackend]{mlr3::DataBackend}.
-\item \verb{[mlr3::Task]}: Replaces the \link{DataBackend} in slot \verb{$task} with a new backend. Only active columns and
+\item \verb{[mlr3::Task]}: Replaces the \link{DataBackend} in slot \verb{$backend} with a new backend. Only active columns and
 rows are considered.
 }
 }

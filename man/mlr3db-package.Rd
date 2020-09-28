@@ -7,9 +7,10 @@
 \title{mlr3db: Data Base Backend for 'mlr3'}
 \description{
 Extends the 'mlr3' package with a backend to
-    transparently work with data bases. Internally relies on the
-    abstraction of package 'dbplyr' to interact with one of the many
-    supported data base management systems (DBMS).
+    transparently work with data bases. Includes two extra backends:
+    One relies on relies on the abstraction of package 'dbplyr' to interact with
+    one of the many supported data base management systems (DBMS). The other one
+    is specialized for package 'duckdb'.
 }
 \seealso{
 Useful links:

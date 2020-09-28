@@ -1,3 +1,8 @@
+# mlr3db 0.3.0
+
+* New backend `DataBackendDuckDB`.
+* `dplyr` is now optional (moved from imports to suggests).
+
 # mlr3db 0.2.0
 
 * Set a primary key for SQLite data bases generated from data frames.
