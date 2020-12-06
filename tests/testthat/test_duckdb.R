@@ -1,5 +1,3 @@
-context("basic ops")
-
 skip_if_not_installed("duckdb")
 
 test_that("Valid DataBackend", {

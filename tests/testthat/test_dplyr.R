@@ -1,5 +1,3 @@
-context("basic ops")
-
 skip_if_not_installed("dplyr")
 skip_if_not_installed("dbplyr")
 
@@ -56,10 +54,10 @@ test_that("as_data_backend", {
   data = iris
   data$row_id = 1:150
   data = tibble::as_tibble(data)
-  expect_is(as_data_backend(data, primary_key = "row_id"), "DataBackendDataTable")
+  expect_r6(as_data_backend(data, primary_key = "row_id"), "DataBackendDataTable")
 
   data = as_sqlite_tbl(data = data, primary_key = "row_id")
-  expect_is(as_data_backend(data, primary_key = "row_id"), "DataBackendDplyr")
+  expect_r6(as_data_backend(data, primary_key = "row_id"), "DataBackendDplyr")
   disconnect(data)
 })
 

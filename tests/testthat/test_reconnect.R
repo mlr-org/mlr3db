@@ -1,5 +1,3 @@
-context("reconnect")
-
 roundtrip = function(x) {
   path = tempfile()
   on.exit(file.remove(path))

@@ -36,8 +36,10 @@ Suggests:
     future.apply,
     future.callr,
     lgr,
-    testthat,
+    testthat (>= 3.0.0),
     tibble
 Encoding: UTF-8
+Config/testthat/edition: 3
+Config/testthat/parallel: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
