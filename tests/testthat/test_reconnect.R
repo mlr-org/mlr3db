@@ -35,7 +35,7 @@ test_that("filtered tbl", {
   skip_if_not_installed("dplyr")
   skip_if_not_installed("dbplyr")
 
-  b = as_sqlite_backend(cbind(iris, data.frame(row_id = 1:150)), path = "::temp::")
+  b = as_sqlite_backend(cbind(iris, data.frame(row_id = 1:150)), primary_key = "row_id", path = "::temp::")
   path = extract_db_dir(b)
   on.exit(disconnect(b))
 

@@ -57,7 +57,7 @@ as_sqlite_backend.data.frame = function(data, path = getOption("mlr3db.sqlite_di
   sqlite_backend_from_data(
     data = data,
     path = path,
-    primary_key = "..row_id",
+    primary_key = primary_key,
     hash = hash_data_frame(digest),
     ...
   )

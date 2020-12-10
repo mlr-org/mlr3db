@@ -4,12 +4,12 @@
 #' @importFrom utils head
 #' @importFrom R6 R6Class
 #' @importFrom digest digest
-#' @importFrom tools R_user_dir
 "_PACKAGE"
 
 .onLoad = function(libname, pkgname) { # nolint
   # nocov start
   backports::import(pkgname)
+  backports::import(pkgname, "R_user_dir", force = TRUE)
 } # nocov end
 
 mlr3misc::leanify_package()

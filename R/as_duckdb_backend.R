@@ -58,7 +58,7 @@ as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.duckdb_di
   duckdb_backend_from_data(
     data = data,
     path = path,
-    primary_key = "..row_id",
+    primary_key = primary_key,
     hash = hash_data_frame(data),
     ...
   )
