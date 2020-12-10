@@ -2,29 +2,36 @@
 % Please edit documentation in R/as_duckdb_backend.R
 \name{as_duckdb_backend}
 \alias{as_duckdb_backend}
-\title{Convert to use a DuckDB Backend}
+\title{Convert to DuckDB Backend}
 \usage{
-as_duckdb_backend(data, path = NULL, ...)
+as_duckdb_backend(data, path = getOption("mlr3db.duckdb_dir", "::temp::"), ...)
 }
 \arguments{
 \item{data}{(\code{data.frame()} | \link[mlr3:DataBackend]{mlr3::DataBackend} | \link[mlr3:Task]{mlr3::Task})\cr
 See description.}
 
-\item{path}{(\code{NULL} | \code{character(1)})\cr
-Path for the DuckDB data base. Defaults to a file in the temporary directory of the R session, see \code{\link[=tempfile]{tempfile()}}.}
+\item{path}{(\code{character(1)})\cr
+Path for the DuckDB databases.
+If set to special string \code{"::temp::"} (default), a temporary directory of the R session is used, see \code{\link[=tempfile]{tempfile()}}.
+If set to special string \code{"::user::"}, the user cache directory as returned by \code{\link[tools:userdir]{tools::R_user_dir()}} is used.
+The database files will use the respective hash as filename with file extension \code{".duckdb"}
+or \code{".sqlite"}, respectively.
+If the file already exists, data will not get overwritten but instead a connection will be established.}
 
 \item{...}{(\code{any})\cr
 Additional arguments, passed to \link{DataBackendDuckDB}.}
 }
 \value{
-\link{DataBackendDuckDB}.
+\link{DataBackendDuckDB} or \link{Task}.
 }
 \description{
-Converts to a \link{DataBackendDuckDB} using the \CRANpkg{duckdb} data base, depending on the input type:
+Converts to a \link{DataBackendDuckDB} using the \CRANpkg{duckdb} database, depending on the input type:
 \itemize{
-\item \code{data.frame}: Converts to a \link{DataBackendDuckDB}.
-\item \verb{[mlr3::DataBackend]}: Creates a new \link{DataBackendDuckDB} using the data of the provided \link[mlr3:DataBackend]{mlr3::DataBackend}.
-\item \verb{[mlr3::Task]}: Replaces the \link{DataBackend} in slot \verb{$backend} with a new backend. Only active columns and
-rows are considered.
+\item \code{data.frame}: Creates a new database, reopens it in read-only mode and returns a \link{DataBackendDuckDB}.
+The filename is determined by its \code{\link[digest:digest]{digest::digest()}}.
+\item \link[mlr3:DataBackend]{mlr3::DataBackend}: Same as \code{data.frame}. The filename is determined by the \code{hash} of the \link{DataBackend}.
+\item \verb{[mlr3::Task]}: Replaces the \link{DataBackend} in slot \verb{$backend} with a new backend.
+Only affects active columns and rows of the \link[mlr3:Task]{mlr3::Task}.
+The filename is determined by \code{hash} of the task.
 }
 }

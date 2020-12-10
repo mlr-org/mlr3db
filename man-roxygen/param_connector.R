@@ -1,5 +1,5 @@
 #' @param connector (function()`)\cr
-#'   If not `NULL`, a function which re-connects to the data base in case the connection has become invalid.
+#'   If not `NULL`, a function which re-connects to the database in case the connection has become invalid.
 #'   Database connections can become invalid due to timeouts or if the backend is serialized
 #'   to the file system and then de-serialized again.
 #'   This round trip is often performed for parallelization, e.g. to send the objects to remote workers.

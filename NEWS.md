@@ -5,8 +5,8 @@
 
 # mlr3db 0.2.0
 
-* Set a primary key for SQLite data bases generated from data frames.
-* Set a reconnector for SQLite data bases generated from data frames.
+* Set a primary key for SQLite databases generated from data frames.
+* Set a reconnector for SQLite databases generated from data frames.
 * Resolved a warning signaled by dplyr-1.0.0.
 
 # mlr3db 0.1.5
@@ -20,12 +20,12 @@
 
 * Connections can now be automatically re-connected via a user-provided function.
 * `DataBackendDplyr` now has a finalizer which automatically disconnects the
-  data base connection during garbage collection.
+  database connection during garbage collection.
 
 # mlr3db 0.1.3
 
 * During construction of `DataBackendDplyr`, you can now select columns to be
-  converted from string to factor. This simplies the work with SQL databases
+  converted from string to factor. This simplifies the work with SQL databases
   which do not naturally support factors (or where the level information is
   lost in the transaction).
 

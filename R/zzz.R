@@ -4,6 +4,7 @@
 #' @importFrom utils head
 #' @importFrom R6 R6Class
 #' @importFrom digest digest
+#' @importFrom tools R_user_dir
 "_PACKAGE"
 
 .onLoad = function(libname, pkgname) { # nolint

@@ -9,10 +9,8 @@ test_that("expectations + dplyr", {
   skip_if_not_installed("dplyr")
   skip_if_not_installed("dbplyr")
 
-  path = tempfile("db_", fileext = "sqlite")
-  b = as_sqlite_backend(iris, path = path)
+  b = as_sqlite_backend(iris, path = "::temp::")
   on.exit(disconnect(b))
-  b$connector = sqlite_reconnector(path)
 
   b = roundtrip(b)
   expect_false(DBI::dbIsValid(private(b)$.data$src$con))
@@ -25,7 +23,7 @@ test_that("expectations + dplyr", {
 test_that("expectations + duckdb", {
   skip_if_not_installed("duckdb")
 
-  b = as_duckdb_backend(iris)
+  b = as_duckdb_backend(iris, path = "::temp::")
   b = roundtrip(b)
   expect_false(b$valid)
   expect_backend(b)
@@ -37,8 +35,8 @@ test_that("filtered tbl", {
   skip_if_not_installed("dplyr")
   skip_if_not_installed("dbplyr")
 
-  path = tempfile("db_", fileext = "sqlite")
-  b = as_sqlite_backend(cbind(iris, data.frame(row_id = 1:150)), path = path)
+  b = as_sqlite_backend(cbind(iris, data.frame(row_id = 1:150)), path = "::temp::")
+  path = extract_db_dir(b)
   on.exit(disconnect(b))
 
   keep = c("row_id", "Sepal.Length", "Petal.Length", "Species")

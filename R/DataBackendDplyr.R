@@ -2,8 +2,8 @@
 #'
 #' @description
 #' A [mlr3::DataBackend] using [dplyr::tbl()] from packages \CRANpkg{dplyr}/\CRANpkg{dbplyr}.
-#' This includes [`tibbles`][tibble::tibble()] and abstract data base connections interfaced by \CRANpkg{dbplyr}.
-#' The latter allows [mlr3::Task]s to interface an out-of-memory data base.
+#' This includes [`tibbles`][tibble::tibble()] and abstract database connections interfaced by \CRANpkg{dbplyr}.
+#' The latter allows [mlr3::Task]s to interface an out-of-memory database.
 #'
 #'
 #' @param rows `integer()`\cr
@@ -41,12 +41,12 @@
 #' print(task)
 #' task$head()
 #'
-#' # Create a temporary SQLite data base
+#' # Create a temporary SQLite database
 #' con = DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #' dplyr::copy_to(con, data)
 #' tbl = dplyr::tbl(con, "data")
 #'
-#' # Define a backend on a subset of the data base
+#' # Define a backend on a subset of the database
 #' tbl = dplyr::select_at(tbl, setdiff(colnames(tbl), "Sepal.Width")) # do not use column "Sepal.Width"
 #' tbl = dplyr::filter(tbl, row_id %in% 1:120) # Use only first 120 rows
 #' b = DataBackendDplyr$new(tbl, primary_key = "row_id")
@@ -119,7 +119,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     },
 
     #' @description
-    #' Finalizer which disconnects from the data base.
+    #' Finalizer which disconnects from the database.
     #' This is called during garbage collection of the instance.
     #' @return `logical(1)`, the return value of [DBI::dbDisconnect()].
     finalize = function() {

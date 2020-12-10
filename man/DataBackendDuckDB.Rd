@@ -74,7 +74,7 @@ Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Creates a backend for a \code{\link[duckdb:duckdb]{duckdb::duckdb()}} data base.
+Creates a backend for a \code{\link[duckdb:duckdb]{duckdb::duckdb()}} database.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendDuckDB$new(
   data,
@@ -103,7 +103,7 @@ if \code{FALSE}, no column will be converted, if \code{TRUE} all string columns 
 For conversion, the backend is queried for distinct values of the respective columns
 on construction and their levels are stored in \verb{$levels}.}
 
-\item{\code{connector}}{(function()\verb{)\\cr If not }NULL`, a function which re-connects to the data base in case the connection has become invalid.
+\item{\code{connector}}{(function()\verb{)\\cr If not }NULL`, a function which re-connects to the database in case the connection has become invalid.
 Database connections can become invalid due to timeouts or if the backend is serialized
 to the file system and then de-serialized again.
 This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
@@ -121,7 +121,7 @@ To protect your credentials, it is recommended to use the \CRANpkg{secret} packa
 \if{html}{\out{<a id="method-finalize"></a>}}
 \if{latex}{\out{\hypertarget{method-finalize}{}}}
 \subsection{Method \code{finalize()}}{
-Finalizer which disconnects from the data base.
+Finalizer which disconnects from the database.
 This is called during garbage collection of the instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendDuckDB$finalize()}\if{html}{\out{</div>}}

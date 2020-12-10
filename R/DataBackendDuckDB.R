@@ -35,7 +35,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
 
     #' @description
     #'
-    #' Creates a backend for a [duckdb::duckdb()] data base.
+    #' Creates a backend for a [duckdb::duckdb()] database.
     #'
     #' @param data (connection)\cr
     #'   A connection created with [DBI::dbConnect()].
@@ -78,7 +78,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     },
 
     #' @description
-    #' Finalizer which disconnects from the data base.
+    #' Finalizer which disconnects from the database.
     #' This is called during garbage collection of the instance.
     #' @return `logical(1)`, the return value of [DBI::dbDisconnect()].
     finalize = function() {
