@@ -55,8 +55,8 @@
 
 <meta property="og:title" content="DataBackend for dplyr/dbplyr — DataBackendDplyr" />
 <meta property="og:description" content="A mlr3::DataBackend using dplyr::tbl() from packages dplyr/dbplyr.
-This includes tibbles and abstract data base connections interfaced by dbplyr.
-The latter allows mlr3::Tasks to interface an out-of-memory data base." />
+This includes tibbles and abstract database connections interfaced by dbplyr.
+The latter allows mlr3::Tasks to interface an out-of-memory database." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -162,8 +162,8 @@ The latter allows mlr3::Tasks to interface an out-of-memory data base." />
 
     <div class="ref-description">
     <p>A <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a> using <code><a href='https://dplyr.tidyverse.org/reference/tbl.html'>dplyr::tbl()</a></code> from packages <a href='https://CRAN.R-project.org/package=dplyr'><span class="pkg">dplyr</span></a>/<a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>.
-This includes <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code> and abstract data base connections interfaced by <a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>.
-The latter allows <a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::Task</a>s to interface an out-of-memory data base.</p>
+This includes <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibbles</a></code> and abstract database connections interfaced by <a href='https://CRAN.R-project.org/package=dbplyr'><span class="pkg">dbplyr</span></a>.
+The latter allows <a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::Task</a>s to interface an out-of-memory database.</p>
     </div>
 
 
@@ -251,7 +251,7 @@ if <code>FALSE</code>, no column will be converted, if <code>TRUE</code> all str
 For conversion, the backend is queried for distinct values of the respective columns
 on construction and their levels are stored in <code>$levels</code>.</p></dd>
 
-<dt><code>connector</code></dt><dd><p>(function()<code>)\cr If not </code>NULL`, a function which re-connects to the data base in case the connection has become invalid.
+<dt><code>connector</code></dt><dd><p>(function()<code>)\cr If not </code>NULL`, a function which re-connects to the database in case the connection has become invalid.
 Database connections can become invalid due to timeouts or if the backend is serialized
 to the file system and then de-serialized again.
 This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
@@ -265,7 +265,7 @@ To protect your credentials, it is recommended to use the <a href='https://CRAN.
 </dl><p></div></p>
 <p><hr>
 <a id="method-finalize"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>finalize()</code></h3>
-<p>Finalizer which disconnects from the data base.
+<p>Finalizer which disconnects from the database.
 This is called during garbage collection of the instance.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>finalize</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
@@ -392,12 +392,12 @@ Column names.</p></dd>
 #&gt; 4:  setosa          1.5         0.2           NA         3.1
 #&gt; 5:  setosa          1.4         0.2           NA         3.6
 #&gt; 6:  setosa          1.7         0.4           NA         3.9</div><div class='input'>
-<span class='co'># Create a temporary SQLite data base</span>
+<span class='co'># Create a temporary SQLite database</span>
 <span class='va'>con</span> <span class='op'>=</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='op'>(</span><span class='fu'>RSQLite</span><span class='fu'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>":memory:"</span><span class='op'>)</span>
 <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to</a></span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>data</span><span class='op'>)</span>
 <span class='va'>tbl</span> <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span><span class='op'>(</span><span class='va'>con</span>, <span class='st'>"data"</span><span class='op'>)</span>
 
-<span class='co'># Define a backend on a subset of the data base</span>
+<span class='co'># Define a backend on a subset of the database</span>
 <span class='va'>tbl</span> <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select_all.html'>select_at</a></span><span class='op'>(</span><span class='va'>tbl</span>, <span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>tbl</span><span class='op'>)</span>, <span class='st'>"Sepal.Width"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># do not use column "Sepal.Width"</span>
 <span class='va'>tbl</span> <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>tbl</span>, <span class='va'>row_id</span> <span class='op'>%in%</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>120</span><span class='op'>)</span> <span class='co'># Use only first 120 rows</span>
 <span class='va'>b</span> <span class='op'>=</span> <span class='va'>DataBackendDplyr</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>tbl</span>, primary_key <span class='op'>=</span> <span class='st'>"row_id"</span><span class='op'>)</span>

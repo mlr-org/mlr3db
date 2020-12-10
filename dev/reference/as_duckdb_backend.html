@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert to use a DuckDB Backend — as_duckdb_backend • mlr3db</title>
+<title>Convert to DuckDB Backend — as_duckdb_backend • mlr3db</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -53,12 +53,14 @@
 
 
 
-<meta property="og:title" content="Convert to use a DuckDB Backend — as_duckdb_backend" />
-<meta property="og:description" content="Converts to a DataBackendDuckDB using the duckdb data base, depending on the input type:
-data.frame: Converts to a DataBackendDuckDB.
-[mlr3::DataBackend]: Creates a new DataBackendDuckDB using the data of the provided mlr3::DataBackend.
-[mlr3::Task]: Replaces the DataBackend in slot $backend with a new backend. Only active columns and
-rows are considered.
+<meta property="og:title" content="Convert to DuckDB Backend — as_duckdb_backend" />
+<meta property="og:description" content="Converts to a DataBackendDuckDB using the duckdb database, depending on the input type:
+data.frame: Creates a new database, reopens it in read-only mode and returns a DataBackendDuckDB.
+The filename is determined by its digest::digest().
+mlr3::DataBackend: Same as data.frame. The filename is determined by the hash of the DataBackend.
+[mlr3::Task]: Replaces the DataBackend in slot $backend with a new backend.
+Only affects active columns and rows of the mlr3::Task.
+The filename is determined by hash of the task.
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -159,22 +161,24 @@ rows are considered.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert to use a DuckDB Backend</h1>
+    <h1>Convert to DuckDB Backend</h1>
     <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3db/blob/master/R/as_duckdb_backend.R'><code>R/as_duckdb_backend.R</code></a></small>
     <div class="hidden name"><code>as_duckdb_backend.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Converts to a <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a> using the <a href='https://CRAN.R-project.org/package=duckdb'><span class="pkg">duckdb</span></a> data base, depending on the input type:</p><ul>
-<li><p><code>data.frame</code>: Converts to a <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a>.</p></li>
-<li><p><code>[mlr3::DataBackend]</code>: Creates a new <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a> using the data of the provided <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>.</p></li>
-<li><p><code>[mlr3::Task]</code>: Replaces the DataBackend in slot <code>$backend</code> with a new backend. Only active columns and
-rows are considered.</p></li>
+    <p>Converts to a <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a> using the <a href='https://CRAN.R-project.org/package=duckdb'><span class="pkg">duckdb</span></a> database, depending on the input type:</p><ul>
+<li><p><code>data.frame</code>: Creates a new database, reopens it in read-only mode and returns a <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a>.
+The filename is determined by its <code><a href='https://rdrr.io/pkg/digest/man/digest.html'>digest::digest()</a></code>.</p></li>
+<li><p><a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>: Same as <code>data.frame</code>. The filename is determined by the <code>hash</code> of the DataBackend.</p></li>
+<li><p><code>[mlr3::Task]</code>: Replaces the DataBackend in slot <code>$backend</code> with a new backend.
+Only affects active columns and rows of the <a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::Task</a>.
+The filename is determined by <code>hash</code> of the task.</p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>as_duckdb_backend</span><span class='op'>(</span><span class='va'>data</span>, path <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>as_duckdb_backend</span><span class='op'>(</span><span class='va'>data</span>, path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"mlr3db.duckdb_dir"</span>, <span class='st'>"::temp::"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,8 +190,13 @@ See description.</p></td>
     </tr>
     <tr>
       <th>path</th>
-      <td><p>(<code>NULL</code> | <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>)<br />
-Path for the DuckDB data base. Defaults to a file in the temporary directory of the R session, see <code><a href='https://rdrr.io/r/base/tempfile.html'>tempfile()</a></code>.</p></td>
+      <td><p>(<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>)<br />
+Path for the DuckDB databases.
+If set to special string <code>"::temp::"</code> (default), a temporary directory of the R session is used, see <code><a href='https://rdrr.io/r/base/tempfile.html'>tempfile()</a></code>.
+If set to special string <code>"::user::"</code>, the user cache directory as returned by <code><a href='https://rdrr.io/r/tools/userdir.html'>tools::R_user_dir()</a></code> is used.
+The database files will use the respective hash as filename with file extension <code>".duckdb"</code>
+or <code>".sqlite"</code>, respectively.
+If the file already exists, data will not get overwritten but instead a connection will be established.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -198,7 +207,7 @@ Additional arguments, passed to <a href='DataBackendDuckDB.html'>DataBackendDuck
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><a href='DataBackendDuckDB.html'>DataBackendDuckDB</a>.</p>
+    <p><a href='DataBackendDuckDB.html'>DataBackendDuckDB</a> or Task.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -229,7 +229,7 @@ Returns the result of <code><a href='https://dbi.r-dbi.org/reference/dbIsValid.h
 
 <hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
-<p>Creates a backend for a <code><a href='https://rdrr.io/pkg/duckdb/man/duckdb.html'>duckdb::duckdb()</a></code> data base.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p>Creates a backend for a <code><a href='https://rdrr.io/pkg/duckdb/man/duckdb.html'>duckdb::duckdb()</a></code> database.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>DataBackendDuckDB</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
   <span class='va'>data</span>,
   <span class='va'>table</span>,
@@ -255,7 +255,7 @@ if <code>FALSE</code>, no column will be converted, if <code>TRUE</code> all str
 For conversion, the backend is queried for distinct values of the respective columns
 on construction and their levels are stored in <code>$levels</code>.</p></dd>
 
-<dt><code>connector</code></dt><dd><p>(function()<code>)\cr If not </code>NULL`, a function which re-connects to the data base in case the connection has become invalid.
+<dt><code>connector</code></dt><dd><p>(function()<code>)\cr If not </code>NULL`, a function which re-connects to the database in case the connection has become invalid.
 Database connections can become invalid due to timeouts or if the backend is serialized
 to the file system and then de-serialized again.
 This round trip is often performed for parallelization, e.g. to send the objects to remote workers.
@@ -269,7 +269,7 @@ To protect your credentials, it is recommended to use the <a href='https://CRAN.
 </dl><p></div></p>
 <p><hr>
 <a id="method-finalize"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>finalize()</code></h3>
-<p>Finalizer which disconnects from the data base.
+<p>Finalizer which disconnects from the database.
 This is called during garbage collection of the instance.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>DataBackendDuckDB</span><span class='op'>$</span><span class='fu'>finalize</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
