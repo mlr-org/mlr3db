@@ -13,3 +13,4 @@
 ^\.github$
 ^tic\.R$
 ^.lintr$
+^README\.Rmd$

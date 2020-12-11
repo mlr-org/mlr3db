@@ -14,17 +14,18 @@ See description.}
 Path for the DuckDB databases.
 Either a valid path to a directory which will be created if it not exists, or one of the special strings:
 \itemize{
-\item \code{":temp:"}: Temporary directory of the R session is used, see \code{\link[=tempdir]{tempdir()}}.
+\item \code{":temp:"} (default): Temporary directory of the R session is used, see \code{\link[=tempdir]{tempdir()}}.
 Note that this directory will be removed during the shutdown of the R session.
 Also note that this usually does not work for parallelization on remote workers.
 Set to a custom path instead or use special string \code{":user:"} instead.
 \item \code{":user:"}: User cache directory as returned by \code{\link[tools:userdir]{tools::R_user_dir()}} is used.
 }
 
-The database files will use the hash of the \link{DataBackend} as filename with file extension \code{".duckdb"}
-or \code{".sqlite"}, respectively.
-If the file already exists on the file system, the existing data will not get overwritten but instead
-a connection will be established.}
+The default for this argument can be configured via option \code{"mlr3db.sqlite_dir"} or \code{"mlr3db.duckdb_dir"},
+respectively. The database files will use the hash of the \link{DataBackend} as filename with
+file extension \code{".duckdb"} or \code{".sqlite"}.
+If the database already exists on the file system, the converters will just established a new read-only
+connection.}
 
 \item{...}{(\code{any})\cr
 Additional arguments, passed to \link{DataBackendDuckDB}.}
@@ -45,6 +46,6 @@ files are reused.
 
 The created backend automatically reconnects to the database if the connection was lost, e.g. because
 the object was serialized to the filesystem and restored in a different R session.
-The only requirement is that the path to the file system does not change and that the path is accessible
+The only requirement is that the path does not change and that the path is accessible
 on all workers.
 }

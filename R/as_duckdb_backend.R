@@ -12,7 +12,7 @@
 #'
 #' The created backend automatically reconnects to the database if the connection was lost, e.g. because
 #' the object was serialized to the filesystem and restored in a different R session.
-#' The only requirement is that the path to the file system does not change and that the path is accessible
+#' The only requirement is that the path does not change and that the path is accessible
 #' on all workers.
 #'
 #' @param data (`data.frame()` | [mlr3::DataBackend])\cr

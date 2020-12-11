@@ -12,6 +12,16 @@ Extends the 'mlr3' package with a backend to
     one of the many supported database management systems (DBMS). The other one
     is specialized for package 'duckdb'.
 }
+\section{Options}{
+
+\itemize{
+\item \code{mlr3db.sqlite_dir}: Default directory to store SQLite databases constructed
+with \code{\link[=as_sqlite_backend]{as_sqlite_backend()}}..
+\item \code{mlr3db.sqlite_dir}: Default directory to store DuckDB databases constructed
+with \code{\link[=as_duckdb_backend]{as_duckdb_backend()}}..
+}
+}
+
 \seealso{
 Useful links:
 \itemize{
