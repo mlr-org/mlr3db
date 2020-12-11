@@ -3,14 +3,19 @@
 #' @description
 #' Converts to a [DataBackendDuckDB] using the \CRANpkg{duckdb} database, depending on the input type:
 #'
-#' * `data.frame`: Creates a new database, reopens it in read-only mode and returns a [DataBackendDuckDB].
-#'   The filename is determined by its [digest::digest()].
-#' * [mlr3::DataBackend]: Same as `data.frame`. The filename is determined by the `hash` of the [DataBackend].
-#' * `[mlr3::Task]`: Replaces the [DataBackend] in slot `$backend` with a new backend.
-#'   Only affects active columns and rows of the [mlr3::Task].
-#'   The filename is determined by `hash` of the task.
+#' * `data.frame`: Creates a new [DataBackendDataTable] first using [as_data_backend()], then proceeds
+#'   with the conversion from [DataBackendDataTable] to [DataBackendDuckDB].
+#' * [mlr3::DataBackend]: Creates a new DuckDB data base in the specified path.
+#'   The filename is determined by the hash of the [DataBackend].
+#'   If the file already exists, a connection to the existing database is established and the existing
+#'   files are reused.
 #'
-#' @param data (`data.frame()` | [mlr3::DataBackend] | [mlr3::Task])\cr
+#' The created backend automatically reconnects to the database if the connection was lost, e.g. because
+#' the object was serialized to the filesystem and restored in a different R session.
+#' The only requirement is that the path to the file system does not change and that the path is accessible
+#' on all workers.
+#'
+#' @param data (`data.frame()` | [mlr3::DataBackend])\cr
 #'   See description.
 #' @param ... (`any`)\cr
 #'   Additional arguments, passed to [DataBackendDuckDB].
@@ -18,54 +23,20 @@
 #'
 #' @return [DataBackendDuckDB] or [Task].
 #' @export
-as_duckdb_backend = function(data, path = getOption("mlr3db.duckdb_dir", "::temp::"), ...) {
+as_duckdb_backend = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), ...) {
   UseMethod("as_duckdb_backend")
 }
 
 #' @export
-as_duckdb_backend.Task = function(data, path = getOption("mlr3db.duckdb_dir", "::temp::"), ...) { # nolint
-  data$backend = duckdb_backend_from_data(
-    data = cbind(data$data(), data.table(..row_id = data$row_ids)),
-    path = path,
-    primary_key = "..row_id",
-    hash = data$hash,
-    ...
-  )
-  data
+as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.sqlite_dir", ":temp:"), primary_key = NULL, ...) { # nolint
+  backend = as_data_backend(data, primary_key = primary_key)
+  as_duckdb_backend.DataBackend(backend, path = path, ...)
 }
 
 #' @export
-as_duckdb_backend.DataBackend = function(data, path = getOption("mlr3db.duckdb_dir", "::temp::"), ...) { # nolint
-  duckdb_backend_from_data(
-    data = data$head(Inf),
-    path = path,
-    primary_key = data$primary_key,
-    hash = data$hash,
-    ...
-  )
-}
-
-#' @export
-as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.duckdb_dir", "::temp::"), primary_key = "..row_id", ...) { # nolint
-  assert_string(primary_key)
-
-  if (primary_key %in% names(data)) {
-    assert_integerish(data[[primary_key]], any.missing = FALSE, unique = TRUE)
-  } else {
-    data[[primary_key]] = seq_len(nrow(data))
-  }
-
-  duckdb_backend_from_data(
-    data = data,
-    path = path,
-    primary_key = primary_key,
-    hash = hash_data_frame(data),
-    ...
-  )
-}
-
-duckdb_backend_from_data = function(data, path, primary_key, hash, ...) {
-  path = get_db_path(path, hash = hash, "duckdb")
+as_duckdb_backend.DataBackend = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), ...) { # nolint
+  path = get_db_path(path, hash = data$hash, "duckdb")
+  primary_key = data$primary_key
 
   if (!file.exists(path)) {
     con = NULL
@@ -75,7 +46,7 @@ duckdb_backend_from_data = function(data, path, primary_key, hash, ...) {
     })
 
     con = DBI::dbConnect(duckdb::duckdb(), dbdir = path, read_only = FALSE)
-    DBI::dbWriteTable(con, "data", data, row.names = FALSE)
+    DBI::dbWriteTable(con, "data", data$head(Inf), row.names = FALSE)
     DBI::dbExecute(con, sprintf('CREATE UNIQUE INDEX primary_key ON "%s" ("%s")', "data", primary_key))
     DBI::dbDisconnect(con, shutdown = TRUE)
   }

@@ -17,10 +17,12 @@ test_that("DataBackend", {
 })
 
 test_that("Task", {
-  b = as_duckdb_backend(mlr3::mlr_tasks$get("iris"), path = tempfile())$backend
-  expect_r6(b, "DataBackendDuckDB")
-  expect_backend(b)
-  disconnect(b)
+  task = tsk("iris")
+  task$backend = as_duckdb_backend(task$backend, path = tempfile())
+  expect_r6(task$backend, "DataBackendDuckDB")
+  expect_backend(task$backend)
+  expect_task(task)
+  disconnect(task$backend)
 })
 
 test_that("connector is automatically set", {

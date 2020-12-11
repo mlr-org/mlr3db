@@ -4,19 +4,27 @@
 \alias{as_duckdb_backend}
 \title{Convert to DuckDB Backend}
 \usage{
-as_duckdb_backend(data, path = getOption("mlr3db.duckdb_dir", "::temp::"), ...)
+as_duckdb_backend(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), ...)
 }
 \arguments{
-\item{data}{(\code{data.frame()} | \link[mlr3:DataBackend]{mlr3::DataBackend} | \link[mlr3:Task]{mlr3::Task})\cr
+\item{data}{(\code{data.frame()} | \link[mlr3:DataBackend]{mlr3::DataBackend})\cr
 See description.}
 
 \item{path}{(\code{character(1)})\cr
 Path for the DuckDB databases.
-If set to special string \code{"::temp::"} (default), a temporary directory of the R session is used, see \code{\link[=tempfile]{tempfile()}}.
-If set to special string \code{"::user::"}, the user cache directory as returned by \code{\link[tools:userdir]{tools::R_user_dir()}} is used.
-The database files will use the respective hash as filename with file extension \code{".duckdb"}
+Either a valid path to a directory which will be created if it not exists, or one of the special strings:
+\itemize{
+\item \code{":temp:"}: Temporary directory of the R session is used, see \code{\link[=tempdir]{tempdir()}}.
+Note that this directory will be removed during the shutdown of the R session.
+Also note that this usually does not work for parallelization on remote workers.
+Set to a custom path instead or use special string \code{":user:"} instead.
+\item \code{":user:"}: User cache directory as returned by \code{\link[tools:userdir]{tools::R_user_dir()}} is used.
+}
+
+The database files will use the hash of the \link{DataBackend} as filename with file extension \code{".duckdb"}
 or \code{".sqlite"}, respectively.
-If the file already exists, data will not get overwritten but instead a connection will be established.}
+If the file already exists on the file system, the existing data will not get overwritten but instead
+a connection will be established.}
 
 \item{...}{(\code{any})\cr
 Additional arguments, passed to \link{DataBackendDuckDB}.}
@@ -27,11 +35,16 @@ Additional arguments, passed to \link{DataBackendDuckDB}.}
 \description{
 Converts to a \link{DataBackendDuckDB} using the \CRANpkg{duckdb} database, depending on the input type:
 \itemize{
-\item \code{data.frame}: Creates a new database, reopens it in read-only mode and returns a \link{DataBackendDuckDB}.
-The filename is determined by its \code{\link[digest:digest]{digest::digest()}}.
-\item \link[mlr3:DataBackend]{mlr3::DataBackend}: Same as \code{data.frame}. The filename is determined by the \code{hash} of the \link{DataBackend}.
-\item \verb{[mlr3::Task]}: Replaces the \link{DataBackend} in slot \verb{$backend} with a new backend.
-Only affects active columns and rows of the \link[mlr3:Task]{mlr3::Task}.
-The filename is determined by \code{hash} of the task.
+\item \code{data.frame}: Creates a new \link{DataBackendDataTable} first using \code{\link[=as_data_backend]{as_data_backend()}}, then proceeds
+with the conversion from \link{DataBackendDataTable} to \link{DataBackendDuckDB}.
+\item \link[mlr3:DataBackend]{mlr3::DataBackend}: Creates a new DuckDB data base in the specified path.
+The filename is determined by the hash of the \link{DataBackend}.
+If the file already exists, a connection to the existing database is established and the existing
+files are reused.
 }
+
+The created backend automatically reconnects to the database if the connection was lost, e.g. because
+the object was serialized to the filesystem and restored in a different R session.
+The only requirement is that the path to the file system does not change and that the path is accessible
+on all workers.
 }

@@ -18,10 +18,12 @@ test_that("DataBackend", {
 })
 
 test_that("Task", {
-  b = as_sqlite_backend(mlr3::mlr_tasks$get("iris"), path = tempfile())$backend
-  expect_r6(b, "DataBackendDplyr")
-  expect_backend(b)
-  disconnect(b)
+  task = mlr3::tsk("iris")
+  task$backend = as_sqlite_backend(task$backend)
+  expect_r6(task$backend, "DataBackendDplyr")
+  expect_backend(task$backend)
+  expect_task(task)
+  disconnect(task$backend)
 })
 
 test_that("connector is automatically set", {

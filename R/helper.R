@@ -6,9 +6,10 @@ recode = function(tab, levels) {
 }
 
 get_db_path = function(path, hash, extension) {
+  assert_string(path)
   parent = switch(path,
-    "::temp::" = tempdir(),
-    "::user::" = R_user_dir("mlr3db", "cache"),
+    ":temp:" = tempdir(),
+    ":user:" = R_user_dir("mlr3db", "cache"),
     path
   )
   if (!dir.exists(parent)) {
