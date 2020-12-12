@@ -124,7 +124,38 @@
 <li>
 <code>DataBackendDuckDB</code>: Connector to <a href="https://cran.r-project.org/package=duckdb">duckdb</a>.</li>
 </ul>
-<p>See <a href="https://mlr3book.mlr-org.com">mlr3book</a> for a short introduction.</p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>You can install the released version of mlr3db from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"mlr3db"</span><span class="op">)</span></code></pre></div>
+<p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mlr-org/mlr3db"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com">mlr3</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https:///mlr3db.mlr-org.com">mlr3db</a></span><span class="op">)</span>
+
+<span class="co"># Create a classification task:</span>
+<span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">tsk</a></span><span class="op">(</span><span class="st">"spam"</span><span class="op">)</span>
+
+<span class="co"># Convert the task backend from a data.table backend to a DuckDB backend.</span>
+<span class="co"># By default, a temporary directory is used to store the database files.</span>
+<span class="co"># Note that the in-memory data is now used anymore, its memory will get freed</span>
+<span class="co"># by the garbage collector.</span>
+<span class="va">task</span><span class="op">$</span><span class="va">backend</span> <span class="op">=</span> <span class="fu"><a href="reference/as_duckdb_backend.html">as_duckdb_backend</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">backend</span><span class="op">)</span>
+
+<span class="co"># The requested data will be queried from the database in the background:</span>
+<span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span>
+<span class="va">ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">row_ids</span>, <span class="fl">3000</span><span class="op">)</span>
+<span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="va">ids</span><span class="op">)</span></code></pre></div>
+</div>
 </div>
   </div>
 
