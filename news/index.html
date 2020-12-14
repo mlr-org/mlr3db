@@ -86,7 +86,7 @@
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">mlr3db <small>v0.2.0</small></a>
+        <a class="navbar-brand" href="../index.html">mlr3db <small>v0.3.0</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -155,13 +155,23 @@
       <small>Source: <a href='https://github.com/mlr-org/mlr3db/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="mlr3db-020" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.0">
-<a href="#mlr3db-020" class="anchor"></a>mlr3db 0.2.0<small> Unreleased </small>
+    <div id="mlr3db-030" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.0">
+<a href="#mlr3db-030" class="anchor"></a>mlr3db 0.3.0<small> Unreleased </small>
 </h1>
 <ul>
-<li>Set a primary key for SQLite data bases generated from data frames.</li>
-<li>Set a reconnector for SQLite data bases generated from data frames.</li>
+<li>New backend <code>DataBackendDuckDB</code>.</li>
+<li>
+<code>dplyr</code> is now optional (moved from imports to suggests).</li>
+</ul>
+</div>
+    <div id="mlr3db-020" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.0">
+<a href="#mlr3db-020" class="anchor"></a>mlr3db 0.2.0<small> 2020-09-28 </small>
+</h1>
+<ul>
+<li>Set a primary key for SQLite databases generated from data frames.</li>
+<li>Set a reconnector for SQLite databases generated from data frames.</li>
 <li>Resolved a warning signaled by dplyr-1.0.0.</li>
 </ul>
 </div>
@@ -171,7 +181,7 @@
 </h1>
 <ul>
 <li>
-<code>as_data_backend()</code> method to construct a <code>DataBackendDplyr</code> now specialized to operate on objects of type <code>"tbl_lazy"</code> (was <code>"tbl"</code> before). This way, local <code>"tbl"</code> objects such as tibbles are converted to a <code>DataBackendDataTable</code> by <code><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html">mlr3::as_data_backend.data.frame()</a></code>.</li>
+<code><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html">as_data_backend()</a></code> method to construct a <code>DataBackendDplyr</code> now specialized to operate on objects of type <code>"tbl_lazy"</code> (was <code>"tbl"</code> before). This way, local <code>"tbl"</code> objects such as tibbles are converted to a <code>DataBackendDataTable</code> by <code><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html">mlr3::as_data_backend.data.frame()</a></code>.</li>
 </ul>
 </div>
     <div id="mlr3db-014" class="section level1">
@@ -181,7 +191,7 @@
 <ul>
 <li>Connections can now be automatically re-connected via a user-provided function.</li>
 <li>
-<code>DataBackendDplyr</code> now has a finalizer which automatically disconnects the data base connection during garbage collection.</li>
+<code>DataBackendDplyr</code> now has a finalizer which automatically disconnects the database connection during garbage collection.</li>
 </ul>
 </div>
     <div id="mlr3db-013" class="section level1">
@@ -189,7 +199,7 @@
 <a href="#mlr3db-013" class="anchor"></a>mlr3db 0.1.3<small> 2019-10-29 </small>
 </h1>
 <ul>
-<li>During construction of <code>DataBackendDplyr</code>, you can now select columns to be converted from string to factor. This simplies the work with SQL databases which do not naturally support factors (or where the level information is lost in the transaction).</li>
+<li>During construction of <code>DataBackendDplyr</code>, you can now select columns to be converted from string to factor. This simplifies the work with SQL databases which do not naturally support factors (or where the level information is lost in the transaction).</li>
 </ul>
 </div>
     <div id="mlr3db-012" class="section level1">

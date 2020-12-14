@@ -7,6 +7,12 @@
     <loc>https://mlr3db.mlr-org.com/reference/DataBackendDplyr.html</loc>
   </url>
   <url>
+    <loc>https://mlr3db.mlr-org.com/reference/DataBackendDuckDB.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3db.mlr-org.com/reference/as_duckdb_backend.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3db.mlr-org.com/reference/as_sqlite_backend.html</loc>
   </url>
   <url>

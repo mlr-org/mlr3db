@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>mlr3db: Data Base Backend for 'mlr3' — mlr3db-package • mlr3db</title>
+<title>Convert to DuckDB Backend — as_duckdb_backend • mlr3db</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -53,12 +53,20 @@
 
 
 
-<meta property="og:title" content="mlr3db: Data Base Backend for 'mlr3' — mlr3db-package" />
-<meta property="og:description" content="Extends the 'mlr3' package with a backend to
-    transparently work with databases. Includes two extra backends:
-    One relies on relies on the abstraction of package 'dbplyr' to interact with
-    one of the many supported database management systems (DBMS). The other one
-    is specialized for package 'duckdb'." />
+<meta property="og:title" content="Convert to DuckDB Backend — as_duckdb_backend" />
+<meta property="og:description" content="Converts to a DataBackendDuckDB using the duckdb database, depending on the input type:
+data.frame: Creates a new DataBackendDataTable first using as_data_backend(), then proceeds
+with the conversion from DataBackendDataTable to DataBackendDuckDB.
+mlr3::DataBackend: Creates a new DuckDB data base in the specified path.
+The filename is determined by the hash of the DataBackend.
+If the file already exists, a connection to the existing database is established and the existing
+files are reused.
+
+
+The created backend automatically reconnects to the database if the connection was lost, e.g. because
+the object was serialized to the filesystem and restored in a different R session.
+The only requirement is that the path does not change and that the path is accessible
+on all workers." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -157,44 +165,65 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>mlr3db: Data Base Backend for 'mlr3'</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3db/blob/master/R/zzz.R'><code>R/zzz.R</code></a></small>
-    <div class="hidden name"><code>mlr3db-package.Rd</code></div>
+    <h1>Convert to DuckDB Backend</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3db/blob/master/R/as_duckdb_backend.R'><code>R/as_duckdb_backend.R</code></a></small>
+    <div class="hidden name"><code>as_duckdb_backend.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extends the 'mlr3' package with a backend to
-    transparently work with databases. Includes two extra backends:
-    One relies on relies on the abstraction of package 'dbplyr' to interact with
-    one of the many supported database management systems (DBMS). The other one
-    is specialized for package 'duckdb'.</p>
+    <p>Converts to a <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a> using the <a href='https://CRAN.R-project.org/package=duckdb'><span class="pkg">duckdb</span></a> database, depending on the input type:</p><ul>
+<li><p><code>data.frame</code>: Creates a new <a href='https://mlr3.mlr-org.com/reference/DataBackendDataTable.html'>DataBackendDataTable</a> first using <code><a href='https://mlr3.mlr-org.com/reference/as_data_backend.html'>as_data_backend()</a></code>, then proceeds
+with the conversion from <a href='https://mlr3.mlr-org.com/reference/DataBackendDataTable.html'>DataBackendDataTable</a> to <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a>.</p></li>
+<li><p><a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>: Creates a new DuckDB data base in the specified path.
+The filename is determined by the hash of the <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>DataBackend</a>.
+If the file already exists, a connection to the existing database is established and the existing
+files are reused.</p></li>
+</ul>
+
+<p>The created backend automatically reconnects to the database if the connection was lost, e.g. because
+the object was serialized to the filesystem and restored in a different R session.
+The only requirement is that the path does not change and that the path is accessible
+on all workers.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>as_duckdb_backend</span><span class='op'>(</span><span class='va'>data</span>, path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"mlr3db.duckdb_dir"</span>, <span class='st'>":temp:"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
-
-    <h2 class="hasAnchor" id="options"><a class="anchor" href="#options"></a>Options</h2>
-
-    
-
-<ul>
-<li><p><code>mlr3db.sqlite_dir</code>: Default directory to store SQLite databases constructed
-with <code><a href='as_sqlite_backend.html'>as_sqlite_backend()</a></code>..</p></li>
-<li><p><code>mlr3db.sqlite_dir</code>: Default directory to store DuckDB databases constructed
-with <code><a href='as_duckdb_backend.html'>as_duckdb_backend()</a></code>..</p></li>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>(<code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code> | <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>)<br />
+See description.</p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>(<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>)<br />
+Path for the DuckDB databases.
+Either a valid path to a directory which will be created if it not exists, or one of the special strings:</p><ul>
+<li><p><code>":temp:"</code> (default): Temporary directory of the R session is used, see <code><a href='https://rdrr.io/r/base/tempfile.html'>tempdir()</a></code>.
+Note that this directory will be removed during the shutdown of the R session.
+Also note that this usually does not work for parallelization on remote workers.
+Set to a custom path instead or use special string <code>":user:"</code> instead.</p></li>
+<li><p><code>":user:"</code>: User cache directory as returned by <code><a href='https://rdrr.io/r/tools/userdir.html'>tools::R_user_dir()</a></code> is used.</p></li>
 </ul>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+<p>The default for this argument can be configured via option <code>"mlr3db.sqlite_dir"</code> or <code>"mlr3db.duckdb_dir"</code>,
+respectively. The database files will use the hash of the <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>DataBackend</a> as filename with
+file extension <code>".duckdb"</code> or <code>".sqlite"</code>.
+If the database already exists on the file system, the converters will just established a new read-only
+connection.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>(<code>any</code>)<br />
+Additional arguments, passed to <a href='DataBackendDuckDB.html'>DataBackendDuckDB</a>.</p></td>
+    </tr>
+    </table>
 
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https:///mlr3db.mlr-org.com'>https:///mlr3db.mlr-org.com</a></p></li>
-<li><p><a href='https://github.com/mlr-org/mlr3db'>https://github.com/mlr-org/mlr3db</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/mlr-org/mlr3db/issues'>https://github.com/mlr-org/mlr3db/issues</a></p></li>
-</ul>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-</div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p><strong>Maintainer</strong>: Michel Lang <a href='mailto:michellang@gmail.com'>michellang@gmail.com</a> (<a href='https://orcid.org/0000-0001-9754-0393'>ORCID</a>)</p>
+    <p><a href='DataBackendDuckDB.html'>DataBackendDuckDB</a> or <a href='https://mlr3.mlr-org.com/reference/Task.html'>Task</a>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
