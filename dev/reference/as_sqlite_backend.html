@@ -205,7 +205,8 @@ Either a valid path to a directory which will be created if it not exists, or on
 Note that this directory will be removed during the shutdown of the R session.
 Also note that this usually does not work for parallelization on remote workers.
 Set to a custom path instead or use special string <code>":user:"</code> instead.</p></li>
-<li><p><code>":user:"</code>: User cache directory as returned by <code><a href='https://rdrr.io/r/tools/userdir.html'>tools::R_user_dir()</a></code> is used.</p></li>
+<li><p><code>":user:"</code>: User cache directory as returned by <code><a href='https://rdrr.io/r/tools/userdir.html'>tools::R_user_dir()</a></code>
+(or <code><a href='https://rdrr.io/pkg/backports/man/R_user_dir.html'>backports::R_user_dir()</a></code> for older R versions) is used.</p></li>
 </ul>
 
 <p>The default for this argument can be configured via option <code>"mlr3db.sqlite_dir"</code> or <code>"mlr3db.duckdb_dir"</code>,
