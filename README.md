@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 
-[![tic](https://github.com/mlr-org/mlr3db/workflows/tic/badge.svg?branch=master)](https://github.com/mlr-org/mlr3db/actions)
+[![tic](https://github.com/mlr-org/mlr3db/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3db/actions)
 [![CRAN
 Status](https://www.r-pkg.org/badges/version-ago/mlr3db)](https://cran.r-project.org/package=mlr3db)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
