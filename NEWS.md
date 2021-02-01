@@ -1,3 +1,7 @@
+# mlr3db 0.4.0
+
+* Added a `show_query()` method for `DataBackendDplyr` (#4).
+
 # mlr3db 0.3.0
 
 * New backend `DataBackendDuckDB`.
