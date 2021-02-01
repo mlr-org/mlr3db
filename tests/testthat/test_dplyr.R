@@ -69,3 +69,8 @@ test_that("distinct with NULL rows", {
   )
   disconnect(b)
 })
+
+test_that("show_query", {
+  b = as_sqlite_backend(iris)
+  expect_output(dplyr::show_query(b), "SELECT *")
+})
