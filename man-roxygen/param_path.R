@@ -6,8 +6,7 @@
 #'     Note that this directory will be removed during the shutdown of the R session.
 #'     Also note that this usually does not work for parallelization on remote workers.
 #'     Set to a custom path instead or use special string `":user:"` instead.
-#'   * `":user:"`: User cache directory as returned by `tools::R_user_dir()`
-#'     (or [backports::R_user_dir()] for older R versions) is used.
+#'   * `":user:"`: User cache directory as returned by [R_user_dir()] is used.
 #'
 #'
 #' The default for this argument can be configured via option `"mlr3db.sqlite_dir"` or `"mlr3db.duckdb_dir"`,
