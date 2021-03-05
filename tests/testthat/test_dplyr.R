@@ -26,6 +26,7 @@ test_that("valid DataBackend (as_sqlite_backend)", {
   b = as_sqlite_backend(data)
   expect_backend(b)
   expect_iris_backend(b, n_missing = 30L)
+  disconnect(b)
 })
 
 test_that("strings_as_factors", {
@@ -35,11 +36,13 @@ test_that("strings_as_factors", {
   b = DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = FALSE)
   expect_character(b$head()$Species, any.missing = FALSE)
   expect_character(b$data(b$rownames[1], "Species")$Species, any.missing = FALSE)
+  disconnect(b)
 
   tbl = as_sqlite_tbl(data)
   b = DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = TRUE)
   expect_factor(b$head()$Species, any.missing = FALSE)
   expect_factor(b$data(b$rownames[1], "Species")$Species, any.missing = FALSE)
+  disconnect(b)
 
   tbl = as_sqlite_tbl(data)
   b = DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = "Species")
@@ -47,6 +50,7 @@ test_that("strings_as_factors", {
   expect_factor(b$data(b$rownames[1], "Species")$Species, any.missing = FALSE)
 
   expect_error(DataBackendDplyr$new(data = tbl, "row_id", strings_as_factors = "Sepal.Length"))
+  disconnect(b)
 })
 
 test_that("as_data_backend", {
@@ -67,5 +71,11 @@ test_that("distinct with NULL rows", {
     b$distinct(NULL, b$colnames),
     b$distinct(b$rownames, b$colnames)
   )
+  disconnect(b)
+})
+
+test_that("show_query", {
+  b = as_sqlite_backend(iris)
+  expect_output(dplyr::show_query(b), "SELECT *")
   disconnect(b)
 })

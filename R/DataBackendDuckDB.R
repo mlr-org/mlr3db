@@ -264,3 +264,14 @@ write_temp_table = function(con, rows) {
     temporary = TRUE, overwrite = TRUE)
   tbl_name
 }
+
+#' @importFrom mlr3 as_data_backend
+#' @export
+as_data_backend.tbl_duckdb_connection = function(data, primary_key, strings_as_factors = TRUE, ...) { # nolint
+  b = DataBackendDuckDB$new(data, primary_key)
+  path = data$src$con@driver@dbdir
+  if (!identical(path, ":memory:") && test_string(path) && file.exists(path)) {
+    b$connector = duckdb_reconnector(path)
+  }
+  return(b)
+}

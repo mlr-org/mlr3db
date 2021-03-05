@@ -1,3 +1,9 @@
+# mlr3db 0.4.0
+
+* Added a `show_query()` method for `DataBackendDplyr` (#4).
+* A reconnector is automatically added in `as_data_backend()` for objects of
+  type `tbl_SQLiteConnection` and `tbl_duckdb_connection`.
+
 # mlr3db 0.3.0
 
 * New backend `DataBackendDuckDB`.
