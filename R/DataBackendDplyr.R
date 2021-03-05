@@ -299,6 +299,17 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
 #' @importFrom mlr3 as_data_backend
 #' @export
+as_data_backend.tbl_SQLiteConnection = function(data, primary_key, strings_as_factors = TRUE, ...) { # nolint
+  b = DataBackendDplyr$new(data, primary_key)
+  path = data$src$con@dbname
+  if (!identical(path, ":memory:") && test_string(path) && file.exists(path)) {
+    b$connector = sqlite_reconnector(path)
+  }
+  return(b)
+}
+
+#' @importFrom mlr3 as_data_backend
+#' @export
 as_data_backend.tbl_lazy = function(data, primary_key, strings_as_factors = TRUE, ...) { # nolint
   DataBackendDplyr$new(data, primary_key)
 }

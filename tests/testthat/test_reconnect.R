@@ -9,26 +9,30 @@ test_that("expectations + dplyr", {
   skip_if_not_installed("dplyr")
   skip_if_not_installed("dbplyr")
 
-  b = as_sqlite_backend(iris, path = tempfile())
-  on.exit(disconnect(b))
+  b1 = as_sqlite_backend(iris, path = tempfile())
+  on.exit(disconnect(b1))
 
-  b = roundtrip(b)
-  expect_false(DBI::dbIsValid(private(b)$.data$src$con))
+  b2 = roundtrip(b1)
+  expect_false(b2$valid)
 
-  expect_backend(b)
-  expect_iris_backend(b)
+  expect_backend(b2)
+  expect_iris_backend(b2)
+  disconnect(b1)
+  disconnect(b2)
 })
 
 
 test_that("expectations + duckdb", {
   skip_if_not_installed("duckdb")
 
-  b = as_duckdb_backend(iris, path = tempfile())
-  b = roundtrip(b)
-  expect_false(b$valid)
-  expect_backend(b)
-  expect_iris_backend(b)
-  disconnect(b)
+  b1 = as_duckdb_backend(iris, path = tempfile())
+  b2 = roundtrip(b)
+  expect_false(b2$valid)
+
+  expect_backend(b2)
+  expect_iris_backend(b2)
+  disconnect(b1)
+  disconnect(b2)
 })
 
 test_that("filtered tbl", {
@@ -37,7 +41,7 @@ test_that("filtered tbl", {
 
   b = as_sqlite_backend(cbind(iris, data.frame(row_id = 1:150)), primary_key = "row_id", path = tempfile())
   path = extract_db_dir(b)
-  on.exit(disconnect(b))
+  disconnect(b)
 
   keep = c("row_id", "Sepal.Length", "Petal.Length", "Species")
   con = DBI::dbConnect(RSQLite::SQLite(), path)
