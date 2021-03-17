@@ -1,6 +1,6 @@
 skip_if_not_installed("duckdb")
 
-b = as_duckdb_backend(iris)
+b = as_duckdb_backend(iris, path = tempfile())
 task = mlr3::TaskClassif$new("iris_duckdb", b, "Species")
 learner = mlr3::mlr_learners$get("classif.featureless")
 

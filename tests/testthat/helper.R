@@ -24,7 +24,7 @@ disconnect.tbl_dbi = function(x) {
 registerS3method("disconnect", "tbl_dbi", disconnect.tbl_dbi)
 
 disconnect.SQLiteConnection = function(x) {
-    DBI::dbDisconnect(x)
+  DBI::dbDisconnect(x)
 }
 registerS3method("disconnect", "SQLiteConnection", disconnect.SQLiteConnection)
 

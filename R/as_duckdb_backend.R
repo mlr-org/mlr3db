@@ -28,7 +28,7 @@ as_duckdb_backend = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:
 }
 
 #' @export
-as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.sqlite_dir", ":temp:"), primary_key = NULL, ...) { # nolint
+as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), primary_key = NULL, ...) { # nolint
   backend = as_data_backend(data, primary_key = primary_key)
   as_duckdb_backend.DataBackend(backend, path = path, ...)
 }
@@ -38,12 +38,15 @@ as_duckdb_backend.DataBackend = function(data, path = getOption("mlr3db.duckdb_d
   path = get_db_path(path, hash = data$hash, "duckdb")
   primary_key = data$primary_key
 
+  con = NULL
+  on.exit({
+    if (!is.null(con)) DBI::dbDisconnect(con, shutdown = TRUE)
+  }, add = TRUE)
+
   if (!file.exists(path)) {
-    con = NULL
     on.exit({
       if (file.exists(path)) unlink(paste0(path, c("", ".wal", ".tmp"), recursive = TRUE))
-      if (!is.null(con)) DBI::dbDisconnect(con, shutdown = TRUE)
-    })
+    }, add = TRUE)
 
     con = DBI::dbConnect(duckdb::duckdb(), dbdir = path, read_only = FALSE)
     DBI::dbWriteTable(con, "data", data$head(Inf), row.names = FALSE)
