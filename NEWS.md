@@ -1,7 +1,6 @@
-# mlr3db 0.4.0.9000
+# mlr3db 0.4.1
 
-- Internal changes only.
-
+- Temporarily disabled some tests to overcome some regressions in duckdb.
 
 # mlr3db 0.4.0
 
