@@ -147,7 +147,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
 
         get_query = function(col) {
           query = sprintf('SELECT DISTINCT("%1$s"."%2$s") FROM "%3$s" LEFT JOIN "%1$s" ON "%3$s"."row_id" = "%1$s"."%4$s"',
-              self$table, col, tmp_tbl, self$primary_key)
+            self$table, col, tmp_tbl, self$primary_key)
         }
       }
 
@@ -177,7 +177,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         return(setNames(integer(0L), character(0L)))
       }
 
-      query = sprintf('SELECT %s FROM "%s"', paste0(sprintf('COUNT("%s") AS "%s"', cols, cols), collapse = ','), self$table)
+      query = sprintf('SELECT %s FROM "%s"', paste0(sprintf('COUNT("%s") AS "%s"', cols, cols), collapse = ","), self$table)
       complete = as.integer(unlist(DBI::dbGetQuery(private$.data, query), recursive = FALSE))
       setNames(self$nrow - complete, cols)
     }
@@ -249,7 +249,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
 
         if (!all(class(private$.data) == class(con))) {
           stop(sprintf("Reconnecting failed. Expected a connection of class %s, but got %s",
-              paste0(class(private$.data$src$con), collapse = "/"), paste0(class(con), collapse = "/")), call. = FALSE)
+            paste0(class(private$.data$src$con), collapse = "/"), paste0(class(con), collapse = "/")), call. = FALSE)
         }
 
         private$.data = con

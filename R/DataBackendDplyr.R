@@ -288,7 +288,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
         if (!all(class(private$.data$src$con) == class(con))) {
           stop(sprintf("Reconnecting failed. Expected a connection of class %s, but got %s",
-              paste0(class(private$.data$src$con), collapse = "/"), paste0(class(con), collapse = "/")), call. = FALSE)
+            paste0(class(private$.data$src$con), collapse = "/"), paste0(class(con), collapse = "/")), call. = FALSE)
         }
 
         private$.data$src$con = con
