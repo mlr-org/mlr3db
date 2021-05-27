@@ -22,8 +22,6 @@ test_that("expectations + dplyr", {
 
 
 test_that("expectations + duckdb", {
-  skip_if_not_installed("duckdb", "0.2.6")
-
   b1 = as_duckdb_backend(iris, path = tempfile())
   on.exit(disconnect(b1), add = TRUE)
   b2 = roundtrip(b1)

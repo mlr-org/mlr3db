@@ -31,7 +31,7 @@ Suggests:
     RSQLite,
     dbplyr,
     dplyr,
-    duckdb,
+    duckdb (>= 0.2.6),
     future,
     future.apply,
     future.callr,
