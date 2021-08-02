@@ -104,7 +104,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         self$levels = list()
       } else {
         h = self$head(1L)
-        string_cols = setdiff(names(h)[mlr3misc::map_lgl(h, is.character)], self$primary_key)
+        string_cols = setdiff(names(h)[map_lgl(h, is.character)], self$primary_key)
 
         if (isTRUE(strings_as_factors)) {
           strings_as_factors = string_cols
@@ -272,9 +272,9 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     .calculate_hash = function() {
       private$.reconnect()
       if (inherits(private$.data, "tbl_lazy")) {
-        digest(list(private$.data$ops, private$.data$con), algo = "xxhash64")
+        calculate_hash(private$.data$ops, private$.data$con)
       } else {
-        digest(private$.data, algo = "xxhash64")
+        calculate_hash(private$.data)
       }
     },
 

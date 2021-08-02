@@ -236,7 +236,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
   private = list(
     .calculate_hash = function() {
       private$.reconnect()
-      digest::digest(private$.data@driver@dbdir, algo = "xxhash64")
+      calculate_hash(private$.data@driver@dbdir)
     },
 
     .reconnect = function() {

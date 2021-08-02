@@ -3,7 +3,7 @@
 #' @importFrom stats setNames
 #' @importFrom utils head
 #' @importFrom R6 R6Class
-#' @importFrom digest digest
+#' @importFrom mlr3misc map_lgl calculate_hash
 #' @section Options:
 #' * `mlr3db.sqlite_dir`: Default directory to store SQLite databases constructed
 #'   with [as_sqlite_backend()]..
