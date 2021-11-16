@@ -17,7 +17,7 @@ URL: https:///mlr3db.mlr-org.com,
     https://github.com/mlr-org/mlr3db
 BugReports: https://github.com/mlr-org/mlr3db/issues
 Depends:
-    mlr3 (>= 0.9.0),
+    mlr3 (>= 0.13.0),
     R (>= 3.1.0)
 Imports:
     R6,
