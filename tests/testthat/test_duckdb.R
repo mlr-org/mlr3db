@@ -36,10 +36,11 @@ test_that("distinct with NULL rows", {
 test_that("ordering", {
   path = tempfile()
   con = DBI::dbConnect(duckdb::duckdb(), dbdir = path, read_only = FALSE)
-  on.exit(DBI::dbDisconnect(con))
+  on.exit(DBI::dbDisconnect(con, shutdown = TRUE))
 
   df = data.frame(id = 5:1, x = 1:5)
   DBI::dbWriteTable(con, "data", df, row.names = FALSE)
+  b = DataBackendDuckDB$new(con, "data", "id")
 
   expect_equal(b$rownames, 1:5)
   expect_equal(b$colnames, c("id", "x"))
