@@ -8,6 +8,7 @@ test_that("Valid DataBackend", {
 
 test_that("strings_as_factors", {
   data = iris
+  data[["Species"]] = as.character(data[["Species"]])
 
   b = as_duckdb_backend(data, strings_as_factors = FALSE, path = tempfile())
   expect_character(b$head()$Species, any.missing = FALSE)
