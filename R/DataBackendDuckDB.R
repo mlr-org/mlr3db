@@ -54,10 +54,9 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       assert_choice(table, DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name)
       self$connector = assert_function(connector, args = character(), null.ok = TRUE)
 
-      try({
-        DBI::dbExecute(private$.data,
-          sprintf('CREATE UNIQUE INDEX primary_key ON "%s" ("%s")', self$table, self$primary_key))
-      }, silent = TRUE)
+      # create index
+      DBI::dbExecute(private$.data,
+        sprintf('CREATE UNIQUE INDEX primary_key ON "%s" ("%s")', self$table, self$primary_key))
 
       if (isFALSE(strings_as_factors)) {
         self$levels = list()
@@ -103,11 +102,11 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       cols = intersect(cols, self$colnames)
       tmp_tbl = write_temp_table(private$.data, rows)
 
-      query = sprintf('SELECT %1$s FROM "%2$s" LEFT JOIN "%3$s" ON "%2$s"."row_id" = "%3$s"."%4$s"',
+      query = sprintf('SELECT %1$s FROM "%2$s" INNER JOIN "%3$s" ON "%2$s"."row_id" = "%3$s"."%4$s"',
         paste0(sprintf('"%s"."%s"', self$table, union(cols, self$primary_key)), collapse = ","),
         tmp_tbl, self$table, self$primary_key)
 
-      res = setDT(DBI::dbGetQuery(private$.data, query))
+      res = setDT(DBI::dbGetQuery(private$.data, query), key = self$primary_key)
       recode(res[list(rows), cols, nomatch = NULL, on = self$primary_key, with = FALSE],
         self$levels)
     },
@@ -261,7 +260,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
 
 write_temp_table = function(con, rows) {
   tbl_name = sprintf("rows_%i", Sys.getpid())
-  DBI::dbWriteTable(con, tbl_name, data.frame(row_id = unique(rows)),
+  DBI::dbWriteTable(con, tbl_name, data.frame(row_id = sort(unique(rows))),
     temporary = TRUE, overwrite = TRUE, append = FALSE)
   tbl_name
 }

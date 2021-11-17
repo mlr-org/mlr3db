@@ -32,3 +32,17 @@ test_that("distinct with NULL rows", {
     b$distinct(b$rownames, b$colnames)
   )
 })
+
+test_that("ordering", {
+  path = tempfile()
+  con = DBI::dbConnect(duckdb::duckdb(), dbdir = path, read_only = FALSE)
+  on.exit(DBI::dbDisconnect(con))
+
+  df = data.frame(id = 5:1, x = 1:5)
+  DBI::dbWriteTable(con, "data", df, row.names = FALSE)
+
+  expect_equal(b$rownames, 1:5)
+  expect_equal(b$colnames, c("id", "x"))
+  expect_equal(b$head()$id, 1:5)
+  expect_equal(b$data(b$rownames, "id")$id, 1:5)
+})
