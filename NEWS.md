@@ -1,3 +1,7 @@
+# mlr3db 0.4.2
+
+- Compatibility fixes with new duckdb version.
+
 # mlr3db 0.4.1
 
 - Temporarily disabled some tests to overcome some regressions in duckdb.
