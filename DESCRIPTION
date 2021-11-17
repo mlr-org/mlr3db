@@ -1,6 +1,6 @@
 Package: mlr3db
 Title: Data Base Backend for 'mlr3'
-Version: 0.4.1
+Version: 0.4.2
 Authors@R:
     person(given = "Michel",
            family = "Lang",
