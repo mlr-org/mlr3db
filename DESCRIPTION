@@ -30,7 +30,7 @@ Suggests:
     RSQLite,
     dbplyr,
     dplyr,
-    duckdb (>= 0.2.6),
+    duckdb (>= 0.3.1),
     future,
     future.apply,
     future.callr,
@@ -40,4 +40,4 @@ Suggests:
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

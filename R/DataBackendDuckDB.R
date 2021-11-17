@@ -122,7 +122,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     head = function(n = 6L) {
       private$.reconnect()
       res = DBI::dbGetQuery(private$.data,
-        sprintf('SELECT * FROM "%s" LIMIT %i', self$table, n))
+        sprintf('SELECT * FROM "%s" ORDER BY "%s" LIMIT %i', self$table, self$primary_key, n))
       recode(setDT(res), self$levels)
     },
 
@@ -156,7 +156,8 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         if (na_rm) {
           query = sprintf('%s WHERE "%s"."%s" IS NOT NULL', query, self$table, col)
         }
-        DBI::dbGetQuery(private$.data, query)[[1L]]
+        levels = DBI::dbGetQuery(private$.data, query)[[1L]]
+        if (is.factor(levels)) as.character(levels) else levels
       })
 
       setNames(res, cols)
@@ -196,7 +197,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     rownames = function() {
       private$.reconnect()
       res = DBI::dbGetQuery(private$.data,
-        sprintf('SELECT "%s" FROM "%s"', self$primary_key, self$table))
+        sprintf('SELECT "%1$s" FROM "%2$s" ORDER BY "%1$s"', self$primary_key, self$table))
       res[[1L]]
     },
 
@@ -261,7 +262,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
 write_temp_table = function(con, rows) {
   tbl_name = sprintf("rows_%i", Sys.getpid())
   DBI::dbWriteTable(con, tbl_name, data.frame(row_id = unique(rows)),
-    temporary = TRUE, overwrite = TRUE)
+    temporary = TRUE, overwrite = TRUE, append = FALSE)
   tbl_name
 }
 
