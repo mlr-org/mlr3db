@@ -33,6 +33,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -45,7 +47,7 @@
       </button>
 
       <div class="navbar-brand-container">
-        <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org"></a>
+        <a href="https://mlr-org.com" class="external-link"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/reference/figures/logo.png" id="hexlogo" alt="mlr-org"></a>
         <a class="navbar-brand" href="index.html">mlr3db <small>v0.4.2</small></a>
       </div>
     </div>
@@ -62,32 +64,32 @@
   <a href="news/index.html">Changelog</a>
 </li>
 <li>
-  <a href="https://mlr3book.mlr-org.com">
+  <a href="https://mlr3book.mlr-org.com" class="external-link">
     <span class="fa fa-link"></span>
      
     mlr3book
   </a>
 </li>
         <li>
-  <a href="https://github.com/mlr-org/mlr3db/">
+  <a href="https://github.com/mlr-org/mlr3db/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/">
+  <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/" class="external-link">
     <span class="fa fa-comments"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://stackoverflow.com/questions/tagged/mlr3">
+  <a href="https://stackoverflow.com/questions/tagged/mlr3" class="external-link">
     <span class="fab fa-stack-overflow"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://mlr-org.com/">
+  <a href="https://mlr-org.com/" class="external-link">
     <span class="fa fa-rss"></span>
      
   </a>
@@ -110,39 +112,39 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="mlr3db" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#mlr3db" class="anchor"></a>mlr3db</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="mlr3db">mlr3db<a class="anchor" aria-label="anchor" href="#mlr3db"></a>
+</h1></div>
 <!-- badges: start -->
 
 <p>Package website: <a href="https://mlr3db.mlr-org.com/">release</a> | <a href="https://mlr3db.mlr-org.com/dev/">dev</a></p>
-<p>Extends the <a href="https://mlr3.mlr-org.com/">mlr3</a> package with a data backend to transparently work with databases. Two additional backends are currently implemented:</p>
+<p>Extends the <a href="https://mlr3.mlr-org.com/" class="external-link">mlr3</a> package with a data backend to transparently work with databases. Two additional backends are currently implemented:</p>
 <ul>
 <li>
-<code>DataBackendDplyr</code>: Relies internally on the abstraction of <a href="https://dplyr.tidyverse.org/">dplyr</a> and <a href="https://dbplyr.tidyverse.org/">dbplyr</a>.</li>
+<code>DataBackendDplyr</code>: Relies internally on the abstraction of <a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a> and <a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>.</li>
 <li>
-<code>DataBackendDuckDB</code>: Connector to <a href="https://cran.r-project.org/package=duckdb">duckdb</a>.</li>
+<code>DataBackendDuckDB</code>: Connector to <a href="https://cran.r-project.org/package=duckdb" class="external-link">duckdb</a>.</li>
 </ul>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of mlr3db from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the released version of mlr3db from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"mlr3db"</span><span class="op">)</span></code></pre></div>
-<p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"mlr3db"</span><span class="op">)</span></code></pre></div>
+<p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mlr-org/mlr3db"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com">mlr3</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https:///mlr3db.mlr-org.com">mlr3db</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https:///mlr3db.mlr-org.com" class="external-link">mlr3db</a></span><span class="op">)</span>
 
 <span class="co"># Create a classification task:</span>
-<span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">tsk</a></span><span class="op">(</span><span class="st">"spam"</span><span class="op">)</span>
+<span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"spam"</span><span class="op">)</span>
 
 <span class="co"># Convert the task backend from a data.table backend to a DuckDB backend.</span>
 <span class="co"># By default, a temporary directory is used to store the database files.</span>
@@ -151,8 +153,8 @@
 <span class="va">task</span><span class="op">$</span><span class="va">backend</span> <span class="op">=</span> <span class="fu"><a href="reference/as_duckdb_backend.html">as_duckdb_backend</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">backend</span><span class="op">)</span>
 
 <span class="co"># The requested data will be queried from the database in the background:</span>
-<span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span>
-<span class="va">ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">row_ids</span>, <span class="fl">3000</span><span class="op">)</span>
+<span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span>
+<span class="va">ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">row_ids</span>, <span class="fl">3000</span><span class="op">)</span>
 <span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="va">ids</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
@@ -160,48 +162,58 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=mlr3db">https://​cloud.r-project.org/​package=mlr3db</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/mlr-org/mlr3db/">https://​github.com/​mlr-org/​mlr3db/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/mlr-org/mlr3db/issues">https://​github.com/​mlr-org/​mlr3db/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/LGPL-3">LGPL-3</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Michel Lang <br><small class="roles"> Maintainer, author </small> <a href="https://orcid.org/0000-0001-9754-0393" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="https://cloud.r-project.org/package=mlr3db" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/mlr-org/mlr3db/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/mlr-org/mlr3db/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/mlr-org/mlr3db/actions"><img src="https://github.com/mlr-org/mlr3db/workflows/tic/badge.svg?branch=main" alt="tic"></a></li>
-<li><a href="https://cran.r-project.org/package=mlr3db"><img src="https://www.r-pkg.org/badges/version-ago/mlr3db" alt="CRAN Status"></a></li>
-<li><a href="https://stackoverflow.com/questions/tagged/mlr3"><img src="https://img.shields.io/badge/stackoverflow-mlr3-orange.svg" alt="StackOverflow"></a></li>
-<li><a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/"><img src="https://img.shields.io/badge/chat-mattermost-orange.svg" alt="Mattermost"></a></li>
+<li><a href="https://www.r-project.org/Licenses/LGPL-3" class="external-link">LGPL-3</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing mlr3db</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Michel Lang <br><small class="roles"> Maintainer, author </small> <a href="https://orcid.org/0000-0001-9754-0393" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/mlr-org/mlr3db/actions" class="external-link"><img src="https://github.com/mlr-org/mlr3db/workflows/tic/badge.svg?branch=main" alt="tic"></a></li>
+<li><a href="https://cran.r-project.org/package=mlr3db" class="external-link"><img src="https://www.r-pkg.org/badges/version-ago/mlr3db" alt="CRAN Status"></a></li>
+<li><a href="https://stackoverflow.com/questions/tagged/mlr3" class="external-link"><img src="https://img.shields.io/badge/stackoverflow-mlr3-orange.svg" alt="StackOverflow"></a></li>
+<li><a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/" class="external-link"><img src="https://img.shields.io/badge/chat-mattermost-orange.svg" alt="Mattermost"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Michel Lang.</p>
+  <p></p>
+<p>Developed by Michel Lang.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
