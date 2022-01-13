@@ -35,9 +35,9 @@ registerS3method("disconnect", "DataBackend", disconnect.DataBackend)
 
 extract_db_dir = function(b) {
   if (inherits(b, "DataBackendDplyr")) {
-    private(b)$.data$src$con@dbname
+    mlr3misc::get_private(b)$.data$src$con@dbname
   } else if (inherits(b, "DataBackendDuckDB")) {
-    private(b)$.data@driver@dbdir
+    mlr3misc::get_private(b)$.data@driver@dbdir
   } else {
     stop("Unknown Backend")
   }

@@ -24,7 +24,7 @@ Imports:
     backports,
     checkmate,
     data.table,
-    mlr3misc (>= 0.9.3),
+    mlr3misc (>= 0.10.0),
 Suggests:
     DBI,
     RSQLite,
