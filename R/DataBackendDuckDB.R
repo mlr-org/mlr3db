@@ -45,23 +45,24 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       loadNamespace("duckdb")
 
       assert_class(data, "duckdb_connection")
-      assert_string(primary_key)
-      self$table = assert_string(table)
-      super$initialize(data, primary_key)
+      view = create_views(data, table, primary_key)
+      self$table = view$table
+      super$initialize(data, view$primary_key)
 
-      table_info = self$table_info
-      assert_choice(primary_key, table_info$name)
-      assert_choice(table, DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name)
+      info = self$table_info
+      assert_choice(self$primary_key, info$name)
+      assert_choice(self$table, DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name)
       self$connector = assert_function(connector, args = character(), null.ok = TRUE)
 
       # create index
+      if (!view$is_view) {
       DBI::dbExecute(private$.data,
         sprintf('CREATE UNIQUE INDEX primary_key ON "%s" ("%s")', self$table, self$primary_key))
+      }
 
       if (isFALSE(strings_as_factors)) {
         self$levels = list()
       } else {
-        info = self$table_info
         string_cols = info$name[tolower(info$type) %in% c("varchar", "string", "text")]
         string_cols = setdiff(string_cols, self$primary_key)
 
@@ -263,6 +264,46 @@ write_temp_table = function(con, rows) {
   DBI::dbWriteTable(con, tbl_name, data.frame(row_id = sort(unique(rows))),
     temporary = TRUE, overwrite = TRUE, append = FALSE)
   tbl_name
+}
+
+create_views = function(con, table, primary_key) {
+  is_parquet_source = all(endsWith(table, ".parquet"))
+  view_required = is_parquet_source || is.null(primary_key)
+
+  if (view_required) {
+    query = if (is.null(primary_key)) {
+      primary_key = "mlr3_row_id"
+      "CREATE OR REPLACE VIEW 'mlr3db_view' AS SELECT *, row_number() OVER () AS mlr3_row_id FROM"
+    } else {
+      assert_string(primary_key)
+      "CREATE OR REPLACE VIEW 'mlr3db_view' AS SELECT * FROM"
+    }
+
+    # check if table is a vector of parquet files
+    query = if (is_parquet_source) {
+      assert_file_exists(table)
+      paste(query, sprintf("parquet_scan(['%s'])", paste0(table, collapse = "','")))
+    } else {
+      assert_string(table)
+      paste(query, sprintf("'%s'", table))
+    }
+
+    DBI::dbExecute(con, query)
+
+    table = "mlr3db_view"
+  }
+
+  list(table = table, primary_key = primary_key, is_view = view_required)
+}
+
+parquet_as_view = function(con, files) {
+  name = paste0(gsub("\\.parquet$", "", basename(files)), collapse = "_")
+  source = sprintf("parquet_scan(['%s'])", paste0(files, collapse = "','"))
+  query = sprintf("CREATE OR REPLACE VIEW '%s' AS SELECT * FROM %s", name, source)
+
+  dbExecute(con, query)
+
+  return(name)
 }
 
 #' @importFrom mlr3 as_data_backend
