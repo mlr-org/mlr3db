@@ -8,15 +8,15 @@ con = dbConnect(duckdb::duckdb())
 dbGetQuery(con, sprintf("select row_number() over () as id from %s", files))
 DBI::dbExecute(con,
   sprintf('CREATE UNIQUE INDEX primary_key ON "%s" ("%s")', files, "id"))
-dbGetQuery(con, sprintf("select * from '%s'", files))
+dbGetQuery(con, sprintf("select * from %s", files))
 
 
 dbGetQuery(con, sprintf("select email, row_number() over () as id from '%s' where id < 10", files))
 
 dbGetQuery(con, sprintf("PRAGMA table_info(%s)", files))
-dbGetQuery(con, sprintf("PRAGMA table_info('merged')"))
 
 dbExecute(con, sprintf("CREATE VIEW merged AS SELECT * FROM %s", files))
+dbGetQuery(con, sprintf("PRAGMA table_info('merged')"))
 
 
 

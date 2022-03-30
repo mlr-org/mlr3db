@@ -178,9 +178,17 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         return(setNames(integer(0L), character(0L)))
       }
 
-      query = sprintf('SELECT %s FROM "%s"', paste0(sprintf('COUNT("%s") AS "%s"', cols, cols), collapse = ","), self$table)
-      complete = as.integer(unlist(DBI::dbGetQuery(private$.data, query), recursive = FALSE))
-      setNames(self$nrow - complete, cols)
+      tmp_tbl = write_temp_table(private$.data, rows)
+
+      query = sprintf('SELECT %1$s FROM (SELECT * FROM "%2$s" INNER JOIN "%3$s" ON "%2$s"."%4$s" = "%3$s"."row_id")',
+        paste0(sprintf('COUNT("%s")', cols), collapse = ","),
+        self$table,
+        tmp_tbl,
+        self$primary_key
+      )
+
+      counts = unlist(DBI::dbGetQuery(private$.data, query), recursive = FALSE)
+      setNames(self$nrow - counts, cols)
     }
   ),
 
