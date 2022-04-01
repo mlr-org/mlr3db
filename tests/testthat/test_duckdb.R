@@ -47,3 +47,18 @@ test_that("ordering", {
   expect_equal(b$head()$id, 1:5)
   expect_equal(b$data(b$rownames, "id")$id, 1:5)
 })
+
+
+test_that("single parquet file", {
+  file = system.file(file.path("extdata", "userdata1.parquet"), package = "mlr3db")
+  con = DBI::dbConnect(duckdb::duckdb())
+  b = DataBackendDuckDB$new(con, file, primary_key = NULL)
+  expect_backend(b)
+})
+
+test_that("multiple parquet file", {
+  file = system.file(file.path("extdata", c("userdata1.parquet", "userdata2.parquet")), package = "mlr3db")
+  con = DBI::dbConnect(duckdb::duckdb())
+  b = DataBackendDuckDB$new(con, file, NULL)
+  expect_backend(b)
+})

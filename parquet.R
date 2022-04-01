@@ -22,4 +22,4 @@ dbGetQuery(con, sprintf("PRAGMA table_info('merged')"))
 
 con = dbConnect(duckdb::duckdb())
 files = list.files("inst/extdata", full.names = TRUE)
-b = DataBackendDuckDB$new(con, files, NULL)
+b = DataBackendDuckDB$new(con, files, connector = NULL)

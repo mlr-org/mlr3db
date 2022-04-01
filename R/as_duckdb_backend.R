@@ -34,6 +34,14 @@ as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.duckdb_di
 }
 
 #' @export
+as_duckdb_backend.character = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), primary_key = NULL, ...) {
+  con = DBI::dbConnect(duckdb::duckdb())
+  DataBackendDuckDB$new(con, table = data, primary_key = primary_key)
+
+  # TODO: reconnector
+}
+
+#' @export
 as_duckdb_backend.DataBackend = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), ...) { # nolint
   path = get_db_path(path, hash = data$hash, "duckdb")
   primary_key = data$primary_key
