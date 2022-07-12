@@ -51,14 +51,12 @@ test_that("ordering", {
 
 test_that("single parquet file", {
   file = system.file(file.path("extdata", "userdata1.parquet"), package = "mlr3db")
-  con = DBI::dbConnect(duckdb::duckdb())
-  b = DataBackendDuckDB$new(con, file, primary_key = NULL)
+  b = as_duckdb_backend(file)
   expect_backend(b)
 })
 
 test_that("multiple parquet file", {
-  file = system.file(file.path("extdata", c("userdata1.parquet", "userdata2.parquet")), package = "mlr3db")
-  con = DBI::dbConnect(duckdb::duckdb())
-  b = DataBackendDuckDB$new(con, file, NULL)
+  files = system.file(file.path("extdata", c("userdata1.parquet", "userdata2.parquet")), package = "mlr3db")
+  b = as_duckdb_backend(files)
   expect_backend(b)
 })

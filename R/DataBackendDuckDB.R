@@ -92,7 +92,8 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #' The rows must be addressed as vector of primary key values, columns must be referred to via column names.
     #' Queries for rows with no matching row id and queries for columns with no matching
     #' column name are silently ignored.
-    #' Rows are guaranteed to be returned in the same order as `rows`, columns may be returned in an arbitrary order   #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
+    #' Rows are guaranteed to be returned in the same order as `rows`, columns may be returned in an arbitrary order.
+    #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
     data = function(rows, cols, data_format = "data.table") {
       private$.reconnect()
       rows = assert_integerish(rows, coerce = TRUE)
@@ -186,7 +187,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       )
 
       counts = unlist(DBI::dbGetQuery(private$.data, query), recursive = FALSE)
-      setNames(self$nrow - counts, cols)
+      setNames(as.integer(self$nrow - counts), cols)
     }
   ),
 
