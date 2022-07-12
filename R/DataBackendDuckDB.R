@@ -2,6 +2,7 @@
 #'
 #' @description
 #' A [mlr3::DataBackend] for \CRANpkg{duckdb}.
+#' Can be easily constructed with [as_duckdb_backend()].
 #'
 #' @seealso
 #' \url{https://duckdb.org/}
@@ -39,6 +40,8 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #'
     #' @param data (connection)\cr
     #'   A connection created with [DBI::dbConnect()].
+    #'   If constructed manually (and not via the helper function [as_duckdb_backend()],
+    #'   make sure that there exists an (unique) index for the key column.
     #' @param table (`character(1)`)\cr
     #'   Table or view to operate on.
     initialize = function(data, table, primary_key, strings_as_factors = TRUE, connector = NULL) {
@@ -52,12 +55,6 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       assert_choice(self$primary_key, info$name)
       assert_choice(self$table, DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name)
       self$connector = assert_function(connector, args = character(), null.ok = TRUE)
-
-      # create index
-      # if (!view$is_view) {
-      #   DBI::dbExecute(private$.data,
-      #     sprintf('CREATE UNIQUE INDEX primary_key ON "%s" ("%s")', self$table, self$primary_key))
-      # }
 
       if (isFALSE(strings_as_factors)) {
         self$levels = list()
