@@ -1,3 +1,7 @@
+# mlr3db 0.5.0
+
+- Support for parquet files as Backend via DuckDB.
+
 # mlr3db 0.4.2
 
 - Compatibility fixes with new duckdb version.

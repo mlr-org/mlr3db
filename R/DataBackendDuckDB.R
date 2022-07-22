@@ -2,6 +2,7 @@
 #'
 #' @description
 #' A [mlr3::DataBackend] for \CRANpkg{duckdb}.
+#' Can be easily constructed with [as_duckdb_backend()].
 #'
 #' @seealso
 #' \url{https://duckdb.org/}
@@ -39,29 +40,25 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #'
     #' @param data (connection)\cr
     #'   A connection created with [DBI::dbConnect()].
+    #'   If constructed manually (and not via the helper function [as_duckdb_backend()],
+    #'   make sure that there exists an (unique) index for the key column.
     #' @param table (`character(1)`)\cr
     #'   Table or view to operate on.
     initialize = function(data, table, primary_key, strings_as_factors = TRUE, connector = NULL) {
       loadNamespace("duckdb")
 
       assert_class(data, "duckdb_connection")
-      assert_string(primary_key)
-      self$table = assert_string(table)
       super$initialize(data, primary_key)
+      self$table = assert_string(table)
 
-      table_info = self$table_info
-      assert_choice(primary_key, table_info$name)
-      assert_choice(table, DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name)
+      info = self$table_info
+      assert_choice(self$primary_key, info$name)
+      assert_choice(self$table, DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name)
       self$connector = assert_function(connector, args = character(), null.ok = TRUE)
-
-      # create index
-      DBI::dbExecute(private$.data,
-        sprintf('CREATE UNIQUE INDEX primary_key ON "%s" ("%s")', self$table, self$primary_key))
 
       if (isFALSE(strings_as_factors)) {
         self$levels = list()
       } else {
-        info = self$table_info
         string_cols = info$name[tolower(info$type) %in% c("varchar", "string", "text")]
         string_cols = setdiff(string_cols, self$primary_key)
 
@@ -177,9 +174,17 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         return(setNames(integer(0L), character(0L)))
       }
 
-      query = sprintf('SELECT %s FROM "%s"', paste0(sprintf('COUNT("%s") AS "%s"', cols, cols), collapse = ","), self$table)
-      complete = as.integer(unlist(DBI::dbGetQuery(private$.data, query), recursive = FALSE))
-      setNames(self$nrow - complete, cols)
+      tmp_tbl = write_temp_table(private$.data, rows)
+
+      query = sprintf('SELECT %1$s FROM (SELECT * FROM "%2$s" INNER JOIN "%3$s" ON "%2$s"."%4$s" = "%3$s"."row_id")',
+        paste0(sprintf('COUNT("%s")', cols), collapse = ","),
+        self$table,
+        tmp_tbl,
+        self$primary_key
+      )
+
+      counts = unlist(DBI::dbGetQuery(private$.data, query), recursive = FALSE)
+      setNames(as.integer(self$nrow - counts), cols)
     }
   ),
 

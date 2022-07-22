@@ -25,3 +25,9 @@ test_that("connector is automatically set", {
   expect_function(b$connector)
   expect_set_equal(ls(environment(b$connector), all.names = TRUE), "path")
 })
+
+test_that("parquet converter", {
+  file = system.file(file.path("extdata", "userdata1.parquet"), package = "mlr3db")
+  b = as_duckdb_backend(file)
+  expect_backend(b)
+})

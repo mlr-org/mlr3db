@@ -1,6 +1,6 @@
 Package: mlr3db
 Title: Data Base Backend for 'mlr3'
-Version: 0.4.2
+Version: 0.4.2-9000
 Authors@R:
     person(given = "Michel",
            family = "Lang",
@@ -8,10 +8,11 @@ Authors@R:
            email = "michellang@gmail.com",
            comment = c(ORCID = "0000-0001-9754-0393"))
 Description: Extends the 'mlr3' package with a backend to
-    transparently work with databases. Includes two extra backends:
-    One relies on relies on the abstraction of package 'dbplyr' to interact with
-    one of the many supported database management systems (DBMS). The other one
-    is specialized for package 'duckdb'.
+    transparently work with databases such as 'SQLite', 'DuckDB', 'MySQL',
+    'MariaDB', or 'PostgreSQL'. The package provides two additional backends:
+    'DataBackendDplyr' relies on the abstraction of package 'dbplyr' to
+    interact with most DBMS. 'DataBackendDuckDB' operates on DuckDB data bases
+    and also on Apache Parquet files.
 License: LGPL-3
 URL: https:///mlr3db.mlr-org.com,
     https://github.com/mlr-org/mlr3db
@@ -24,7 +25,7 @@ Imports:
     backports,
     checkmate,
     data.table,
-    mlr3misc (>= 0.10.0),
+    mlr3misc (>= 0.10.0)
 Suggests:
     DBI,
     RSQLite,
@@ -40,4 +41,4 @@ Suggests:
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1

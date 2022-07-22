@@ -47,3 +47,16 @@ test_that("ordering", {
   expect_equal(b$head()$id, 1:5)
   expect_equal(b$data(b$rownames, "id")$id, 1:5)
 })
+
+
+test_that("single parquet file", {
+  file = system.file(file.path("extdata", "userdata1.parquet"), package = "mlr3db")
+  b = as_duckdb_backend(file)
+  expect_backend(b)
+})
+
+test_that("multiple parquet file", {
+  files = system.file(file.path("extdata", c("userdata1.parquet", "userdata2.parquet")), package = "mlr3db")
+  b = as_duckdb_backend(files)
+  expect_backend(b)
+})

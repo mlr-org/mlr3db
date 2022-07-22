@@ -34,6 +34,25 @@ as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.duckdb_di
 }
 
 #' @export
+as_duckdb_backend.character = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), primary_key = NULL, ...) {
+  assert_file_exists(data, access = "r", extension = "parquet")
+  con = DBI::dbConnect(duckdb::duckdb())
+
+  query = "CREATE OR REPLACE VIEW 'mlr3db_view' AS SELECT *"
+  if (is.null(primary_key)) {
+    primary_key = "mlr3_row_id"
+    query = paste0(query, ", row_number() OVER () AS mlr3_row_id")
+  } else {
+    assert_string(primary_key)
+  }
+
+  query = sprintf("%s FROM parquet_scan(['%s'])", query, paste0(data, collapse = "','"))
+  DBI::dbExecute(con, query)
+
+  DataBackendDuckDB$new(con, table = "mlr3db_view", primary_key = primary_key)
+}
+
+#' @export
 as_duckdb_backend.DataBackend = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), ...) { # nolint
   path = get_db_path(path, hash = data$hash, "duckdb")
   primary_key = data$primary_key

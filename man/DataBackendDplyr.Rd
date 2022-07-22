@@ -91,25 +91,25 @@ Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{DataBackendDplyr$new()}}
-\item \href{#method-finalize}{\code{DataBackendDplyr$finalize()}}
-\item \href{#method-data}{\code{DataBackendDplyr$data()}}
-\item \href{#method-head}{\code{DataBackendDplyr$head()}}
-\item \href{#method-distinct}{\code{DataBackendDplyr$distinct()}}
-\item \href{#method-missings}{\code{DataBackendDplyr$missings()}}
+\item \href{#method-DataBackendDplyr-new}{\code{DataBackendDplyr$new()}}
+\item \href{#method-DataBackendDplyr-finalize}{\code{DataBackendDplyr$finalize()}}
+\item \href{#method-DataBackendDplyr-data}{\code{DataBackendDplyr$data()}}
+\item \href{#method-DataBackendDplyr-head}{\code{DataBackendDplyr$head()}}
+\item \href{#method-DataBackendDplyr-distinct}{\code{DataBackendDplyr$distinct()}}
+\item \href{#method-DataBackendDplyr-missings}{\code{DataBackendDplyr$missings()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format">}\href{../../mlr3/html/DataBackend.html#method-format}{\code{mlr3::DataBackend$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print">}\href{../../mlr3/html/DataBackend.html#method-print}{\code{mlr3::DataBackend$print()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-format'><code>mlr3::DataBackend$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-print'><code>mlr3::DataBackend$print()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-DataBackendDplyr-new"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendDplyr-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a backend for a \code{\link[dplyr:tbl]{dplyr::tbl()}} object.
 \subsection{Usage}{
@@ -158,8 +158,8 @@ To protect your credentials, it is recommended to use the \CRANpkg{secret} packa
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-finalize}{}}}
+\if{html}{\out{<a id="method-DataBackendDplyr-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendDplyr-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 Finalizer which disconnects from the database.
 This is called during garbage collection of the instance.
@@ -172,8 +172,8 @@ This is called during garbage collection of the instance.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-data"></a>}}
-\if{latex}{\out{\hypertarget{method-data}{}}}
+\if{html}{\out{<a id="method-DataBackendDplyr-data"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendDplyr-data}{}}}
 \subsection{Method \code{data()}}{
 Returns a slice of the data.
 Calls \code{\link[dplyr:filter]{dplyr::filter()}} and \code{\link[dplyr:select]{dplyr::select()}} on the table and converts it to a \code{\link[data.table:data.table]{data.table::data.table()}}.
@@ -203,8 +203,8 @@ Desired data format, e.g. \code{"data.table"} or \code{"Matrix"}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-head"></a>}}
-\if{latex}{\out{\hypertarget{method-head}{}}}
+\if{html}{\out{<a id="method-DataBackendDplyr-head"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendDplyr-head}{}}}
 \subsection{Method \code{head()}}{
 Retrieve the first \code{n} rows.
 \subsection{Usage}{
@@ -224,8 +224,8 @@ Number of rows.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-distinct"></a>}}
-\if{latex}{\out{\hypertarget{method-distinct}{}}}
+\if{html}{\out{<a id="method-DataBackendDplyr-distinct"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendDplyr-distinct}{}}}
 \subsection{Method \code{distinct()}}{
 Returns a named list of vectors of distinct values for each column
 specified. If \code{na_rm} is \code{TRUE}, missing values are removed from the
@@ -254,8 +254,8 @@ Named \code{list()} of distinct values.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-missings"></a>}}
-\if{latex}{\out{\hypertarget{method-missings}{}}}
+\if{html}{\out{<a id="method-DataBackendDplyr-missings"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendDplyr-missings}{}}}
 \subsection{Method \code{missings()}}{
 Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.
