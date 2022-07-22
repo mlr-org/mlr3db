@@ -13,15 +13,22 @@ Status](https://www.r-pkg.org/badges/version-ago/mlr3db)](https://cran.r-project
 Package website: [release](https://mlr3db.mlr-org.com/) \|
 [dev](https://mlr3db.mlr-org.com/dev/)
 
-Extends the [mlr3](https://mlr3.mlr-org.com/) package with a data
-backend to transparently work with databases. Two additional backends
-are currently implemented:
+Extends the [mlr3](https://mlr3.mlr-org.com/) package with a DataBackend
+to transparently work with databases. Two additional backends are
+currently implemented:
 
 -   `DataBackendDplyr`: Relies internally on the abstraction of
     [dplyr](https://dplyr.tidyverse.org/) and
-    [dbplyr](https://dbplyr.tidyverse.org/).
+    [dbplyr](https://dbplyr.tidyverse.org/). This allows working on a
+    broad range of DBMS, such as SQLite, MySQL, MariaDB, or PostgreSQL.
 -   `DataBackendDuckDB`: Connector to
-    [duckdb](https://cran.r-project.org/package=duckdb).
+    [duckdb](https://cran.r-project.org/package=duckdb). This includes
+    support for Parquet files (see example below).
+
+To construct the backends, you have to establish a connection to the
+DBMS yourself with the [DBI](https://cran.r-project.org/package=DBI)
+package. For the serverless SQLite and DuckDB, we provide the converters
+`as_sqlite_backend()` and `as_duckdb_backend()`.
 
 ## Installation
 
@@ -41,21 +48,51 @@ devtools::install_github("mlr-org/mlr3db")
 
 ## Example
 
+### DataBackendDplyr
+
 ``` r
-library(mlr3)
-library(mlr3db)
+library("mlr3db")
+#> Loading required package: mlr3
 
 # Create a classification task:
 task = tsk("spam")
 
-# Convert the task backend from a data.table backend to a DuckDB backend.
-# By default, a temporary directory is used to store the database files.
-# Note that the in-memory data is now used anymore, its memory will get freed
-# by the garbage collector.
-task$backend = as_duckdb_backend(task$backend)
+# Convert the task backend from a in-memory backend (DataBackendDataTable)
+# to an out-of-memory SQLite backend via DataBackendDplyr.
+# A temporary directory is used here to store the database files.
+task$backend = as_sqlite_backend(task$backend, path = tempfile())
 
-# The requested data will be queried from the database in the background:
-learner = lrn("classif.rpart")
-ids = sample(task$row_ids, 3000)
-learner$train(task, row_ids = ids)
+# Resample a classification tree using a 3-fold CV.
+# The requested data will be queried and fetched from the database in the background.
+resample(task, lrn("classif.rpart"), rsmp("cv", folds = 3))
+#> <ResampleResult> of 3 iterations
+#> * Task: spam
+#> * Learner: classif.rpart
+#> * Warnings: 0 in 0 iterations
+#> * Errors: 0 in 0 iterations
+```
+
+### DataBackendDuckDB
+
+``` r
+library("mlr3db")
+
+# Get an example parquet file from the package install directory:
+# spam dataset (tsk("spam")) stored as parquet file
+file = system.file(file.path("extdata", "spam.parquet"), package = "mlr3db")
+
+# Create a backend on the file
+backend = as_duckdb_backend(file)
+
+# Construct classification task on the constructed backend
+task = as_task_classif(backend, target = "type")
+
+# Resample a classification tree using a 3-fold CV.
+# The requested data will be queried and fetched from the database in the background.
+resample(task, lrn("classif.rpart"), rsmp("cv", folds = 3))
+#> <ResampleResult> of 3 iterations
+#> * Task: backend
+#> * Learner: classif.rpart
+#> * Warnings: 0 in 0 iterations
+#> * Errors: 0 in 0 iterations
 ```
