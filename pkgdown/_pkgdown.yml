@@ -1,13 +1,8 @@
 url: https://mlr3db.mlr-org.com
 
 template:
+  bootstrap: 5
   package: mlr3pkgdowntemplate
-  params:
-    bootswatch: journal
-    docsearch:
-      api_key: f1cf73c2e68173ef3c0ac36d6ac6f448
-      index_name: mlr3db
-  default_assets: false
 
 development:
   mode: auto
