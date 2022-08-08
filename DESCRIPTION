@@ -1,6 +1,6 @@
 Package: mlr3db
 Title: Data Base Backend for 'mlr3'
-Version: 0.4.2-9000
+Version: 0.5.0
 Authors@R:
     person(given = "Michel",
            family = "Lang",
@@ -31,7 +31,7 @@ Suggests:
     RSQLite,
     dbplyr,
     dplyr,
-    duckdb (>= 0.3.1),
+    duckdb (>= 0.4.0),
     future,
     future.apply,
     future.callr,

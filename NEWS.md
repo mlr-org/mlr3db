@@ -1,6 +1,7 @@
 # mlr3db 0.5.0
 
 - Support for parquet files as Backend via DuckDB.
+- New converter `as_duckdb_backend()`. 
 
 # mlr3db 0.4.2
 
