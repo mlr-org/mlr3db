@@ -1,6 +1,6 @@
 Package: mlr3db
 Title: Data Base Backend for 'mlr3'
-Version: 0.4.2-9000
+Version: 0.5.0
 Authors@R:
     person(given = "Michel",
            family = "Lang",
@@ -11,7 +11,7 @@ Description: Extends the 'mlr3' package with a backend to
     transparently work with databases such as 'SQLite', 'DuckDB', 'MySQL',
     'MariaDB', or 'PostgreSQL'. The package provides two additional backends:
     'DataBackendDplyr' relies on the abstraction of package 'dbplyr' to
-    interact with most DBMS. 'DataBackendDuckDB' operates on DuckDB data bases
+    interact with most DBMS. 'DataBackendDuckDB' operates on 'DuckDB' data bases
     and also on Apache Parquet files.
 License: LGPL-3
 URL: https:///mlr3db.mlr-org.com,
@@ -31,7 +31,7 @@ Suggests:
     RSQLite,
     dbplyr,
     dplyr,
-    duckdb (>= 0.3.1),
+    duckdb (>= 0.4.0),
     future,
     future.apply,
     future.callr,
