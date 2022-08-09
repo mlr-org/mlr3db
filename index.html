@@ -4,7 +4,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Extends the mlr3 package with a backend to
+    transparently work with databases such as SQLite, DuckDB, MySQL,
+    MariaDB, or PostgreSQL. The package provides two additional backends:
+    DataBackendDplyr relies on the abstraction of package dbplyr to
+    interact with most DBMS. DataBackendDuckDB operates on DuckDB data bases
+    and also on Apache Parquet files.">
 <title>Data Base Backend for mlr3 • mlr3db</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -12,118 +18,109 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/journal/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="deps/Roboto-0.4.2/font.css" rel="stylesheet">
+<link href="deps/JetBrains_Mono-0.4.2/font.css" rel="stylesheet">
+<link href="deps/Roboto_Slab-0.4.2/font.css" rel="stylesheet">
+<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
-<link href="docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Data Base Backend for mlr3">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Data Base Backend for mlr3">
 <meta property="og:description" content="Extends the mlr3 package with a backend to
-    transparently work with databases. Includes two extra backends:
-    One relies on relies on the abstraction of package dbplyr to interact with
-    one of the many supported database management systems (DBMS). The other one
-    is specialized for package duckdb.">
+    transparently work with databases such as SQLite, DuckDB, MySQL,
+    MariaDB, or PostgreSQL. The package provides two additional backends:
+    DataBackendDplyr relies on the abstraction of package dbplyr to
+    interact with most DBMS. DataBackendDuckDB operates on DuckDB data bases
+    and also on Apache Parquet files.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">mlr3db</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="index.html">mlr3db</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="reference/index.html">
-    <span class="fa fa-file-alt"></span>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="reference/index.html">
+    <span class="fa fa fa fa-file-alt"></span>
      
     Reference
   </a>
 </li>
-<li>
-  <a href="news/index.html">Changelog</a>
+<li class="nav-item">
+  <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
-<li>
-  <a href="https://mlr3book.mlr-org.com" class="external-link">
-    <span class="fa fa-link"></span>
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://mlr3book.mlr-org.com">
+    <span class="fa fa fa fa-link"></span>
      
     mlr3book
   </a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/mlr-org/mlr3db/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/mlr-org/mlr3db/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
-<li>
-  <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/" class="external-link">
-    <span class="fa fa-comments"></span>
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/">
+    <span class="fa fa fa fa-comments"></span>
      
   </a>
 </li>
-<li>
-  <a href="https://stackoverflow.com/questions/tagged/mlr3" class="external-link">
-    <span class="fab fa-stack-overflow"></span>
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://stackoverflow.com/questions/tagged/mlr3">
+    <span class="fab fa fab fa-stack-overflow"></span>
      
   </a>
 </li>
-<li>
-  <a href="https://mlr-org.com/" class="external-link">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://mlr-org.com/">
     <span class="fa fa-rss"></span>
      
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
-      </form>
-      
-    </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
-
-      
-
-      </header><div class="row">
-  <div class="contents col-md-9">
-<div class="section level1">
+</nav><div class="container template-home">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="mlr3db">mlr3db<a class="anchor" aria-label="anchor" href="#mlr3db"></a>
 </h1></div>
 <!-- badges: start -->
 <p>Package website: <a href="https://mlr3db.mlr-org.com/">release</a> | <a href="https://mlr3db.mlr-org.com/dev/">dev</a></p>
-<p>Extends the <a href="https://mlr3.mlr-org.com/" class="external-link">mlr3</a> package with a data backend to transparently work with databases. Two additional backends are currently implemented:</p>
+<p>Extends the <a href="https://mlr3.mlr-org.com/" class="external-link">mlr3</a> package with a DataBackend to transparently work with databases. Two additional backends are currently implemented:</p>
 <ul>
 <li>
-<code>DataBackendDplyr</code>: Relies internally on the abstraction of <a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a> and <a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>.</li>
+<code>DataBackendDplyr</code>: Relies internally on the abstraction of <a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a> and <a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>. This allows working on a broad range of DBMS, such as SQLite, MySQL, MariaDB, or PostgreSQL.</li>
 <li>
-<code>DataBackendDuckDB</code>: Connector to <a href="https://cran.r-project.org/package=duckdb" class="external-link">duckdb</a>.</li>
+<code>DataBackendDuckDB</code>: Connector to <a href="https://cran.r-project.org/package=duckdb" class="external-link">duckdb</a>. This includes support for Parquet files (see example below).</li>
 </ul>
+<p>To construct the backends, you have to establish a connection to the DBMS yourself with the <a href="https://cran.r-project.org/package=DBI" class="external-link">DBI</a> package. For the serverless SQLite and DuckDB, we provide the converters <code><a href="reference/as_sqlite_backend.html">as_sqlite_backend()</a></code> and <code><a href="reference/as_duckdb_backend.html">as_duckdb_backend()</a></code>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -138,29 +135,58 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
+<div class="section level3">
+<h3 id="databackenddplyr">DataBackendDplyr<a class="anchor" aria-label="anchor" href="#databackenddplyr"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https:///mlr3db.mlr-org.com" class="external-link">mlr3db</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https:///mlr3db.mlr-org.com" class="external-link">"mlr3db"</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: mlr3</span></span>
 <span></span>
 <span><span class="co"># Create a classification task:</span></span>
 <span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"spam"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Convert the task backend from a data.table backend to a DuckDB backend.</span></span>
-<span><span class="co"># By default, a temporary directory is used to store the database files.</span></span>
-<span><span class="co"># Note that the in-memory data is now used anymore, its memory will get freed</span></span>
-<span><span class="co"># by the garbage collector.</span></span>
-<span><span class="va">task</span><span class="op">$</span><span class="va">backend</span> <span class="op">=</span> <span class="fu"><a href="reference/as_duckdb_backend.html">as_duckdb_backend</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">backend</span><span class="op">)</span></span>
+<span><span class="co"># Convert the task backend from a in-memory backend (DataBackendDataTable)</span></span>
+<span><span class="co"># to an out-of-memory SQLite backend via DataBackendDplyr.</span></span>
+<span><span class="co"># A temporary directory is used here to store the database files.</span></span>
+<span><span class="va">task</span><span class="op">$</span><span class="va">backend</span> <span class="op">=</span> <span class="fu"><a href="reference/as_sqlite_backend.html">as_sqlite_backend</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">backend</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># The requested data will be queried from the database in the background:</span></span>
-<span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span></span>
-<span><span class="va">ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">row_ids</span>, <span class="fl">3000</span><span class="op">)</span></span>
-<span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="va">ids</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Resample a classification tree using a 3-fold CV.</span></span>
+<span><span class="co"># The requested data will be queried and fetched from the database in the background.</span></span>
+<span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="va">task</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;ResampleResult&gt; of 3 iterations</span></span>
+<span><span class="co">#&gt; * Task: spam</span></span>
+<span><span class="co">#&gt; * Learner: classif.rpart</span></span>
+<span><span class="co">#&gt; * Warnings: 0 in 0 iterations</span></span>
+<span><span class="co">#&gt; * Errors: 0 in 0 iterations</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="databackendduckdb">DataBackendDuckDB<a class="anchor" aria-label="anchor" href="#databackendduckdb"></a>
+</h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https:///mlr3db.mlr-org.com" class="external-link">"mlr3db"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get an example parquet file from the package install directory:</span></span>
+<span><span class="co"># spam dataset (tsk("spam")) stored as parquet file</span></span>
+<span><span class="va">file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"spam.parquet"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"mlr3db"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create a backend on the file</span></span>
+<span><span class="va">backend</span> <span class="op">=</span> <span class="fu"><a href="reference/as_duckdb_backend.html">as_duckdb_backend</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Construct classification task on the constructed backend</span></span>
+<span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_classif.html" class="external-link">as_task_classif</a></span><span class="op">(</span><span class="va">backend</span>, target <span class="op">=</span> <span class="st">"type"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Resample a classification tree using a 3-fold CV.</span></span>
+<span><span class="co"># The requested data will be queried and fetched from the database in the background.</span></span>
+<span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="va">task</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;ResampleResult&gt; of 3 iterations</span></span>
+<span><span class="co">#&gt; * Task: backend</span></span>
+<span><span class="co">#&gt; * Learner: classif.rpart</span></span>
+<span><span class="co">#&gt; * Warnings: 0 in 0 iterations</span></span>
+<span><span class="co">#&gt; * Errors: 0 in 0 iterations</span></span></code></pre></div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="links">
+</div>
+  </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://cloud.r-project.org/package=mlr3db" class="external-link">View on CRAN</a></li>
@@ -193,38 +219,26 @@
 
 
 
-  </div>
+  </aside>
 </div>
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by Michel Lang.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
-  docsearch({
-    
-    
-    apiKey: 'f1cf73c2e68173ef3c0ac36d6ac6f448',
-    indexName: 'mlr3db',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
-</body>
+
+  
+
+  </body>
 </html>
