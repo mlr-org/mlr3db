@@ -1,3 +1,5 @@
+skip_if_not_installed("duckdb")
+
 test_that("data", {
   b = as_duckdb_backend(iris, path = tempfile())
   expect_r6(b, "DataBackendDuckDB")

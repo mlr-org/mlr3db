@@ -1,3 +1,5 @@
+skip_if_not_installed("duckdb")
+
 test_that("Valid DataBackend", {
   data = iris
   data$Petal.Length[91:120] = NA

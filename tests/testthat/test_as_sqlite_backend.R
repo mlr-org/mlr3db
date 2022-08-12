@@ -1,5 +1,6 @@
 skip_if_not_installed("dplyr")
 skip_if_not_installed("dbplyr")
+skip_if_not_installed("RSQLite")
 
 test_that("data", {
   b = as_sqlite_backend(iris, path = tempfile())

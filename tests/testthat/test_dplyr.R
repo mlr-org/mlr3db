@@ -11,6 +11,7 @@ test_that("valid DataBackend (tbl/tibble)", {
 })
 
 test_that("valid DataBackend (tbl/sqlite)", {
+  skip_if_not_installed("RSQLite")
   data = iris
   data$Petal.Length[91:120] = NA
   data = as_sqlite_tbl(data)
@@ -20,6 +21,7 @@ test_that("valid DataBackend (tbl/sqlite)", {
 })
 
 test_that("valid DataBackend (as_sqlite_backend)", {
+  skip_if_not_installed("RSQLite")
   data = iris
   data$Petal.Length[91:120] = NA
   b = as_sqlite_backend(data)
@@ -28,6 +30,8 @@ test_that("valid DataBackend (as_sqlite_backend)", {
 })
 
 test_that("strings_as_factors", {
+  skip_if_not_installed("RSQLite")
+
   data = iris
 
   tbl = as_sqlite_tbl(data)

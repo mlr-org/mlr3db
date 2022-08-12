@@ -8,6 +8,7 @@ roundtrip = function(x) {
 test_that("expectations + dplyr", {
   skip_if_not_installed("dplyr")
   skip_if_not_installed("dbplyr")
+  skip_if_not_installed("RSQLite")
 
   b1 = as_sqlite_backend(iris, path = tempfile())
   on.exit(disconnect(b1), add = TRUE)
@@ -22,6 +23,8 @@ test_that("expectations + dplyr", {
 
 
 test_that("expectations + duckdb", {
+  skip_if_not_installed("duckdb")
+
   b1 = as_duckdb_backend(iris, path = tempfile())
   on.exit(disconnect(b1), add = TRUE)
   b2 = roundtrip(b1)
@@ -35,6 +38,7 @@ test_that("expectations + duckdb", {
 test_that("filtered tbl", {
   skip_if_not_installed("dplyr")
   skip_if_not_installed("dbplyr")
+  skip_if_not_installed("RSQLite")
 
   b = as_sqlite_backend(cbind(iris, data.frame(row_id = 1:150)), primary_key = "row_id", path = tempfile())
   path = extract_db_dir(b)

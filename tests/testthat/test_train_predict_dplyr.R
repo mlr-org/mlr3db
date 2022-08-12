@@ -1,5 +1,6 @@
 skip_if_not_installed("dplyr")
 skip_if_not_installed("dbplyr")
+skip_if_not_installed("RSQLite")
 
 b = as_sqlite_backend(iris)
 task = mlr3::TaskClassif$new("iris_sqlite", b, "Species")

@@ -9,48 +9,50 @@ This includes \code{\link[tibble:tibble]{tibbles}} and abstract database connect
 The latter allows \link[mlr3:Task]{mlr3::Task}s to interface an out-of-memory database.
 }
 \examples{
-# Backend using a in-memory tibble
-data = tibble::as_tibble(iris)
-data$Sepal.Length[1:30] = NA
-data$row_id = 1:150
-b = DataBackendDplyr$new(data, primary_key = "row_id")
+if (mlr3misc::require_namespaces(c("tibble", "RSQLite", "dbplyr"), quietly = TRUE)) {
+  # Backend using a in-memory tibble
+  data = tibble::as_tibble(iris)
+  data$Sepal.Length[1:30] = NA
+  data$row_id = 1:150
+  b = DataBackendDplyr$new(data, primary_key = "row_id")
 
-# Object supports all accessors of DataBackend
-print(b)
-b$nrow
-b$ncol
-b$colnames
-b$data(rows = 100:101, cols = "Species")
-b$distinct(b$rownames, "Species")
+  # Object supports all accessors of DataBackend
+  print(b)
+  b$nrow
+  b$ncol
+  b$colnames
+  b$data(rows = 100:101, cols = "Species")
+  b$distinct(b$rownames, "Species")
 
-# Classification task using this backend
-task = mlr3::TaskClassif$new(id = "iris_tibble", backend = b, target = "Species")
-print(task)
-task$head()
+  # Classification task using this backend
+  task = mlr3::TaskClassif$new(id = "iris_tibble", backend = b, target = "Species")
+  print(task)
+  task$head()
 
-# Create a temporary SQLite database
-con = DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-dplyr::copy_to(con, data)
-tbl = dplyr::tbl(con, "data")
+  # Create a temporary SQLite database
+  con = DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  dplyr::copy_to(con, data)
+  tbl = dplyr::tbl(con, "data")
 
-# Define a backend on a subset of the database
-tbl = dplyr::select_at(tbl, setdiff(colnames(tbl), "Sepal.Width")) # do not use column "Sepal.Width"
-tbl = dplyr::filter(tbl, row_id \%in\% 1:120) # Use only first 120 rows
-b = DataBackendDplyr$new(tbl, primary_key = "row_id")
-print(b)
+  # Define a backend on a subset of the database
+  tbl = dplyr::select_at(tbl, setdiff(colnames(tbl), "Sepal.Width")) # do not use column "Sepal.Width"
+  tbl = dplyr::filter(tbl, row_id \%in\% 1:120) # Use only first 120 rows
+  b = DataBackendDplyr$new(tbl, primary_key = "row_id")
+  print(b)
 
-# Query disinct values
-b$distinct(b$rownames, "Species")
+  # Query disinct values
+  b$distinct(b$rownames, "Species")
 
-# Query number of missing values
-b$missings(b$rownames, b$colnames)
+  # Query number of missing values
+  b$missings(b$rownames, b$colnames)
 
-# Note that SQLite does not support factors, column Species has been converted to character
-lapply(b$head(), class)
+  # Note that SQLite does not support factors, column Species has been converted to character
+  lapply(b$head(), class)
 
-# Cleanup
-rm(tbl)
-DBI::dbDisconnect(con)
+  # Cleanup
+  rm(tbl)
+  DBI::dbDisconnect(con)
+}
 }
 \section{Super class}{
 \code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendDplyr}
