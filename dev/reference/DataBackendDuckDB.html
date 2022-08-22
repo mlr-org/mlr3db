@@ -153,6 +153,7 @@ Returns the result of <code><a href="https://dbi.r-dbi.org/reference/dbIsValid.h
 
 <ul><li><p><a href="#method-DataBackendDuckDB-new"><code>DataBackendDuckDB$new()</code></a></p></li>
 <li><p><a href="#method-DataBackendDuckDB-finalize"><code>DataBackendDuckDB$finalize()</code></a></p></li>
+<li><p><a href="#method-DataBackendDuckDB-rename"><code>DataBackendDuckDB$rename()</code></a></p></li>
 <li><p><a href="#method-DataBackendDuckDB-data"><code>DataBackendDuckDB$data()</code></a></p></li>
 <li><p><a href="#method-DataBackendDuckDB-head"><code>DataBackendDuckDB$head()</code></a></p></li>
 <li><p><a href="#method-DataBackendDuckDB-distinct"><code>DataBackendDuckDB$distinct()</code></a></p></li>
@@ -228,6 +229,24 @@ This is called during garbage collection of the instance.</p><div class="section
 <p><code>logical(1)</code>, the return value of <code><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">DBI::dbDisconnect()</a></code>.</p>
 </div>
 
+</div><p></p><hr><a id="method-DataBackendDuckDB-rename"></a><div class="section">
+<h3 id="method-rename-">Method <code>rename()</code><a class="anchor" aria-label="anchor" href="#method-rename-"></a></h3>
+<p>Renames the columns.</p><div class="section">
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDuckDB</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="va">new</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>new</code></dt>
+<dd><p>(<code>character(1)</code>)<br>
+This creates a view with the new names from the table, view referenced by <code>self$table</code>.
+Do <strong>NOT</strong> use this after creating a task.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
 </div><p></p><hr><a id="method-DataBackendDuckDB-data"></a><div class="section">
 <h3 id="method-data-">Method <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code><a class="anchor" aria-label="anchor" href="#method-data-"></a></h3>
 <p>Returns a slice of the data.</p>
@@ -236,12 +255,12 @@ Queries for rows with no matching row id and queries for columns with no matchin
 column name are silently ignored.
 Rows are guaranteed to be returned in the same order as <code>rows</code>, columns may be returned in an arbitrary order.
 Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDuckDB</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span>, data_format <span class="op">=</span> <span class="st">"data.table"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
 Row indices.</p></dd>
@@ -263,12 +282,12 @@ Desired data format, e.g. <code>"data.table"</code> or <code>"Matrix"</code>.</p
 </div><p></p><hr><a id="method-DataBackendDuckDB-head"></a><div class="section">
 <h3 id="method-head-">Method <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">head()</a></code><a class="anchor" aria-label="anchor" href="#method-head-"></a></h3>
 <p>Retrieve the first <code>n</code> rows.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDuckDB</span><span class="op">$</span><span class="fu">head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">6L</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n</code></dt>
 <dd><p>(<code>integer(1)</code>)<br>
 Number of rows.</p></dd>
@@ -287,12 +306,12 @@ Number of rows.</p></dd>
 specified. If <code>na_rm</code> is <code>TRUE</code>, missing values are removed from the
 returned vectors of distinct values. Non-existing rows and columns are
 silently ignored.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDuckDB</span><span class="op">$</span><span class="fu">distinct</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span>, na_rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
 Row indices.</p></dd>
@@ -319,12 +338,12 @@ Whether to remove NAs or not.</p></dd>
 <h3 id="method-missings-">Method <code>missings()</code><a class="anchor" aria-label="anchor" href="#method-missings-"></a></h3>
 <p>Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDuckDB</span><span class="op">$</span><span class="fu">missings</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
 Row indices.</p></dd>
