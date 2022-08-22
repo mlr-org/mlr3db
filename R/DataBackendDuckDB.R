@@ -98,6 +98,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       assert_choice(data_format, self$data_formats)
       cols = intersect(cols, self$colnames)
       tmp_tbl = write_temp_table(private$.data, rows)
+      on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))
 
       query = sprintf('SELECT %1$s FROM "%2$s" INNER JOIN "%3$s" ON "%2$s"."row_id" = "%3$s"."%4$s"',
         paste0(sprintf('"%s"."%s"', self$table, union(cols, self$primary_key)), collapse = ","),
@@ -145,6 +146,8 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
           sprintf('SELECT DISTINCT("%1$s"."%2$s") FROM "%3$s" LEFT JOIN "%1$s" ON "%3$s"."row_id" = "%1$s"."%4$s"',
             self$table, col, tmp_tbl, self$primary_key)
         }
+
+        on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))
       }
 
       res = lapply(cols, function(col) {
@@ -175,6 +178,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       }
 
       tmp_tbl = write_temp_table(private$.data, rows)
+      on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))
 
       query = sprintf('SELECT %1$s FROM (SELECT * FROM "%2$s" INNER JOIN "%3$s" ON "%2$s"."%4$s" = "%3$s"."row_id")',
         paste0(sprintf('COUNT("%s")', cols), collapse = ","),
