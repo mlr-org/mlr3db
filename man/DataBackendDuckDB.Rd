@@ -57,6 +57,7 @@ Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.}
 \itemize{
 \item \href{#method-DataBackendDuckDB-new}{\code{DataBackendDuckDB$new()}}
 \item \href{#method-DataBackendDuckDB-finalize}{\code{DataBackendDuckDB$finalize()}}
+\item \href{#method-DataBackendDuckDB-rename}{\code{DataBackendDuckDB$rename()}}
 \item \href{#method-DataBackendDuckDB-data}{\code{DataBackendDuckDB$data()}}
 \item \href{#method-DataBackendDuckDB-head}{\code{DataBackendDuckDB$head()}}
 \item \href{#method-DataBackendDuckDB-distinct}{\code{DataBackendDuckDB$distinct()}}
@@ -132,6 +133,26 @@ This is called during garbage collection of the instance.
 
 \subsection{Returns}{
 \code{logical(1)}, the return value of \code{\link[DBI:dbDisconnect]{DBI::dbDisconnect()}}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataBackendDuckDB-rename"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendDuckDB-rename}{}}}
+\subsection{Method \code{rename()}}{
+Renames the columns.
+Do \strong{NOT} use this after creating a task.
+This creates a view with the new names from the {table, view} referenced by \code{self$table}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendDuckDB$rename(new)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{new}}{(\code{character(1)})\cr
+New column names.}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

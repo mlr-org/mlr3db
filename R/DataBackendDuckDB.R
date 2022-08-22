@@ -84,6 +84,32 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     },
 
     #' @description
+    #' Renames the columns.
+    #' Do **NOT** use this after creating a task.
+    #' This creates a view with the new names from the {table, view} referenced by `self$table`.
+    #' @param new (`character(1)`)\cr
+    #'   New column names.
+    rename = function(new) {
+      private$.reconnect()
+      assert_true(length(new) == length(self$colnames))
+      assert_names(new, type = "strict")
+      old = self$colnames
+
+      existing_tables = DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name
+      table_new = make.unique(c(existing_tables, self$table), sep = "_")[length(existing_tables) + 1L] # nolint
+      primary_key_new = new[old == self$primary_key]
+      renamings = paste(self$colnames, "AS", new, collapse = ", ")
+      query = sprintf("CREATE VIEW '%s' AS SELECT %s from '%s'", table_new, renamings, self$table)
+
+      ok = DBI::dbExecute(private$.data, query)
+
+      self$table = table_new
+      self$primary_key = primary_key_new
+
+      invisible(self)
+    },
+
+    #' @description
     #' Returns a slice of the data.
     #'
     #' The rows must be addressed as vector of primary key values, columns must be referred to via column names.

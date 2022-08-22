@@ -62,3 +62,21 @@ test_that("multiple parquet file", {
   b = as_duckdb_backend(files)
   expect_backend(b)
 })
+
+test_that("rename works", {
+  file = system.file(file.path("extdata", "userdata1.parquet"), package = "mlr3db")
+  b = as_duckdb_backend(file)
+  data = mlr3misc::get_private(b)$.data
+
+  new = b$colnames
+  new[1L] = "new_name"
+  new[new == "mlr3_row_id"] = "mlr3_new_row_id"
+
+  b$rename(new)
+  expect_true(all(b$colnames == new))
+  expect_set_equal(colnames(b$data(1L, new)), new)
+  expect_true(ncol(b$data(1L, new)) == length(new))
+  expect_true(b$table == "mlr3db_view_1")
+  b$rename(new)
+  expect_true(b$table == "mlr3db_view_1_1")
+})

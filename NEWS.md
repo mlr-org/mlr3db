@@ -1,7 +1,11 @@
+# mlr3db 0.5.0-9000
+
+* Added rename functionality to duckdb databackend
+
 # mlr3db 0.5.0
 
 - Support for parquet files as Backend via DuckDB.
-- New converter `as_duckdb_backend()`. 
+- New converter `as_duckdb_backend()`.
 
 # mlr3db 0.4.2
 
