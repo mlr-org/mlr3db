@@ -90,7 +90,6 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #'   Do **NOT** use this after creating a task.
     rename = function(new) {
       private$.reconnect()
-      new = new %??% make.names(self$colnames, unique = TRUE)
       assert_true(length(new) == length(self$colnames))
       assert_names(new, type = "strict")
       old = self$colnames
@@ -99,11 +98,9 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       table_new = make.unique(c(existing_tables, self$table), sep = "_")[length(existing_tables) + 1L] # nolint
       primary_key_new = new[old == self$primary_key]
       renamings = paste(self$colnames, "AS", new, collapse = ", ")
-      query = sprintf("CREATE VIEW '%s' AS SELECT %s from '%s'", table_new,
-        renamings, self$table
-      )
+      query = sprintf("CREATE VIEW '%s' AS SELECT %s from '%s'", table_new, renamings, self$table)
 
-      ok = try(DBI::dbExecute(private$.data, query), silent = TRUE)
+      ok = DBI::dbExecute(private$.data, query)
 
       self$table = table_new
       self$primary_key = primary_key_new
