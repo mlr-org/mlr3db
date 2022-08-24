@@ -101,7 +101,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       renamings = paste(self$colnames, "AS", new, collapse = ", ")
       query = sprintf("CREATE VIEW '%s' AS SELECT %s from '%s'", table_new, renamings, self$table)
 
-      ok = DBI::dbExecute(private$.data, query)
+      DBI::dbExecute(private$.data, query)
 
       self$table = table_new
       self$primary_key = primary_key_new
