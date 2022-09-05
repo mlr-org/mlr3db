@@ -27,7 +27,7 @@ if (mlr3misc::require_namespaces(c("tibble", "RSQLite", "dbplyr"), quietly = TRU
   # Classification task using this backend
   task = mlr3::TaskClassif$new(id = "iris_tibble", backend = b, target = "Species")
   print(task)
-  task$head()
+  head(task)
 
   # Create a temporary SQLite database
   con = DBI::dbConnect(RSQLite::SQLite(), ":memory:")
