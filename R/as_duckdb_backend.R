@@ -34,7 +34,10 @@ as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.duckdb_di
 }
 
 #' @export
-as_duckdb_backend.character = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), primary_key = NULL, ...) {
+#' @param rename (`logical(1)`)\cr
+#'   Whether to rename the columns to comply with R's naming convention via `make.names()`.
+#'   Default is `FALSE`.
+as_duckdb_backend.character = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), primary_key = NULL, rename = FALSE, ...) {
   assert_file_exists(data, access = "r", extension = "parquet")
   con = DBI::dbConnect(duckdb::duckdb())
 
@@ -49,7 +52,7 @@ as_duckdb_backend.character = function(data, path = getOption("mlr3db.duckdb_dir
   query = sprintf("%s FROM parquet_scan(['%s'])", query, paste0(data, collapse = "','"))
   DBI::dbExecute(con, query)
 
-  DataBackendDuckDB$new(con, table = "mlr3db_view", primary_key = primary_key)
+  DataBackendDuckDB$new(con, table = "mlr3db_view", primary_key = primary_key, rename = rename)
 }
 
 #' @export

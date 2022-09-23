@@ -44,10 +44,14 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #'   make sure that there exists an (unique) index for the key column.
     #' @param table (`character(1)`)\cr
     #'   Table or view to operate on.
-    initialize = function(data, table, primary_key, strings_as_factors = TRUE, connector = NULL) {
+    #' @param rename (`logical(1)`)\cr
+    #'   Whether to rename the columns to comply with R's naming convention via `make.names()`.
+    #'   Default is `FALSE`.
+    initialize = function(data, table, primary_key, strings_as_factors = TRUE, connector = NULL, rename = FALSE) {
       loadNamespace("duckdb")
 
       assert_class(data, "duckdb_connection")
+      assert_flag(rename)
       super$initialize(data, primary_key)
       self$table = assert_string(table)
 
@@ -71,6 +75,10 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         self$levels = self$distinct(rows = NULL, cols = strings_as_factors)
       }
 
+      if (rename) {
+        private$.rename()
+      }
+
     },
 
     #' @description
@@ -81,32 +89,6 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       if (isTRUE(self$valid)) {
         DBI::dbDisconnect(private$.data, shutdown = TRUE)
       }
-    },
-
-    #' @description
-    #' Renames the columns.
-    #' Do **NOT** use this after creating a task.
-    #' This creates a view with the new names from the {table, view} referenced by `self$table`.
-    #' @param new (`character(1)`)\cr
-    #'   New column names.
-    rename = function(new) {
-      private$.reconnect()
-      assert_true(length(new) == length(self$colnames))
-      assert_names(new, type = "strict")
-      old = self$colnames
-
-      existing_tables = DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name
-      table_new = make.unique(c(existing_tables, self$table), sep = "_")[length(existing_tables) + 1L] # nolint
-      primary_key_new = new[old == self$primary_key]
-      renamings = paste(self$colnames, "AS", new, collapse = ", ")
-      query = sprintf("CREATE VIEW '%s' AS SELECT %s from '%s'", table_new, renamings, self$table)
-
-      DBI::dbExecute(private$.data, query)
-
-      self$table = table_new
-      self$primary_key = primary_key_new
-
-      invisible(self)
     },
 
     #' @description
@@ -285,6 +267,26 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
 
         private$.data = con
       }
+    },
+
+    .rename = function() {
+      old = self$colnames
+      new = make.names(old, unique = TRUE)
+
+      existing_tables = DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name
+      table_new = make.unique(c(existing_tables, self$table), sep = "_")[length(existing_tables) + 1L]
+      primary_key_new = new[old == self$primary_key]
+      tmp_old = paste0("\"", old, "\"")
+      tmp_new = paste0("\"", new, "\"")
+      renamings = paste(tmp_old, "AS", tmp_new, collapse = ", ")
+      query = sprintf('CREATE VIEW "%s" AS SELECT %s from "%s"', table_new, renamings, self$table)
+
+      DBI::dbExecute(private$.data, query)
+
+      self$table = table_new
+      self$primary_key = primary_key_new
+
+      invisible(self)
     }
   )
 )
