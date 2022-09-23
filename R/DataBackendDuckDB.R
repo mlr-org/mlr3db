@@ -268,7 +268,6 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         private$.data = con
       }
     },
-
     .rename = function() {
       old = self$colnames
       new = make.names(old, unique = TRUE)

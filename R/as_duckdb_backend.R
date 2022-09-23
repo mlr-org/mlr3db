@@ -20,6 +20,9 @@
 #' @param ... (`any`)\cr
 #'   Additional arguments, passed to [DataBackendDuckDB].
 #' @template param_path
+#' @param rename (`logical(1)`)\cr
+#'   Whether to rename the columns to comply with R's naming convention via `make.names()`.
+#'   Default is `FALSE`.
 #'
 #' @return [DataBackendDuckDB] or [Task].
 #' @export
@@ -34,9 +37,6 @@ as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.duckdb_di
 }
 
 #' @export
-#' @param rename (`logical(1)`)\cr
-#'   Whether to rename the columns to comply with R's naming convention via `make.names()`.
-#'   Default is `FALSE`.
 as_duckdb_backend.character = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), primary_key = NULL, rename = FALSE, ...) {
   assert_file_exists(data, access = "r", extension = "parquet")
   con = DBI::dbConnect(duckdb::duckdb())
