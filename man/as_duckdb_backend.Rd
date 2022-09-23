@@ -29,10 +29,6 @@ connection.}
 
 \item{...}{(\code{any})\cr
 Additional arguments, passed to \link{DataBackendDuckDB}.}
-
-\item{rename}{(\code{logical(1)})\cr
-Whether to rename the columns to comply with R's naming convention via \code{make.names()}.
-Default is \code{FALSE}.}
 }
 \value{
 \link{DataBackendDuckDB} or \link{Task}.
