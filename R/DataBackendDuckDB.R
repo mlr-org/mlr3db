@@ -272,6 +272,10 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       old = self$colnames
       new = make.names(old, unique = TRUE)
 
+      if (all(new == old)) {
+        return(invisible(self))
+      }
+
       existing_tables = DBI::dbGetQuery(private$.data, "PRAGMA show_tables")$name
       table_new = make.unique(c(existing_tables, self$table), sep = "_")[length(existing_tables) + 1L]
       primary_key_new = new[old == self$primary_key]
