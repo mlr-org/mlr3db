@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 
-[![tic](https://github.com/mlr-org/mlr3db/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3db/actions)
+[![r-cmd-check](https://github.com/mlr-org/mlr3db/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3db/actions/workflows/r-cmd-check.yml)
 [![CRAN
 Status](https://www.r-pkg.org/badges/version-ago/mlr3db)](https://cran.r-project.org/package=mlr3db)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
@@ -17,13 +17,13 @@ Extends the [mlr3](https://mlr3.mlr-org.com/) package with a DataBackend
 to transparently work with databases. Two additional backends are
 currently implemented:
 
--   `DataBackendDplyr`: Relies internally on the abstraction of
-    [dplyr](https://dplyr.tidyverse.org/) and
-    [dbplyr](https://dbplyr.tidyverse.org/). This allows working on a
-    broad range of DBMS, such as SQLite, MySQL, MariaDB, or PostgreSQL.
--   `DataBackendDuckDB`: Connector to
-    [duckdb](https://cran.r-project.org/package=duckdb). This includes
-    support for Parquet files (see example below).
+- `DataBackendDplyr`: Relies internally on the abstraction of
+  [dplyr](https://dplyr.tidyverse.org/) and
+  [dbplyr](https://dbplyr.tidyverse.org/). This allows working on a
+  broad range of DBMS, such as SQLite, MySQL, MariaDB, or PostgreSQL.
+- `DataBackendDuckDB`: Connector to
+  [duckdb](https://cran.r-project.org/package=duckdb). This includes
+  support for Parquet files (see example below).
 
 To construct the backends, you have to establish a connection to the
 DBMS yourself with the [DBI](https://cran.r-project.org/package=DBI)
