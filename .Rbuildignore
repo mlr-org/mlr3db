@@ -11,6 +11,5 @@
 ^pkgdown$
 ^\.ccache$
 ^\.github$
-^tic\.R$
 ^.lintr$
 ^README\.Rmd$
