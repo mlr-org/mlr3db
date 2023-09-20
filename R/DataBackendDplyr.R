@@ -273,11 +273,7 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
   private = list(
     .calculate_hash = function() {
       private$.reconnect()
-      if (inherits(private$.data, "tbl_lazy")) {
-        calculate_hash(private$.data$ops, private$.data$con)
-      } else {
-        calculate_hash(private$.data)
-      }
+      calculate_hash(private$.data)
     },
 
     .reconnect = function() {
