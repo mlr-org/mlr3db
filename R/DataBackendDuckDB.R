@@ -134,6 +134,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       private$.reconnect()
       assert_names(cols, type = "unique")
       cols = intersect(cols, self$colnames)
+      order = sprintf('ORDER BY "%s"', self$primary_key)
 
       if (is.null(rows)) {
         get_query = function(col) {
@@ -141,13 +142,12 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         }
       } else {
         tmp_tbl = write_temp_table(private$.data, rows)
+        on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))
 
         get_query = function(col) {
           sprintf('SELECT DISTINCT("%1$s"."%2$s") FROM "%3$s" LEFT JOIN "%1$s" ON "%3$s"."row_id" = "%1$s"."%4$s"',
             self$table, col, tmp_tbl, self$primary_key)
         }
-
-        on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))
       }
 
       res = lapply(cols, function(col) {
@@ -155,7 +155,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         if (na_rm) {
           query = sprintf('%s WHERE "%s"."%s" IS NOT NULL', query, self$table, col)
         }
-        levels = DBI::dbGetQuery(private$.data, query)[[1L]]
+        levels = DBI::dbGetQuery(private$.data, paste(query, order))[[1L]]
         if (is.factor(levels)) as.character(levels) else levels
       })
 
