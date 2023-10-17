@@ -1,3 +1,7 @@
+# mlr3db 0.5.2
+
+- Bugfix: `DataBackendDuckDB` calculated missing values incorrectly
+
 # mlr3db 0.5.1
 
 - Compatibility with new duckdb version (#36).

@@ -188,7 +188,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       )
 
       counts = unlist(DBI::dbGetQuery(private$.data, query), recursive = FALSE)
-      setNames(as.integer(self$nrow - counts), cols)
+      setNames(as.integer(length(rows) - counts), cols)
     }
   ),
 

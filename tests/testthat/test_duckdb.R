@@ -62,3 +62,10 @@ test_that("multiple parquet file", {
   b = as_duckdb_backend(files)
   expect_backend(b)
 })
+
+test_that("missings are calculated correctly", {
+  d = data.frame(x = c(NA, 1), y = c(1, 1))
+  b = as_duckdb_backend(d, path = tempfile())
+  expect_equal(b$missings(1, "x"), c(x = 1))
+  expect_equal(b$missings(2, "x"), c(x = 0))
+})
