@@ -34,8 +34,8 @@ if (mlr3misc::require_namespaces(c("tibble", "RSQLite", "dbplyr"), quietly = TRU
   dplyr::copy_to(con, data)
   tbl = dplyr::tbl(con, "data")
 
-  # Define a backend on a subset of the database
-  tbl = dplyr::select_at(tbl, setdiff(colnames(tbl), "Sepal.Width")) # do not use column "Sepal.Width"
+  # Define a backend on a subset of the database: do not use column "Sepal.Width"
+  tbl = dplyr::select_at(tbl, setdiff(colnames(tbl), "Sepal.Width"))
   tbl = dplyr::filter(tbl, row_id \%in\% 1:120) # Use only first 120 rows
   b = DataBackendDplyr$new(tbl, primary_key = "row_id")
   print(b)
