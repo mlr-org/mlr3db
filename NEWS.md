@@ -1,6 +1,7 @@
 # mlr3db 0.5.2
 
-- Bugfix: `DataBackendDuckDB` calculated missing values incorrectly
+- Bugfix: `DataBackendDuckDB` calculated missing values incorrectly.
+- Compatibility with future versions of `dbplyr` (#35).
 
 # mlr3db 0.5.1
 
