@@ -56,7 +56,6 @@ Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-DataBackendDuckDB-new}{\code{DataBackendDuckDB$new()}}
-\item \href{#method-DataBackendDuckDB-finalize}{\code{DataBackendDuckDB$finalize()}}
 \item \href{#method-DataBackendDuckDB-data}{\code{DataBackendDuckDB$data()}}
 \item \href{#method-DataBackendDuckDB-head}{\code{DataBackendDuckDB$head()}}
 \item \href{#method-DataBackendDuckDB-distinct}{\code{DataBackendDuckDB$distinct()}}
@@ -118,20 +117,6 @@ These can be retrieved from the stored \link[mlr3:DataBackend]{mlr3::DataBackend
 To protect your credentials, it is recommended to use the \CRANpkg{secret} package.}
 }
 \if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendDuckDB-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendDuckDB-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Finalizer which disconnects from the database.
-This is called during garbage collection of the instance.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendDuckDB$finalize()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-\code{logical(1)}, the return value of \code{\link[DBI:dbDisconnect]{DBI::dbDisconnect()}}.
 }
 }
 \if{html}{\out{<hr>}}
