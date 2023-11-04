@@ -2,6 +2,7 @@
 
 - Bugfix: `DataBackendDuckDB` calculated missing values incorrectly.
 - Compatibility with future versions of `dbplyr` (#35).
+- Finalizers are now private
 
 # mlr3db 0.5.1
 
