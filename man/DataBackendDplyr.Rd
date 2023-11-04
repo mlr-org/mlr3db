@@ -94,7 +94,6 @@ Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-DataBackendDplyr-new}{\code{DataBackendDplyr$new()}}
-\item \href{#method-DataBackendDplyr-finalize}{\code{DataBackendDplyr$finalize()}}
 \item \href{#method-DataBackendDplyr-data}{\code{DataBackendDplyr$data()}}
 \item \href{#method-DataBackendDplyr-head}{\code{DataBackendDplyr$head()}}
 \item \href{#method-DataBackendDplyr-distinct}{\code{DataBackendDplyr$distinct()}}
@@ -157,20 +156,6 @@ These can be retrieved from the stored \link[mlr3:DataBackend]{mlr3::DataBackend
 To protect your credentials, it is recommended to use the \CRANpkg{secret} package.}
 }
 \if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendDplyr-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendDplyr-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Finalizer which disconnects from the database.
-This is called during garbage collection of the instance.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$finalize()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-\code{logical(1)}, the return value of \code{\link[DBI:dbDisconnect]{DBI::dbDisconnect()}}.
 }
 }
 \if{html}{\out{<hr>}}
