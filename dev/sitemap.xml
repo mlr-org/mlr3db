@@ -1,33 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/reference/DataBackendDplyr.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/reference/DataBackendDuckDB.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/reference/as_duckdb_backend.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/reference/as_sqlite_backend.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3db.mlr-org.com/dev/reference/mlr3db-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://mlr3db.mlr-org.com/dev/LICENSE-text.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/authors.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/index.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/news/index.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/reference/DataBackendDplyr.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/reference/DataBackendDuckDB.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/reference/as_duckdb_backend.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/reference/as_sqlite_backend.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/reference/index.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/reference/mlr3db-package.html</loc></url>
 </urlset>
+
