@@ -121,16 +121,6 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     },
 
     #' @description
-    #' Finalizer which disconnects from the database.
-    #' This is called during garbage collection of the instance.
-    #' @return `logical(1)`, the return value of [DBI::dbDisconnect()].
-    finalize = function() {
-      if (isTRUE(self$valid)) {
-        DBI::dbDisconnect(private$.data$src$con)
-      }
-    },
-
-    #' @description
     #' Returns a slice of the data.
     #' Calls [dplyr::filter()] and [dplyr::select()] on the table and converts it to a [data.table::data.table()].
     #'
@@ -271,6 +261,16 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
   ),
 
   private = list(
+    # @description
+    # Finalizer which disconnects from the database.
+    # This is called during garbage collection of the instance.
+    # @return `logical(1)`, the return value of [DBI::dbDisconnect()].
+    finalize = function() {
+      if (isTRUE(self$valid)) {
+        DBI::dbDisconnect(private$.data$src$con)
+      }
+    },
+
     .calculate_hash = function() {
       private$.reconnect()
       calculate_hash(private$.data)
