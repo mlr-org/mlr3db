@@ -2,11 +2,17 @@ Package: mlr3db
 Title: Data Base Backend for 'mlr3'
 Version: 0.5.1-9000
 Authors@R:
-    person(given = "Michel",
+    c(
+      person(given = "Michel",
            family = "Lang",
            role = c("cre", "aut"),
            email = "michellang@gmail.com",
-           comment = c(ORCID = "0000-0001-9754-0393"))
+           comment = c(ORCID = "0000-0001-9754-0393")),
+      person(given = "Lona",
+           family = "Koers",
+           role = c("ctb"),
+           email = "lona.koers@gmail.com")
+    )
 Description: Extends the 'mlr3' package with a backend to
     transparently work with databases such as 'SQLite', 'DuckDB', 'MySQL',
     'MariaDB', or 'PostgreSQL'. The package provides two additional backends:
@@ -36,6 +42,7 @@ Suggests:
     future.apply,
     future.callr,
     lgr,
+    polars,
     testthat (>= 3.0.0),
     tibble
 Encoding: UTF-8
