@@ -5,7 +5,7 @@
 #' Can be easily constructed with [as_polars_backend()].
 #' [mlr3::Task]s can interface out-of-memory files if the [polars::RPolarsLazyFrame] was imported using a `polars::scan_x` function.
 #' Streaming, a \CRANpkg{polars} alpha feature, is always enabled, but only used when applicable.
-#' Connector is not required but can be useful e.g. for scanning larger than memory files
+#' A connector is not required but can be useful e.g. for scanning larger than memory files
 #'
 #' @seealso
 #' \url{https://pola-rs.github.io/r-polars/}
@@ -26,6 +26,59 @@
 #'
 #' @importFrom mlr3 DataBackend
 #' @export
+#' @examples
+#' if (mlr3misc::require_namespaces("polars", quietly = TRUE)) {
+#'   # Backend using a in-memory data set
+#'   data = iris
+#'   data$Sepal.Length[1:30] = NA
+#'   data$row_id = 1:150
+#'   data = polars::as_polars_lf(data)
+#'   b = DataBackendPolars$new(data, primary_key = "row_id")
+#'
+#'   # Object supports all accessors of DataBackend
+#'   print(b)
+#'   b$nrow
+#'   b$ncol
+#'   b$colnames
+#'   b$data(rows = 100:101, cols = "Species")
+#'   b$distinct(b$rownames, "Species")
+#'
+#'   # Classification task using this backend
+#'   task = mlr3::TaskClassif$new(id = "iris_tibble", backend = b, target = "Species")
+#'   print(task)
+#'   head(task)
+#'
+#'   # Write a parquet file to scan
+#'   data$collect()$write_parquet("iris.parquet")
+#'   data = polars::pl$scan_parquet("iris.parquet")
+#'
+#'   # Backend that re-reads the parquet file if the connection fails
+#'   b = DataBackendPolars$new(data, "row_id",
+#'                             connector = function() polars::pl$scan_parquet("iris.parquet"))
+#'   print(b)
+#'
+#'   # Define a backend on a subset of the database: do not use column "Sepal.Width"
+#'   data = data$select(
+#'     polars::pl$col(setdiff(colnames(data), "Sepal.Width"))
+#'   )$filter(
+#'     polars::pl$col("row_id")$is_in(1:120) # Use only first 120 rows
+#'   )
+#'
+#'   # Backend with only scanned data
+#'   b = DataBackendPolars$new(data, "row_id", strings_as_factors = TRUE)
+#'   print(b)
+#'
+#'   # Query disinct values
+#'   b$distinct(b$rownames, "Species")
+#'
+#'   # Query number of missing values
+#'   b$missings(b$rownames, b$colnames)
+#'
+#'   # Cleanup
+#'   if (file.exists("iris.parquet")) {
+#'     file.remove("iris.parquet")
+#'   }
+#' }
 DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneable = FALSE,
   public = list(
     #' @template field_levels
@@ -83,7 +136,7 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
       cols = intersect(cols, self$colnames)
 
       data = private$.data
-      res = data$filter(pl$col(self$primary_key)$is_in(rows))$select(pl$col(union(self$primary_key, cols)))$collect(streaming = TRUE)
+      res = data$filter(polars::pl$col(self$primary_key)$is_in(rows))$select(polars::pl$col(union(self$primary_key, cols)))$collect(streaming = TRUE)
       res = as.data.table(res)
 
       recode(res[list(rows), cols, nomatch = NULL, on = self$primary_key, with = FALSE],
@@ -117,13 +170,13 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
       dat = private$.data
 
       if (!is.null(rows)) {
-        dat = dat$filter(pl$col(self$primary_key)$is_in(rows))
+        dat = dat$filter(polars::pl$col(self$primary_key)$is_in(rows))
       }
 
       get_distinct = function(col) {
         x = as.vector(
           dat$select(
-            pl$col(col)$unique()
+            polars::pl$col(col)$unique()
           )$collect(streaming = TRUE)$get_column(col)
         )
 
@@ -154,11 +207,11 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
       }
 
       res = private$.data$filter(
-          pl$col(self$primary_key)$is_in(rows)
+          polars::pl$col(self$primary_key)$is_in(rows)
         )
       res = res$select(
         lapply(cols, function(col) {
-          pl$col(col)$is_null()$sum()$alias(col)
+          polars::pl$col(col)$is_null()$sum()$alias(col)
         })
       )$collect(streaming = TRUE)
 
@@ -178,7 +231,7 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
 
       as.vector(
         private$.data$
-          select(pl$col(self$primary_key))$
+          select(polars::pl$col(self$primary_key))$
           collect()$
           get_column(self$primary_key)
       )
@@ -195,7 +248,7 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
     #' Number of rows (observations).
     nrow = function() {
       private$.reconnect()
-      n = private$.data$select(pl$len())$collect(streaming = TRUE)$item()
+      n = private$.data$select(polars::pl$len())$collect(streaming = TRUE)$item()
       as.integer(n)
     },
 

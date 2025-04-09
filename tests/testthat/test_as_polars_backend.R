@@ -1,7 +1,7 @@
 skip_if_not_installed("polars")
 
 test_that("data.frame", {
-  b = as_polars_backend(iris, path = tempfile())
+  b = as_polars_backend(iris)
   expect_r6(b, "DataBackendPolars")
   expect_backend(b)
   expect_iris_backend(b)
@@ -9,13 +9,13 @@ test_that("data.frame", {
 
 test_that("DataBackend", {
   # without streaming
-  b = as_polars_backend(mlr3::mlr_tasks$get("iris")$backend, path = tempfile())
+  b = as_polars_backend(mlr3::mlr_tasks$get("iris")$backend)
   expect_r6(b, "DataBackendPolars")
   expect_iris_backend(b)
   expect_backend(b)
 
   # with streaming
-  b = as_polars_backend(mlr3::mlr_tasks$get("iris")$backend, path = tempfile(), streaming = TRUE)
+  b = as_polars_backend(mlr3::mlr_tasks$get("iris")$backend, streaming = TRUE)
   expect_r6(b, "DataBackendPolars")
   expect_iris_backend(b)
   expect_backend(b)

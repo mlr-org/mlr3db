@@ -8,27 +8,27 @@
 #' * [mlr3::DataBackend]: Creates a new [DataBackendPolars].
 #'
 #' There is no automatic connection to the origin file set.
-#' If the data is obtained using streaming, a `connector` can be set manually but is not required.
+#' If the data is obtained using scanning and the data is streamed, a `connector` can be set manually but is not required.
 #'
 #' @param data (`data.frame()` | [mlr3::DataBackend])\cr
 #'   See description.
 #' @param streaming (`logical(1)`)\cr
-#'   Whether the data should be only scanned (recommended for large data sets) or loaded into memory completely with every [DataBackendPolars] operation.
+#'   Whether the data should be only scanned (recommended for large data sets) and streamed with
+#'   every [DataBackendPolars] operation or loaded into memory completely.
 #'
 #' @param ... (`any`)\cr
 #'   Additional arguments, passed to [DataBackendPolars].
-#' @template param_path
 #'
 #' @return [DataBackendPolars] or [Task].
 #' @export
-as_polars_backend = function(data, path = getOption("mlr3db.polars_dir", ":temp:"), ...) {
+as_polars_backend = function(data, streaming = FALSE, ...) {
   UseMethod("as_polars_backend")
 }
 
 
 #' @export
-as_polars_backend.data.frame = function(data, primary_key = NULL, ...) {
-  backend = as_data_backend(data, primary_key = primary_key)
+as_polars_backend.data.frame = function(data, streaming = FALSE, primary_key = NULL, ...) {
+  backend = as_data_backend(data, primary_key = primary_key, streaming = streaming)
   as_polars_backend.DataBackend(backend, ...)
 }
 
@@ -44,10 +44,10 @@ as_polars_backend.DataBackend = function(data, streaming = FALSE, ...) {
   primary_key = data$primary_key
 
   if(streaming) {
-    as_polars_df(data$head(Inf))$write_parquet(sprintf("%s.parquet", path))
-    data = pl$scan_parquet(sprintf("%s.parquet", path))
+    polars::as_polars_df(data$head(Inf))$write_parquet(sprintf("%s.parquet", path))
+    data = polars::pl$scan_parquet(sprintf("%s.parquet", path))
   } else {
-    data = as_polars_lf(data$head(Inf))
+    data = polars::as_polars_lf(data$head(Inf))
   }
 
   DataBackendPolars$new(data = data, primary_key = primary_key, ...)
