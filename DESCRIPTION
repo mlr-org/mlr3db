@@ -45,6 +45,8 @@ Suggests:
     polars,
     testthat (>= 3.0.0),
     tibble
+Remotes:
+    pola-rs/r-polars
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
