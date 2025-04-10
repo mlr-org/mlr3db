@@ -45,7 +45,7 @@ Suggests:
     polars,
     testthat (>= 3.0.0),
     tibble
-extra-repositories: https://community.r-multiverse.org
+Additional_repositories: https://community.r-multiverse.org
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
