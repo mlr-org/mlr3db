@@ -4,9 +4,9 @@
 \alias{DataBackendPolars}
 \title{DataBackend for Polars}
 \description{
-A \link[mlr3:DataBackend]{mlr3::DataBackend} using \link[polars:LazyFrame_class]{polars::RPolarsLazyFrame} from package \CRANpkg{polars}.
+A \link[mlr3:DataBackend]{mlr3::DataBackend} using \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame} from package \CRANpkg{polars}.
 Can be easily constructed with \code{\link[=as_polars_backend]{as_polars_backend()}}.
-\link[mlr3:Task]{mlr3::Task}s can interface out-of-memory files if the \link[polars:LazyFrame_class]{polars::RPolarsLazyFrame} was imported using a \code{polars::scan_x} function.
+\link[mlr3:Task]{mlr3::Task}s can interface out-of-memory files if the \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame} was imported using a \code{polars::scan_x} function.
 Streaming, a \CRANpkg{polars} alpha feature, is always enabled, but only used when applicable.
 A connector is not required but can be useful e.g. for scanning larger than memory files
 }
@@ -121,7 +121,7 @@ Number of columns (variables), including the primary key column.}
 \if{html}{\out{<a id="method-DataBackendPolars-new"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendPolars-new}{}}}
 \subsection{Method \code{new()}}{
-Creates a backend for a \link[polars:DataFrame_class]{polars::RPolarsDataFrame} object.
+Creates a backend for a \link[polars:RPolarsDataFrame]{polars::RPolarsDataFrame} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendPolars$new(
   data,
@@ -134,13 +134,13 @@ Creates a backend for a \link[polars:DataFrame_class]{polars::RPolarsDataFrame} 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{(\link[polars:LazyFrame_class]{polars::RPolarsLazyFrame})\cr
+\item{\code{data}}{(\link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame})\cr
 The data object.
 
 Instead of calling the constructor itself, please call \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on
-a \link[polars:LazyFrame_class]{polars::RPolarsLazyFrame} or \link[polars:DataFrame_class]{polars::RPolarsDataFrame}.
-Note that only \link[polars:LazyFrame_class]{polars::RPolarsLazyFrame}s will be converted to a \link{DataBackendPolars}.
-\link[polars:DataFrame_class]{polars::RPolarsDataFrame} objects without lazy execution will be converted to a
+a \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame} or \link[polars:RPolarsDataFrame]{polars::RPolarsDataFrame}.
+Note that only \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame}s will be converted to a \link{DataBackendPolars}.
+\link[polars:RPolarsDataFrame]{polars::RPolarsDataFrame} objects without lazy execution will be converted to a
 \link[mlr3:DataBackendDataTable]{DataBackendDataTable}.}
 
 \item{\code{primary_key}}{(\code{character(1)})\cr
