@@ -5,7 +5,9 @@
 <url><loc>https://mlr3db.mlr-org.com/dev/news/index.html</loc></url>
 <url><loc>https://mlr3db.mlr-org.com/dev/reference/DataBackendDplyr.html</loc></url>
 <url><loc>https://mlr3db.mlr-org.com/dev/reference/DataBackendDuckDB.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/reference/DataBackendPolars.html</loc></url>
 <url><loc>https://mlr3db.mlr-org.com/dev/reference/as_duckdb_backend.html</loc></url>
+<url><loc>https://mlr3db.mlr-org.com/dev/reference/as_polars_backend.html</loc></url>
 <url><loc>https://mlr3db.mlr-org.com/dev/reference/as_sqlite_backend.html</loc></url>
 <url><loc>https://mlr3db.mlr-org.com/dev/reference/index.html</loc></url>
 <url><loc>https://mlr3db.mlr-org.com/dev/reference/mlr3db-package.html</loc></url>
