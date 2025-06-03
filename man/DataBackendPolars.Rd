@@ -4,9 +4,9 @@
 \alias{DataBackendPolars}
 \title{DataBackend for Polars}
 \description{
-A \link[mlr3:DataBackend]{mlr3::DataBackend} using \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame} from package \CRANpkg{polars}.
+A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{RPolarsLazyFrame} from package \CRANpkg{polars}.
 Can be easily constructed with \code{\link[=as_polars_backend]{as_polars_backend()}}.
-\link[mlr3:Task]{mlr3::Task}s can interface out-of-memory files if the \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame} was imported using a \code{polars::scan_x} function.
+\link[mlr3:Task]{mlr3::Task}s can interface out-of-memory files if the \code{polars::RPolarsLazyFrame} was imported using a \code{polars::scan_x} function.
 Streaming, a \CRANpkg{polars} alpha feature, is always enabled, but only used when applicable.
 A connector is not required but can be useful e.g. for scanning larger than memory files
 }
