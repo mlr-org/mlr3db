@@ -44,7 +44,7 @@
 #'   b$distinct(b$rownames, "Species")
 #'
 #'   # Classification task using this backend
-#'   task = mlr3::TaskClassif$new(id = "iris_tibble", backend = b, target = "Species")
+#'   task = mlr3::TaskClassif$new(id = "iris_polars", backend = b, target = "Species")
 #'   print(task)
 #'   head(task)
 #'
@@ -54,7 +54,7 @@
 #'
 #'   # Backend that re-reads the parquet file if the connection fails
 #'   b = DataBackendPolars$new(data, "row_id",
-#'                             connector = function() polars::pl$scan_parquet("iris.parquet"))
+#'     connector = function() polars::pl$scan_parquet("iris.parquet"))
 #'   print(b)
 #'
 #'   # Define a backend on a subset of the database: do not use column "Sepal.Width"
