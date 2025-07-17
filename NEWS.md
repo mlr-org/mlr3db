@@ -1,3 +1,5 @@
+# mlr3db 0.6.0
+
 # mlr3db 0.5.2
 
 - Bugfix: `DataBackendDuckDB` calculated missing values incorrectly.
