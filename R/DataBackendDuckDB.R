@@ -81,11 +81,10 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #' column name are silently ignored.
     #' Rows are guaranteed to be returned in the same order as `rows`, columns may be returned in an arbitrary order.
     #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
-    data = function(rows, cols, data_format = "data.table") {
+    data = function(rows, cols) {
       private$.reconnect()
       rows = assert_integerish(rows, coerce = TRUE)
       assert_names(cols, type = "unique")
-      assert_choice(data_format, self$data_formats)
       cols = intersect(cols, self$colnames)
       tmp_tbl = write_temp_table(private$.data, rows)
       on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))

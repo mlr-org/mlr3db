@@ -129,11 +129,10 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
     #' column name are silently ignored.
     #' Rows are guaranteed to be returned in the same order as `rows`, columns may be returned in an arbitrary order.
     #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
-    data = function(rows, cols, data_format = "data.table") {
+    data = function(rows, cols) {
       private$.reconnect()
       rows = assert_integerish(rows, coerce = TRUE)
       assert_names(cols, type = "unique")
-      assert_choice(data_format, self$data_formats)
       cols = intersect(cols, colnames(private$.data))
 
       res = setDT(dplyr::collect(dplyr::select_at(
