@@ -259,7 +259,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       if (isTRUE(self$valid)) {
         DBI::dbDisconnect(private$.data, shutdown = TRUE)
       }
-    },
+    }
   )
 )
 
