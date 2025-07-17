@@ -2,7 +2,7 @@ Package: mlr3db
 Title: Data Base Backend for 'mlr3'
 Version: 0.6.0
 Authors@R: c(
-    person("Michel", "Lang", , "michellang@gmail.com", role = c("cre", "aut"),
+    person("Michel", "Lang", , "michellang@gmail.com", role = c("aut"),
            comment = c(ORCID = "0000-0001-9754-0393")),
     person("Lona", "Koers", , "lona.koers@gmail.com", role = "aut"),
     person("Marc", "Becker", , "marcbecker@posteo.de", role = c("cre", "aut"),
@@ -10,10 +10,11 @@ Authors@R: c(
   )
 Description: Extends the 'mlr3' package with a backend to transparently
     work with databases such as 'SQLite', 'DuckDB', 'MySQL', 'MariaDB', or
-    'PostgreSQL'. The package provides two additional backends:
+    'PostgreSQL'. The package provides three additional backends:
     'DataBackendDplyr' relies on the abstraction of package 'dbplyr' to
     interact with most DBMS. 'DataBackendDuckDB' operates on 'DuckDB' data
-    bases and also on Apache Parquet files.
+    bases and also on Apache Parquet files. 'DataBackendPolars' operates on
+    'Polars' data frames.
 License: LGPL-3
 URL: https:///mlr3db.mlr-org.com, https://github.com/mlr-org/mlr3db
 BugReports: https://github.com/mlr-org/mlr3db/issues

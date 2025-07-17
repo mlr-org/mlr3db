@@ -13,3 +13,4 @@
 ^\.github$
 ^.lintr$
 ^README\.Rmd$
+^cran-comments\.md$
