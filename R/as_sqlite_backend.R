@@ -3,10 +3,10 @@
 #' @description
 #' Converts to a [DataBackendDplyr] using a \CRANpkg{RSQLite} database, depending on the input type:
 #'
-#' * `data.frame`: Creates a new [DataBackendDataTable] first using [as_data_backend()], then proceeds
-#'   with the conversion from [DataBackendDataTable] to [DataBackendDplyr].
+#' * `data.frame`: Creates a new [mlr3::DataBackendDataTable] first using [mlr3::as_data_backend()], then proceeds
+#'   with the conversion from [mlr3::DataBackendDataTable] to [DataBackendDplyr].
 #' * [mlr3::DataBackend]: Creates a new SQLite data base in the specified path.
-#'   The filename is determined by the hash of the [DataBackend].
+#'   The filename is determined by the hash of the [mlr3::DataBackend].
 #'   If the file already exists, a connection to the existing database is established and the existing
 #'   files are reused.
 #'
@@ -21,7 +21,7 @@
 #'   Additional arguments, passed to [DataBackendDplyr].
 #' @template param_path
 #'
-#' @return [DataBackendDplyr] or [Task].
+#' @return [DataBackendDplyr] or [mlr3::Task].
 #' @export
 as_sqlite_backend = function(data, path = getOption("mlr3db.sqlite_dir", ":temp:"), ...) {
   UseMethod("as_sqlite_backend")

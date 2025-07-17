@@ -141,7 +141,7 @@ Instead of calling the constructor itself, please call \code{\link[mlr3:as_data_
 a \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame} or \link[polars:RPolarsDataFrame]{polars::RPolarsDataFrame}.
 Note that only \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame}s will be converted to a \link{DataBackendPolars}.
 \link[polars:RPolarsDataFrame]{polars::RPolarsDataFrame} objects without lazy execution will be converted to a
-\link[mlr3:DataBackendDataTable]{DataBackendDataTable}.}
+\link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}.}
 
 \item{\code{primary_key}}{(\code{character(1)})\cr
 Name of the primary key column.

@@ -3,10 +3,10 @@
 #' @description
 #' Converts to a [DataBackendDuckDB] using the \CRANpkg{duckdb} database, depending on the input type:
 #'
-#' * `data.frame`: Creates a new [DataBackendDataTable] first using [as_data_backend()], then proceeds
-#'   with the conversion from [DataBackendDataTable] to [DataBackendDuckDB].
+#' * `data.frame`: Creates a new [mlr3::DataBackendDataTable] first using [mlr3::as_data_backend()], then proceeds
+#'   with the conversion from [mlr3::DataBackendDataTable] to [DataBackendDuckDB].
 #' * [mlr3::DataBackend]: Creates a new DuckDB data base in the specified path.
-#'   The filename is determined by the hash of the [DataBackend].
+#'   The filename is determined by the hash of the [mlr3::DataBackend].
 #'   If the file already exists, a connection to the existing database is established and the existing
 #'   files are reused.
 #'
@@ -21,7 +21,7 @@
 #'   Additional arguments, passed to [DataBackendDuckDB].
 #' @template param_path
 #'
-#' @return [DataBackendDuckDB] or [Task].
+#' @return [DataBackendDuckDB] or [mlr3::Task].
 #' @export
 as_duckdb_backend = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), ...) {
   UseMethod("as_duckdb_backend")

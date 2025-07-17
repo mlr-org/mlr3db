@@ -74,16 +74,6 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     },
 
     #' @description
-    #' Finalizer which disconnects from the database.
-    #' This is called during garbage collection of the instance.
-    #' @return `logical(1)`, the return value of [DBI::dbDisconnect()].
-    finalize = function() {
-      if (isTRUE(self$valid)) {
-        DBI::dbDisconnect(private$.data, shutdown = TRUE)
-      }
-    },
-
-    #' @description
     #' Returns a slice of the data.
     #'
     #' The rows must be addressed as vector of primary key values, columns must be referred to via column names.
@@ -263,7 +253,13 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
 
         private$.data = con
       }
-    }
+    },
+
+    finalize = function() {
+      if (isTRUE(self$valid)) {
+        DBI::dbDisconnect(private$.data, shutdown = TRUE)
+      }
+    },
   )
 )
 

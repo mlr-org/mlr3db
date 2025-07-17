@@ -22,7 +22,7 @@ Set to a custom path instead or use special string \code{":user:"} instead.
 }
 
 The default for this argument can be configured via option \code{"mlr3db.sqlite_dir"} or \code{"mlr3db.duckdb_dir"},
-respectively. The database files will use the hash of the \link{DataBackend} as filename with
+respectively. The database files will use the hash of the \link[mlr3:DataBackend]{mlr3::DataBackend} as filename with
 file extension \code{".duckdb"} or \code{".sqlite"}.
 If the database already exists on the file system, the converters will just established a new read-only
 connection.}
@@ -31,15 +31,15 @@ connection.}
 Additional arguments, passed to \link{DataBackendDuckDB}.}
 }
 \value{
-\link{DataBackendDuckDB} or \link{Task}.
+\link{DataBackendDuckDB} or \link[mlr3:Task]{mlr3::Task}.
 }
 \description{
 Converts to a \link{DataBackendDuckDB} using the \CRANpkg{duckdb} database, depending on the input type:
 \itemize{
-\item \code{data.frame}: Creates a new \link{DataBackendDataTable} first using \code{\link[=as_data_backend]{as_data_backend()}}, then proceeds
-with the conversion from \link{DataBackendDataTable} to \link{DataBackendDuckDB}.
+\item \code{data.frame}: Creates a new \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable} first using \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}}, then proceeds
+with the conversion from \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable} to \link{DataBackendDuckDB}.
 \item \link[mlr3:DataBackend]{mlr3::DataBackend}: Creates a new DuckDB data base in the specified path.
-The filename is determined by the hash of the \link{DataBackend}.
+The filename is determined by the hash of the \link[mlr3:DataBackend]{mlr3::DataBackend}.
 If the file already exists, a connection to the existing database is established and the existing
 files are reused.
 }

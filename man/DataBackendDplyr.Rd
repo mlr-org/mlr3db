@@ -134,7 +134,7 @@ on a \code{\link[dplyr:tbl]{dplyr::tbl()}}.
 Note that only objects of class \code{"tbl_lazy"} will be converted to a \link{DataBackendDplyr}
 (this includes all connectors from \CRANpkg{dbplyr}).
 Local \code{"tbl"} objects such as \code{\link[tibble:tibble]{tibbles}} will converted to a
-\link[mlr3:DataBackendDataTable]{DataBackendDataTable}.}
+\link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}.}
 
 \item{\code{primary_key}}{(\code{character(1)})\cr
 Name of the primary key column.}

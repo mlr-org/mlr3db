@@ -18,13 +18,13 @@ every \link{DataBackendPolars} operation or loaded into memory completely.}
 Additional arguments, passed to \link{DataBackendPolars}.}
 }
 \value{
-\link{DataBackendPolars} or \link{Task}.
+\link{DataBackendPolars} or \link[mlr3:Task]{mlr3::Task}.
 }
 \description{
 Converts to a \link{DataBackendPolars} using the \CRANpkg{polars} database, depending on the input type:
 \itemize{
-\item \code{data.frame}: Creates a new \link{DataBackendDataTable} first using \code{\link[=as_data_backend]{as_data_backend()}}, then proceeds
-with the conversion from \link{DataBackendDataTable} to \link{DataBackendPolars}.
+\item \code{data.frame}: Creates a new \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable} first using \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}}, then proceeds
+with the conversion from \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable} to \link{DataBackendPolars}.
 \item \link[mlr3:DataBackend]{mlr3::DataBackend}: Creates a new \link{DataBackendPolars}.
 }
 

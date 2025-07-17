@@ -3,8 +3,8 @@
 #' @description
 #' Converts to a [DataBackendPolars] using the \CRANpkg{polars} database, depending on the input type:
 #'
-#' * `data.frame`: Creates a new [DataBackendDataTable] first using [as_data_backend()], then proceeds
-#'   with the conversion from [DataBackendDataTable] to [DataBackendPolars].
+#' * `data.frame`: Creates a new [mlr3::DataBackendDataTable] first using [mlr3::as_data_backend()], then proceeds
+#'   with the conversion from [mlr3::DataBackendDataTable] to [DataBackendPolars].
 #' * [mlr3::DataBackend]: Creates a new [DataBackendPolars].
 #'
 #' There is no automatic connection to the origin file set.
@@ -19,7 +19,7 @@
 #' @param ... (`any`)\cr
 #'   Additional arguments, passed to [DataBackendPolars].
 #'
-#' @return [DataBackendPolars] or [Task].
+#' @return [DataBackendPolars] or [mlr3::Task].
 #' @export
 as_polars_backend = function(data, streaming = FALSE, ...) {
   UseMethod("as_polars_backend")
