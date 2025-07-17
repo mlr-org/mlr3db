@@ -121,7 +121,7 @@ Number of columns (variables), including the primary key column.}
 \if{html}{\out{<a id="method-DataBackendPolars-new"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendPolars-new}{}}}
 \subsection{Method \code{new()}}{
-Creates a backend for a \link[polars:RPolarsDataFrame]{polars::RPolarsDataFrame} object.
+Creates a backend for a \link[polars:DataFrame_class]{polars::RPolarsDataFrame} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendPolars$new(
   data,
@@ -134,13 +134,13 @@ Creates a backend for a \link[polars:RPolarsDataFrame]{polars::RPolarsDataFrame}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{(\link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame})\cr
+\item{\code{data}}{(\link[polars:LazyFrame_class]{polars::RPolarsLazyFrame})\cr
 The data object.
 
 Instead of calling the constructor itself, please call \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on
-a \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame} or \link[polars:RPolarsDataFrame]{polars::RPolarsDataFrame}.
-Note that only \link[polars:RPolarsLazyFrame]{polars::RPolarsLazyFrame}s will be converted to a \link{DataBackendPolars}.
-\link[polars:RPolarsDataFrame]{polars::RPolarsDataFrame} objects without lazy execution will be converted to a
+a \link[polars:LazyFrame_class]{polars::RPolarsLazyFrame} or \link[polars:DataFrame_class]{polars::RPolarsDataFrame}.
+Note that only \link[polars:LazyFrame_class]{polars::RPolarsLazyFrame}s will be converted to a \link{DataBackendPolars}.
+\link[polars:DataFrame_class]{polars::RPolarsDataFrame} objects without lazy execution will be converted to a
 \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}.}
 
 \item{\code{primary_key}}{(\code{character(1)})\cr
