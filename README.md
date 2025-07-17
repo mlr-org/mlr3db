@@ -24,7 +24,7 @@ currently implemented:
   [duckdb](https://cran.r-project.org/package=duckdb). This includes
   support for Parquet files (see example below).
 - `DataBackendPolars`: Connector to
-  [polars](https://pola-rs.github.io/r-polars).
+  [polars](https://pola-rs.github.io/r-polars/).
 
 To construct the backends, you have to establish a connection to the
 DBMS yourself with the [DBI](https://cran.r-project.org/package=DBI)

@@ -29,7 +29,7 @@ Three additional backends are currently implemented:
     This allows working on a broad range of DBMS, such as SQLite, MySQL, MariaDB, or PostgreSQL.
 * `DataBackendDuckDB`: Connector to [duckdb](https://cran.r-project.org/package=duckdb).
   This includes support for Parquet files (see example below).
-* `DataBackendPolars`: Connector to [polars](https://pola-rs.github.io/r-polars).
+* `DataBackendPolars`: Connector to [polars](https://pola-rs.github.io/r-polars/).
 
 To construct the backends, you have to establish a connection to the DBMS yourself with the [DBI](https://cran.r-project.org/package=DBI) package.
 For the serverless SQLite and DuckDB, we provide the converters `as_sqlite_backend()` and `as_duckdb_backend()`.
