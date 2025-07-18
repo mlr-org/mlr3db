@@ -19,8 +19,8 @@
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Data Base Backend for mlr3">
-<meta name="description" content="Extends the mlr3 package with a backend to transparently work with databases such as SQLite, DuckDB, MySQL, MariaDB, or PostgreSQL. The package provides two additional backends: DataBackendDplyr relies on the abstraction of package dbplyr to interact with most DBMS. DataBackendDuckDB operates on DuckDB data bases and also on Apache Parquet files.">
-<meta property="og:description" content="Extends the mlr3 package with a backend to transparently work with databases such as SQLite, DuckDB, MySQL, MariaDB, or PostgreSQL. The package provides two additional backends: DataBackendDplyr relies on the abstraction of package dbplyr to interact with most DBMS. DataBackendDuckDB operates on DuckDB data bases and also on Apache Parquet files.">
+<meta name="description" content="Extends the mlr3 package with a backend to transparently work with databases such as SQLite, DuckDB, MySQL, MariaDB, or PostgreSQL. The package provides three additional backends: DataBackendDplyr relies on the abstraction of package dbplyr to interact with most DBMS. DataBackendDuckDB operates on DuckDB data bases and also on Apache Parquet files. DataBackendPolars operates on Polars data frames.">
+<meta property="og:description" content="Extends the mlr3 package with a backend to transparently work with databases such as SQLite, DuckDB, MySQL, MariaDB, or PostgreSQL. The package provides three additional backends: DataBackendDplyr relies on the abstraction of package dbplyr to interact with most DBMS. DataBackendDuckDB operates on DuckDB data bases and also on Apache Parquet files. DataBackendPolars operates on Polars data frames.">
 <meta name="robots" content="noindex">
 </head>
 <body>
@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">mlr3db</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.5.1-9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,12 +65,14 @@
 <!-- badges: start -->
 
 <p>Package website: <a href="https://mlr3db.mlr-org.com/">release</a> | <a href="https://mlr3db.mlr-org.com/dev/">dev</a></p>
-<p>Extends the <a href="https://mlr3.mlr-org.com/" class="external-link">mlr3</a> package with a DataBackend to transparently work with databases. Two additional backends are currently implemented:</p>
+<p>Extends the <a href="https://mlr3.mlr-org.com/" class="external-link">mlr3</a> package with a DataBackend to transparently work with databases. Three additional backends are currently implemented:</p>
 <ul>
 <li>
 <code>DataBackendDplyr</code>: Relies internally on the abstraction of <a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a> and <a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a>. This allows working on a broad range of DBMS, such as SQLite, MySQL, MariaDB, or PostgreSQL.</li>
 <li>
 <code>DataBackendDuckDB</code>: Connector to <a href="https://cran.r-project.org/package=duckdb" class="external-link">duckdb</a>. This includes support for Parquet files (see example below).</li>
+<li>
+<code>DataBackendPolars</code>: Connector to <a href="https://pola-rs.github.io/r-polars/" class="external-link">polars</a>.</li>
 </ul>
 <p>To construct the backends, you have to establish a connection to the DBMS yourself with the <a href="https://cran.r-project.org/package=DBI" class="external-link">DBI</a> package. For the serverless SQLite and DuckDB, we provide the converters <code><a href="reference/as_sqlite_backend.html">as_sqlite_backend()</a></code> and <code><a href="reference/as_duckdb_backend.html">as_duckdb_backend()</a></code>.</p>
 <div class="section level2">
@@ -105,11 +107,18 @@
 <span><span class="co"># Resample a classification tree using a 3-fold CV.</span></span>
 <span><span class="co"># The requested data will be queried and fetched from the database in the background.</span></span>
 <span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="va">task</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;ResampleResult&gt; of 3 iterations</span></span>
-<span><span class="co">#&gt; * Task: spam</span></span>
-<span><span class="co">#&gt; * Learner: classif.rpart</span></span>
-<span><span class="co">#&gt; * Warnings: 0 in 0 iterations</span></span>
-<span><span class="co">#&gt; * Errors: 0 in 0 iterations</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning in warn_deprecated("DataBackend$data_formats"):</span></span>
+<span><span class="co">#&gt; DataBackend$data_formats is deprecated and will be removed in the future.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── &lt;ResampleResult&gt; with 3 resampling iterations ───────────────────────────────</span></span>
+<span><span class="co">#&gt;  task_id    learner_id resampling_id iteration     prediction_test warnings</span></span>
+<span><span class="co">#&gt;     spam classif.rpart            cv         1 &lt;PredictionClassif&gt;        0</span></span>
+<span><span class="co">#&gt;     spam classif.rpart            cv         2 &lt;PredictionClassif&gt;        0</span></span>
+<span><span class="co">#&gt;     spam classif.rpart            cv         3 &lt;PredictionClassif&gt;        0</span></span>
+<span><span class="co">#&gt;  errors</span></span>
+<span><span class="co">#&gt;       0</span></span>
+<span><span class="co">#&gt;       0</span></span>
+<span><span class="co">#&gt;       0</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="databackendduckdb">DataBackendDuckDB<a class="anchor" aria-label="anchor" href="#databackendduckdb"></a>
@@ -130,11 +139,16 @@
 <span><span class="co"># Resample a classification tree using a 3-fold CV.</span></span>
 <span><span class="co"># The requested data will be queried and fetched from the database in the background.</span></span>
 <span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="va">task</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;ResampleResult&gt; of 3 iterations</span></span>
-<span><span class="co">#&gt; * Task: backend</span></span>
-<span><span class="co">#&gt; * Learner: classif.rpart</span></span>
-<span><span class="co">#&gt; * Warnings: 0 in 0 iterations</span></span>
-<span><span class="co">#&gt; * Errors: 0 in 0 iterations</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── &lt;ResampleResult&gt; with 3 resampling iterations ───────────────────────────────</span></span>
+<span><span class="co">#&gt;  task_id    learner_id resampling_id iteration     prediction_test warnings</span></span>
+<span><span class="co">#&gt;  backend classif.rpart            cv         1 &lt;PredictionClassif&gt;        0</span></span>
+<span><span class="co">#&gt;  backend classif.rpart            cv         2 &lt;PredictionClassif&gt;        0</span></span>
+<span><span class="co">#&gt;  backend classif.rpart            cv         3 &lt;PredictionClassif&gt;        0</span></span>
+<span><span class="co">#&gt;  errors</span></span>
+<span><span class="co">#&gt;       0</span></span>
+<span><span class="co">#&gt;       0</span></span>
+<span><span class="co">#&gt;       0</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -165,8 +179,9 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Michel Lang <br><small class="roles"> Maintainer, author </small> <a href="https://orcid.org/0000-0001-9754-0393" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Michel Lang <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9754-0393" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>Lona Koers <br><small class="roles"> Author </small>   </li>
+<li>Marc Becker <br><small class="roles"> Maintainer, author </small> <a href="https://orcid.org/0000-0002-8115-0400" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -175,7 +190,6 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/mlr-org/mlr3db/actions/workflows/r-cmd-check.yml" class="external-link"><img src="https://github.com/mlr-org/mlr3db/actions/workflows/r-cmd-check.yml/badge.svg" alt="r-cmd-check"></a></li>
 <li><a href="https://cran.r-project.org/package=mlr3db" class="external-link"><img src="https://www.r-pkg.org/badges/version-ago/mlr3db" alt="CRAN Status"></a></li>
-<li><a href="https://stackoverflow.com/questions/tagged/mlr3" class="external-link"><img src="https://img.shields.io/badge/stackoverflow-mlr3-orange.svg" alt="StackOverflow"></a></li>
 <li><a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/" class="external-link"><img src="https://img.shields.io/badge/chat-mattermost-orange.svg" alt="Mattermost"></a></li>
 </ul>
 </div>
@@ -185,7 +199,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Michel Lang, Lona Koers.</p>
+  <p>Developed by Michel Lang, Lona Koers, Marc Becker.</p>
 </div>
 
 <div class="pkgdown-footer-right">

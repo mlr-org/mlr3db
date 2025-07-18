@@ -15,7 +15,7 @@ A connector is not required but can be useful e.g. for scanning larger than memo
 
     <a class="navbar-brand me-2" href="../index.html">mlr3db</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.5.1-9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -135,7 +135,7 @@ The data object.</p>
 a <a href="https://pola-rs.github.io/r-polars/man/LazyFrame_class.html" class="external-link">polars::RPolarsLazyFrame</a> or <a href="https://pola-rs.github.io/r-polars/man/DataFrame_class.html" class="external-link">polars::RPolarsDataFrame</a>.
 Note that only <a href="https://pola-rs.github.io/r-polars/man/LazyFrame_class.html" class="external-link">polars::RPolarsLazyFrame</a>s will be converted to a DataBackendPolars.
 <a href="https://pola-rs.github.io/r-polars/man/DataFrame_class.html" class="external-link">polars::RPolarsDataFrame</a> objects without lazy execution will be converted to a
-<a href="https://mlr3.mlr-org.com/reference/DataBackendDataTable.html" class="external-link">DataBackendDataTable</a>.</p></dd>
+<a href="https://mlr3.mlr-org.com/reference/DataBackendDataTable.html" class="external-link">mlr3::DataBackendDataTable</a>.</p></dd>
 
 
 <dt><code>primary_key</code></dt>
@@ -325,7 +325,8 @@ Column names.</p></dd>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="st">"iris.parquet"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;DataBackendPolars&gt; (150x6)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;DataBackendPolars&gt;</span><span style="font-weight: bold;"> (</span><span style="color: #0000BB; font-weight: bold;">150</span><span style="font-weight: bold;">x</span><span style="color: #0000BB; font-weight: bold;">6</span><span style="font-weight: bold;">)</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species row_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;       &lt;num&gt;        &lt;num&gt;       &lt;num&gt;  &lt;fctr&gt;  &lt;int&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA         3.5          1.4         0.2  setosa      1</span>
@@ -335,12 +336,15 @@ Column names.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA         3.6          1.4         0.2  setosa      5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA         3.9          1.7         0.4  setosa      6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [...] (144 rows omitted)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;TaskClassif:iris_polars&gt; (150 x 5)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Target: Species</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Properties: multiclass</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Features (4):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   - dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;DataBackendPolars&gt; (150x6)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;TaskClassif&gt;</span><span style="font-weight: bold;"> (150x5)</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Target: Species</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Target classes: setosa (33%), versicolor (33%), virginica (33%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Properties: multiclass</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Features (4):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   • dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;DataBackendPolars&gt;</span><span style="font-weight: bold;"> (</span><span style="color: #0000BB; font-weight: bold;">150</span><span style="font-weight: bold;">x</span><span style="color: #0000BB; font-weight: bold;">6</span><span style="font-weight: bold;">)</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species row_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;       &lt;num&gt;        &lt;num&gt;       &lt;num&gt;  &lt;fctr&gt;  &lt;int&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA         3.5          1.4         0.2  setosa      1</span>
@@ -350,7 +354,8 @@ Column names.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA         3.6          1.4         0.2  setosa      5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA         3.9          1.7         0.4  setosa      6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [...] (144 rows omitted)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;DataBackendPolars&gt; (120x5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;DataBackendPolars&gt;</span><span style="font-weight: bold;"> (</span><span style="color: #0000BB; font-weight: bold;">120</span><span style="font-weight: bold;">x</span><span style="color: #0000BB; font-weight: bold;">5</span><span style="font-weight: bold;">)</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Sepal.Length Petal.Length Petal.Width Species row_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;        &lt;num&gt;       &lt;num&gt;  &lt;fctr&gt;  &lt;int&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA          1.4         0.2  setosa      1</span>
@@ -368,7 +373,7 @@ Column names.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Michel Lang, Lona Koers.</p>
+  <p>Developed by Michel Lang, Lona Koers, Marc Becker.</p>
 </div>
 
 <div class="pkgdown-footer-right">

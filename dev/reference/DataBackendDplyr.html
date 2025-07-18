@@ -11,7 +11,7 @@ The latter allows mlr3::Tasks to interface an out-of-memory database."><meta nam
 
     <a class="navbar-brand me-2" href="../index.html">mlr3db</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.5.1-9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,7 +104,6 @@ Returns the result of <code><a href="https://dbi.r-dbi.org/reference/dbIsValid.h
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-DataBackendDplyr-new"><code>DataBackendDplyr$new()</code></a></p></li>
-<li><p><a href="#method-DataBackendDplyr-finalize"><code>DataBackendDplyr$finalize()</code></a></p></li>
 <li><p><a href="#method-DataBackendDplyr-data"><code>DataBackendDplyr$data()</code></a></p></li>
 <li><p><a href="#method-DataBackendDplyr-head"><code>DataBackendDplyr$head()</code></a></p></li>
 <li><p><a href="#method-DataBackendDplyr-distinct"><code>DataBackendDplyr$distinct()</code></a></p></li>
@@ -133,7 +132,7 @@ on a <code><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="exter
 Note that only objects of class <code>"tbl_lazy"</code> will be converted to a DataBackendDplyr
 (this includes all connectors from <a href="https://CRAN.R-project.org/package=dbplyr" class="external-link"><span class="pkg">dbplyr</span></a>).
 Local <code>"tbl"</code> objects such as <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibbles</a></code> will converted to a
-<a href="https://mlr3.mlr-org.com/reference/DataBackendDataTable.html" class="external-link">DataBackendDataTable</a>.</p></dd>
+<a href="https://mlr3.mlr-org.com/reference/DataBackendDataTable.html" class="external-link">mlr3::DataBackendDataTable</a>.</p></dd>
 
 
 <dt><code>primary_key</code></dt>
@@ -165,19 +164,6 @@ To protect your credentials, it is recommended to use the <a href="https://CRAN.
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendDplyr-finalize"></a><div class="section">
-<h3 id="method-finalize-">Method <code>finalize()</code><a class="anchor" aria-label="anchor" href="#method-finalize-"></a></h3>
-<p>Finalizer which disconnects from the database.
-This is called during garbage collection of the instance.</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDplyr</span><span class="op">$</span><span class="fu">finalize</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
-<p><code>logical(1)</code>, the return value of <code><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">DBI::dbDisconnect()</a></code>.</p>
-</div>
-
 </div><p></p><hr><a id="method-DataBackendDplyr-data"></a><div class="section">
 <h3 id="method-data-">Method <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code><a class="anchor" aria-label="anchor" href="#method-data-"></a></h3>
 <p>Returns a slice of the data.
@@ -187,8 +173,8 @@ Queries for rows with no matching row id and queries for columns with no matchin
 column name are silently ignored.
 Rows are guaranteed to be returned in the same order as <code>rows</code>, columns may be returned in an arbitrary order.
 Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDplyr</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span>, data_format <span class="op">=</span> <span class="st">"data.table"</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDplyr</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -203,18 +189,13 @@ Row indices.</p></dd>
 Column names.</p></dd>
 
 
-<dt><code>data_format</code></dt>
-<dd><p>(<code>character(1)</code>)<br>
-Desired data format, e.g. <code>"data.table"</code> or <code>"Matrix"</code>.</p></dd>
-
-
 </dl><p></p></div>
 </div>
 
 </div><p></p><hr><a id="method-DataBackendDplyr-head"></a><div class="section">
 <h3 id="method-head-">Method <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">head()</a></code><a class="anchor" aria-label="anchor" href="#method-head-"></a></h3>
 <p>Retrieve the first <code>n</code> rows.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDplyr</span><span class="op">$</span><span class="fu">head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">6L</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -228,7 +209,7 @@ Number of rows.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code> of the first <code>n</code> rows.</p>
 </div>
 
@@ -238,7 +219,7 @@ Number of rows.</p></dd>
 specified. If <code>na_rm</code> is <code>TRUE</code>, missing values are removed from the
 returned vectors of distinct values. Non-existing rows and columns are
 silently ignored.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDplyr</span><span class="op">$</span><span class="fu">distinct</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span>, na_rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -262,7 +243,7 @@ Whether to remove NAs or not.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Named <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> of distinct values.</p>
 </div>
 
@@ -270,7 +251,7 @@ Whether to remove NAs or not.</p></dd>
 <h3 id="method-missings-">Method <code>missings()</code><a class="anchor" aria-label="anchor" href="#method-missings-"></a></h3>
 <p>Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDplyr</span><span class="op">$</span><span class="fu">missings</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -289,7 +270,7 @@ Column names.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>Total of missing values per column (named <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>).</p>
 </div>
 
@@ -343,7 +324,8 @@ Column names.</p></dd>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;DataBackendDplyr&gt; (150x6)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;DataBackendDplyr&gt;</span><span style="font-weight: bold;"> (</span><span style="color: #0000BB; font-weight: bold;">150</span><span style="font-weight: bold;">x</span><span style="color: #0000BB; font-weight: bold;">6</span><span style="font-weight: bold;">)</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species row_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;       &lt;num&gt;        &lt;num&gt;       &lt;num&gt;  &lt;fctr&gt;  &lt;int&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA         3.5          1.4         0.2  setosa      1</span>
@@ -353,13 +335,15 @@ Column names.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA         3.6          1.4         0.2  setosa      5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA         3.9          1.7         0.4  setosa      6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [...] (144 rows omitted)</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>DataBackend$data_formats is deprecated and will be removed in the future.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;TaskClassif:iris_tibble&gt; (150 x 5)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Target: Species</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Properties: multiclass</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Features (4):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   - dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;DataBackendDplyr&gt; (120x5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;TaskClassif&gt;</span><span style="font-weight: bold;"> (150x5)</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Target: Species</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Target classes: setosa (33%), versicolor (33%), virginica (33%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Properties: multiclass</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Features (4):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   • dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;DataBackendDplyr&gt;</span><span style="font-weight: bold;"> (</span><span style="color: #0000BB; font-weight: bold;">120</span><span style="font-weight: bold;">x</span><span style="color: #0000BB; font-weight: bold;">5</span><span style="font-weight: bold;">)</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Sepal.Length Petal.Length Petal.Width Species row_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;        &lt;num&gt;       &lt;num&gt;  &lt;fctr&gt;  &lt;int&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            NA          1.4         0.2  setosa      1</span>
@@ -376,7 +360,7 @@ Column names.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Michel Lang, Lona Koers.</p>
+  <p>Developed by Michel Lang, Lona Koers, Marc Becker.</p>
 </div>
 
 <div class="pkgdown-footer-right">
