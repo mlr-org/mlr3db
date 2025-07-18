@@ -10,7 +10,7 @@
 #'
 #'
 #' The default for this argument can be configured via option `"mlr3db.sqlite_dir"` or `"mlr3db.duckdb_dir"`,
-#' respectively. The database files will use the hash of the [DataBackend] as filename with
+#' respectively. The database files will use the hash of the [mlr3::DataBackend] as filename with
 #' file extension `".duckdb"` or `".sqlite"`.
 #' If the database already exists on the file system, the converters will just established a new read-only
 #' connection.

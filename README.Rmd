@@ -17,19 +17,19 @@ lgr::get_logger("mlr3")$set_threshold("warn")
 <!-- badges: start -->
 [![r-cmd-check](https://github.com/mlr-org/mlr3db/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3db/actions/workflows/r-cmd-check.yml)
 [![CRAN Status](https://www.r-pkg.org/badges/version-ago/mlr3db)](https://cran.r-project.org/package=mlr3db)
-[![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 <!-- badges: end -->
 
 Package website: [release](https://mlr3db.mlr-org.com/) | [dev](https://mlr3db.mlr-org.com/dev/)
 
 Extends the [mlr3](https://mlr3.mlr-org.com/) package with a DataBackend to transparently work with databases.
-Two additional backends are currently implemented:
+Three additional backends are currently implemented:
 
 * `DataBackendDplyr`: Relies internally on the abstraction of [dplyr](https://dplyr.tidyverse.org/) and [dbplyr](https://dbplyr.tidyverse.org/).
     This allows working on a broad range of DBMS, such as SQLite, MySQL, MariaDB, or PostgreSQL.
 * `DataBackendDuckDB`: Connector to [duckdb](https://cran.r-project.org/package=duckdb).
   This includes support for Parquet files (see example below).
+* `DataBackendPolars`: Connector to [polars](https://pola-rs.github.io/r-polars/).
 
 To construct the backends, you have to establish a connection to the DBMS yourself with the [DBI](https://cran.r-project.org/package=DBI) package.
 For the serverless SQLite and DuckDB, we provide the converters `as_sqlite_backend()` and `as_duckdb_backend()`.

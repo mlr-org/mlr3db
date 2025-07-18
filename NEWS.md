@@ -1,24 +1,28 @@
+# mlr3db 0.6.0
+
+* feat: New backend `DataBackendPolars`.
+
 # mlr3db 0.5.2
 
-- Bugfix: `DataBackendDuckDB` calculated missing values incorrectly.
-- Compatibility with future versions of `dbplyr` (#35).
+* Bugfix: `DataBackendDuckDB` calculated missing values incorrectly.
+* Compatibility with future versions of `dbplyr` (#35).
 
 # mlr3db 0.5.1
 
-- Compatibility with new duckdb version (#36).
+* Compatibility with new duckdb version (#36).
 
 # mlr3db 0.5.0
 
-- Support for parquet files as Backend via DuckDB.
-- New converter `as_duckdb_backend()`.
+* Support for parquet files as Backend via DuckDB.
+* New converter `as_duckdb_backend()`.
 
 # mlr3db 0.4.2
 
-- Compatibility fixes with new duckdb version.
+* Compatibility fixes with new duckdb version.
 
 # mlr3db 0.4.1
 
-- Temporarily disabled some tests to overcome some regressions in duckdb.
+* Temporarily disabled some tests to overcome some regressions in duckdb.
 
 # mlr3db 0.4.0
 

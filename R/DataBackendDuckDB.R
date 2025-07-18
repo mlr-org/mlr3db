@@ -74,16 +74,6 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     },
 
     #' @description
-    #' Finalizer which disconnects from the database.
-    #' This is called during garbage collection of the instance.
-    #' @return `logical(1)`, the return value of [DBI::dbDisconnect()].
-    finalize = function() {
-      if (isTRUE(self$valid)) {
-        DBI::dbDisconnect(private$.data, shutdown = TRUE)
-      }
-    },
-
-    #' @description
     #' Returns a slice of the data.
     #'
     #' The rows must be addressed as vector of primary key values, columns must be referred to via column names.
@@ -91,11 +81,10 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #' column name are silently ignored.
     #' Rows are guaranteed to be returned in the same order as `rows`, columns may be returned in an arbitrary order.
     #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
-    data = function(rows, cols, data_format = "data.table") {
+    data = function(rows, cols) {
       private$.reconnect()
       rows = assert_integerish(rows, coerce = TRUE)
       assert_names(cols, type = "unique")
-      assert_choice(data_format, self$data_formats)
       cols = intersect(cols, self$colnames)
       tmp_tbl = write_temp_table(private$.data, rows)
       on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))
@@ -262,6 +251,12 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         }
 
         private$.data = con
+      }
+    },
+
+    finalize = function() {
+      if (isTRUE(self$valid)) {
+        DBI::dbDisconnect(private$.data, shutdown = TRUE)
       }
     }
   )

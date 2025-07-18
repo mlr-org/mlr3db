@@ -56,7 +56,6 @@ Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-DataBackendDuckDB-new}{\code{DataBackendDuckDB$new()}}
-\item \href{#method-DataBackendDuckDB-finalize}{\code{DataBackendDuckDB$finalize()}}
 \item \href{#method-DataBackendDuckDB-data}{\code{DataBackendDuckDB$data()}}
 \item \href{#method-DataBackendDuckDB-head}{\code{DataBackendDuckDB$head()}}
 \item \href{#method-DataBackendDuckDB-distinct}{\code{DataBackendDuckDB$distinct()}}
@@ -121,20 +120,6 @@ To protect your credentials, it is recommended to use the \CRANpkg{secret} packa
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendDuckDB-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendDuckDB-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Finalizer which disconnects from the database.
-This is called during garbage collection of the instance.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendDuckDB$finalize()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-\code{logical(1)}, the return value of \code{\link[DBI:dbDisconnect]{DBI::dbDisconnect()}}.
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendDuckDB-data"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendDuckDB-data}{}}}
 \subsection{Method \code{data()}}{
@@ -146,7 +131,7 @@ column name are silently ignored.
 Rows are guaranteed to be returned in the same order as \code{rows}, columns may be returned in an arbitrary order.
 Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendDuckDB$data(rows, cols, data_format = "data.table")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendDuckDB$data(rows, cols)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -157,9 +142,6 @@ Row indices.}
 
 \item{\code{cols}}{\code{character()}\cr
 Column names.}
-
-\item{\code{data_format}}{(\code{character(1)})\cr
-Desired data format, e.g. \code{"data.table"} or \code{"Matrix"}.}
 }
 \if{html}{\out{</div>}}
 }

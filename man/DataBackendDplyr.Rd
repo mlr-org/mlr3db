@@ -94,7 +94,6 @@ Returns the result of \code{\link[DBI:dbIsValid]{DBI::dbIsValid()}} otherwise.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-DataBackendDplyr-new}{\code{DataBackendDplyr$new()}}
-\item \href{#method-DataBackendDplyr-finalize}{\code{DataBackendDplyr$finalize()}}
 \item \href{#method-DataBackendDplyr-data}{\code{DataBackendDplyr$data()}}
 \item \href{#method-DataBackendDplyr-head}{\code{DataBackendDplyr$head()}}
 \item \href{#method-DataBackendDplyr-distinct}{\code{DataBackendDplyr$distinct()}}
@@ -134,7 +133,7 @@ on a \code{\link[dplyr:tbl]{dplyr::tbl()}}.
 Note that only objects of class \code{"tbl_lazy"} will be converted to a \link{DataBackendDplyr}
 (this includes all connectors from \CRANpkg{dbplyr}).
 Local \code{"tbl"} objects such as \code{\link[tibble:tibble]{tibbles}} will converted to a
-\link[mlr3:DataBackendDataTable]{DataBackendDataTable}.}
+\link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}.}
 
 \item{\code{primary_key}}{(\code{character(1)})\cr
 Name of the primary key column.}
@@ -160,20 +159,6 @@ To protect your credentials, it is recommended to use the \CRANpkg{secret} packa
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendDplyr-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendDplyr-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Finalizer which disconnects from the database.
-This is called during garbage collection of the instance.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$finalize()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-\code{logical(1)}, the return value of \code{\link[DBI:dbDisconnect]{DBI::dbDisconnect()}}.
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendDplyr-data"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendDplyr-data}{}}}
 \subsection{Method \code{data()}}{
@@ -186,7 +171,7 @@ column name are silently ignored.
 Rows are guaranteed to be returned in the same order as \code{rows}, columns may be returned in an arbitrary order.
 Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$data(rows, cols, data_format = "data.table")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendDplyr$data(rows, cols)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -197,9 +182,6 @@ Row indices.}
 
 \item{\code{cols}}{\code{character()}\cr
 Column names.}
-
-\item{\code{data_format}}{(\code{character(1)})\cr
-Desired data format, e.g. \code{"data.table"} or \code{"Matrix"}.}
 }
 \if{html}{\out{</div>}}
 }

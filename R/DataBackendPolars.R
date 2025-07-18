@@ -98,7 +98,7 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
     #' a [polars::RPolarsLazyFrame] or [polars::RPolarsDataFrame].
     #' Note that only [polars::RPolarsLazyFrame]s will be converted to a [DataBackendPolars].
     #' [polars::RPolarsDataFrame] objects without lazy execution will be converted to a
-    #' [DataBackendDataTable][mlr3::DataBackendDataTable].
+    #' [mlr3::DataBackendDataTable][mlr3::DataBackendDataTable].
     initialize = function(data, primary_key, strings_as_factors = TRUE, connector = NULL) {
       loadNamespace("polars")
       assert_choice(class(data), "RPolarsLazyFrame")

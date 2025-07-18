@@ -29,7 +29,7 @@ disconnect.SQLiteConnection = function(x) {
 registerS3method("disconnect", "SQLiteConnection", disconnect.SQLiteConnection)
 
 disconnect.DataBackend = function(x) {
-  x$finalize()
+  mlr3misc::get_private(x)$finalize()
 }
 registerS3method("disconnect", "DataBackend", disconnect.DataBackend)
 
