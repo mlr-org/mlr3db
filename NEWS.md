@@ -1,5 +1,7 @@
 # mlr3db (development version)
 
+* Compatibility fixes with new polars version (1.1.0).
+
 # mlr3db 0.6.0
 
 * feat: New backend `DataBackendPolars`.

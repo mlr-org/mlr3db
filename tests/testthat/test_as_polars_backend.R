@@ -1,4 +1,4 @@
-skip_if_not_installed("polars")
+skip_if_not_installed("polars", minimum_version = "1.1.0")
 
 test_that("data.frame", {
   b = as_polars_backend(iris)

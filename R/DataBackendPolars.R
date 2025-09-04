@@ -1,9 +1,9 @@
 #' @title DataBackend for Polars
 #'
 #' @description
-#' A [mlr3::DataBackend] using `RPolarsLazyFrame` from package \CRANpkg{polars}.
+#' A [mlr3::DataBackend] using `LazyFrame` from package \CRANpkg{polars}.
 #' Can be easily constructed with [as_polars_backend()].
-#' [mlr3::Task]s can interface out-of-memory files if the `polars::RPolarsLazyFrame` was imported using a `polars::scan_x` function.
+#' [mlr3::Task]s can interface out-of-memory files if the `polars::polars_lazy_frame` was imported using a `polars::scan_x` function.
 #' Streaming, a \CRANpkg{polars} alpha feature, is always enabled, but only used when applicable.
 #' A connector is not required but can be useful e.g. for scanning larger than memory files
 #'
@@ -59,10 +59,8 @@
 #'
 #'   # Define a backend on a subset of the database: do not use column "Sepal.Width"
 #'   data = data$select(
-#'     polars::pl$col(setdiff(colnames(data), "Sepal.Width"))
-#'   )$filter(
-#'     polars::pl$col("row_id")$is_in(1:120) # Use only first 120 rows
-#'   )
+#'     polars::pl$col(!!!setdiff(colnames(data), "Sepal.Width"))
+#'   )$head(120) # Use only first 120 rows
 #'
 #'   # Backend with only scanned data
 #'   b = DataBackendPolars$new(data, "row_id", strings_as_factors = TRUE)
@@ -89,19 +87,20 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
 
     #' @description
     #'
-    #' Creates a backend for a [polars::RPolarsDataFrame] object.
+    #' Creates a backend for a [polars::polars_data_frame] object.
     #'
-    #' @param data ([polars::RPolarsLazyFrame])\cr
+    #' @param data ([polars::polars_lazy_frame])\cr
     #'   The data object.
     #'
     #' Instead of calling the constructor itself, please call [mlr3::as_data_backend()] on
-    #' a [polars::RPolarsLazyFrame] or [polars::RPolarsDataFrame].
-    #' Note that only [polars::RPolarsLazyFrame]s will be converted to a [DataBackendPolars].
-    #' [polars::RPolarsDataFrame] objects without lazy execution will be converted to a
+    #' a [polars::polars_lazy_frame] or [polars::polars_data_frame].
+    #' Note that only [polars::polars_lazy_frame]s will be converted to a [DataBackendPolars].
+    #' [polars::polars_data_frame] objects without lazy execution will be converted to a
     #' [mlr3::DataBackendDataTable][mlr3::DataBackendDataTable].
     initialize = function(data, primary_key, strings_as_factors = TRUE, connector = NULL) {
-      loadNamespace("polars")
-      assert_choice(class(data), "RPolarsLazyFrame")
+      requireNamespace("rlang", quietly = TRUE)
+      rlang::check_installed("polars", version = "1.1.0")
+      polars::check_polars_lf(data)
 
       super$initialize(data, primary_key)
       assert_choice(primary_key, colnames(data))
@@ -136,7 +135,9 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
       cols = intersect(cols, self$colnames)
 
       data = private$.data
-      res = data$filter(polars::pl$col(self$primary_key)$is_in(rows))$select(polars::pl$col(union(self$primary_key, cols)))$collect(streaming = TRUE)
+      res = data$filter(
+        polars::pl$col(self$primary_key)$is_in(list(rows))
+      )$select(polars::pl$col(!!!union(self$primary_key, cols)))$collect(engine = "streaming")
       res = as.data.table(res)
 
       recode(res[list(rows), cols, nomatch = NULL, on = self$primary_key, with = FALSE],
@@ -152,7 +153,7 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
     #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
       private$.reconnect()
-      recode(as.data.table(private$.data$head(n)$collect(streaming = TRUE)), self$levels)
+      recode(as.data.table(as.data.frame(private$.data$head(n), engine = "streaming")), self$levels)
     },
 
     #' @description
@@ -170,15 +171,13 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
       dat = private$.data
 
       if (!is.null(rows)) {
-        dat = dat$filter(polars::pl$col(self$primary_key)$is_in(rows))
+        dat = dat$filter(polars::pl$col(self$primary_key)$is_in(list(rows)))
       }
 
       get_distinct = function(col) {
-        x = as.vector(
-          dat$select(
-            polars::pl$col(col)$unique()
-          )$collect(streaming = TRUE)$get_column(col)
-        )
+        x = dat$select(
+            polars::pl$col(!!!col)$unique()
+          )$collect(engine = "streaming")$get_column(col)$to_r_vector()
 
         if (is.factor(x)) {
           x = as.character(x)
@@ -207,13 +206,13 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
       }
 
       res = private$.data$filter(
-          polars::pl$col(self$primary_key)$is_in(rows)
+          polars::pl$col(self$primary_key)$is_in(list(rows))
         )
       res = res$select(
-        lapply(cols, function(col) {
-          polars::pl$col(col)$is_null()$sum()$alias(col)
+        !!!lapply(cols, function(col) {
+          polars::pl$col(!!!col)$is_null()$sum()$alias(col)
         })
-      )$collect(streaming = TRUE)
+      )$collect(engine = "streaming")
 
       if (res$height == 0L) {
         return(setNames(integer(length(cols)), cols))
@@ -229,34 +228,34 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
     rownames = function() {
       private$.reconnect()
 
-      as.vector(
         private$.data$
           select(polars::pl$col(self$primary_key))$
           collect()$
-          get_column(self$primary_key)
-      )
+          get_column(self$primary_key)$
+          to_r_vector()
     },
 
     #' @field colnames (`character()`)\cr
     #' Returns vector of all column names, including the primary key column.
     colnames = function() {
       private$.reconnect()
-      names(private$.data$schema)
+      names(private$.data)
     },
 
     #' @field nrow (`integer(1)`)\cr
     #' Number of rows (observations).
     nrow = function() {
       private$.reconnect()
-      n = private$.data$select(polars::pl$len())$collect(streaming = TRUE)$item()
-      as.integer(n)
+      private$.data$select(polars::pl$len())$collect(
+        engine = "streaming"
+      )$to_series()$to_r_vector(int64 = "integer")
     },
 
     #' @field ncol (`integer(1)`)\cr
     #' Number of columns (variables), including the primary key column.
     ncol = function() {
       private$.reconnect()
-      length(private$.data$schema)
+      length(private$.data)
     }
   ),
 
@@ -285,7 +284,7 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.RPolarsDataFrame = function(data, primary_key = NULL, ...) { # nolint
+as_data_backend.polars_data_frame = function(data, primary_key = NULL, ...) { # nolint
   data = as.data.frame(data)
 
   if (!is.null(primary_key) && test_integerish(data[[primary_key]])) {
@@ -297,6 +296,6 @@ as_data_backend.RPolarsDataFrame = function(data, primary_key = NULL, ...) { # n
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.RPolarsLazyFrame = function(data, primary_key, strings_as_factors = TRUE, ...) { # nolint
+as_data_backend.polars_lazy_frame = function(data, primary_key, strings_as_factors = TRUE, ...) { # nolint
   DataBackendPolars$new(data, primary_key, strings_as_factors)
 }
