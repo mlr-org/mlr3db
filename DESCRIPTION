@@ -35,9 +35,11 @@ Suggests:
     future,
     future.apply,
     future.callr,
+    hms,
     lgr,
-    polars,
+    polars (>= 1.1.0),
     RSQLite,
+    rlang,
     testthat (>= 3.0.0),
     tibble
 Additional_repositories: https://community.r-multiverse.org

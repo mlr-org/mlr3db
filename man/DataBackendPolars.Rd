@@ -4,9 +4,9 @@
 \alias{DataBackendPolars}
 \title{DataBackend for Polars}
 \description{
-A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{RPolarsLazyFrame} from package \CRANpkg{polars}.
+A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{LazyFrame} from package \CRANpkg{polars}.
 Can be easily constructed with \code{\link[=as_polars_backend]{as_polars_backend()}}.
-\link[mlr3:Task]{mlr3::Task}s can interface out-of-memory files if the \code{polars::RPolarsLazyFrame} was imported using a \code{polars::scan_x} function.
+\link[mlr3:Task]{mlr3::Task}s can interface out-of-memory files if the \code{polars::polars_lazy_frame} was imported using a \code{polars::scan_x} function.
 Streaming, a \CRANpkg{polars} alpha feature, is always enabled, but only used when applicable.
 A connector is not required but can be useful e.g. for scanning larger than memory files
 }
@@ -43,10 +43,8 @@ if (mlr3misc::require_namespaces("polars", quietly = TRUE)) {
 
   # Define a backend on a subset of the database: do not use column "Sepal.Width"
   data = data$select(
-    polars::pl$col(setdiff(colnames(data), "Sepal.Width"))
-  )$filter(
-    polars::pl$col("row_id")$is_in(1:120) # Use only first 120 rows
-  )
+    polars::pl$col(!!!setdiff(colnames(data), "Sepal.Width"))
+  )$head(120) # Use only first 120 rows
 
   # Backend with only scanned data
   b = DataBackendPolars$new(data, "row_id", strings_as_factors = TRUE)
@@ -121,7 +119,7 @@ Number of columns (variables), including the primary key column.}
 \if{html}{\out{<a id="method-DataBackendPolars-new"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendPolars-new}{}}}
 \subsection{Method \code{new()}}{
-Creates a backend for a \link[polars:DataFrame_class]{polars::RPolarsDataFrame} object.
+Creates a backend for a \link[polars:pl__DataFrame]{polars::polars_data_frame} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendPolars$new(
   data,
@@ -134,13 +132,13 @@ Creates a backend for a \link[polars:DataFrame_class]{polars::RPolarsDataFrame} 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{(\link[polars:LazyFrame_class]{polars::RPolarsLazyFrame})\cr
+\item{\code{data}}{(\link[polars:pl__LazyFrame]{polars::polars_lazy_frame})\cr
 The data object.
 
 Instead of calling the constructor itself, please call \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on
-a \link[polars:LazyFrame_class]{polars::RPolarsLazyFrame} or \link[polars:DataFrame_class]{polars::RPolarsDataFrame}.
-Note that only \link[polars:LazyFrame_class]{polars::RPolarsLazyFrame}s will be converted to a \link{DataBackendPolars}.
-\link[polars:DataFrame_class]{polars::RPolarsDataFrame} objects without lazy execution will be converted to a
+a \link[polars:pl__LazyFrame]{polars::polars_lazy_frame} or \link[polars:pl__DataFrame]{polars::polars_data_frame}.
+Note that only \link[polars:pl__LazyFrame]{polars::polars_lazy_frame}s will be converted to a \link{DataBackendPolars}.
+\link[polars:pl__DataFrame]{polars::polars_data_frame} objects without lazy execution will be converted to a
 \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}.}
 
 \item{\code{primary_key}}{(\code{character(1)})\cr
