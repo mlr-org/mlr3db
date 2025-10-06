@@ -18,7 +18,7 @@ Either a valid path to a directory which will be created if it not exists, or on
 Note that this directory will be removed during the shutdown of the R session.
 Also note that this usually does not work for parallelization on remote workers.
 Set to a custom path instead or use special string \code{":user:"} instead.
-\item \code{":user:"}: User cache directory as returned by \code{\link[=R_user_dir]{R_user_dir()}} is used.
+\item \code{":user:"}: User cache directory as returned by \code{\link[backports:R_user_dir]{backports::R_user_dir()}} is used.
 }
 
 The default for this argument can be configured via option \code{"mlr3db.sqlite_dir"} or \code{"mlr3db.duckdb_dir"},

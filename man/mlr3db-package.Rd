@@ -6,7 +6,7 @@
 \alias{mlr3db-package}
 \title{mlr3db: Data Base Backend for 'mlr3'}
 \description{
-Extends the 'mlr3' package with a backend to transparently work with databases such as 'SQLite', 'DuckDB', 'MySQL', 'MariaDB', or 'PostgreSQL'. The package provides two additional backends: 'DataBackendDplyr' relies on the abstraction of package 'dbplyr' to interact with most DBMS. 'DataBackendDuckDB' operates on 'DuckDB' data bases and also on Apache Parquet files.
+Extends the 'mlr3' package with a backend to transparently work with databases such as 'SQLite', 'DuckDB', 'MySQL', 'MariaDB', or 'PostgreSQL'. The package provides three additional backends: 'DataBackendDplyr' relies on the abstraction of package 'dbplyr' to interact with most DBMS. 'DataBackendDuckDB' operates on 'DuckDB' data bases and also on Apache Parquet files. 'DataBackendPolars' operates on 'Polars' data frames.
 }
 \section{Options}{
 
@@ -21,17 +21,18 @@ with \code{\link[=as_duckdb_backend]{as_duckdb_backend()}}..
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https:///mlr3db.mlr-org.com}
+  \item \url{https://mlr3db.mlr-org.com}
   \item \url{https://github.com/mlr-org/mlr3db}
   \item Report bugs at \url{https://github.com/mlr-org/mlr3db/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Michel Lang \email{michellang@gmail.com} (\href{https://orcid.org/0000-0001-9754-0393}{ORCID})
+\strong{Maintainer}: Marc Becker \email{marcbecker@posteo.de} (\href{https://orcid.org/0000-0002-8115-0400}{ORCID})
 
 Authors:
 \itemize{
+  \item Michel Lang \email{michellang@gmail.com} (\href{https://orcid.org/0000-0001-9754-0393}{ORCID})
   \item Lona Koers \email{lona.koers@gmail.com}
 }
 
