@@ -66,8 +66,6 @@ task$backend = as_sqlite_backend(task$backend, path = tempfile())
 # Resample a classification tree using a 3-fold CV.
 # The requested data will be queried and fetched from the database in the background.
 resample(task, lrn("classif.rpart"), rsmp("cv", folds = 3))
-#> Warning in warn_deprecated("DataBackend$data_formats"):
-#> DataBackend$data_formats is deprecated and will be removed in the future.
 #> 
 #> ── <ResampleResult> with 3 resampling iterations ───────────────────────────────
 #>  task_id    learner_id resampling_id iteration     prediction_test warnings
