@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">mlr3db</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.7.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,8 +107,6 @@
 <span><span class="co"># Resample a classification tree using a 3-fold CV.</span></span>
 <span><span class="co"># The requested data will be queried and fetched from the database in the background.</span></span>
 <span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="va">task</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span>, <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in warn_deprecated("DataBackend$data_formats"):</span></span>
-<span><span class="co">#&gt; DataBackend$data_formats is deprecated and will be removed in the future.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── &lt;ResampleResult&gt; with 3 resampling iterations ───────────────────────────────</span></span>
 <span><span class="co">#&gt;  task_id    learner_id resampling_id iteration     prediction_test warnings</span></span>
