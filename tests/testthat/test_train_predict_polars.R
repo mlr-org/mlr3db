@@ -10,7 +10,7 @@ test_that("single step train + predict", {
   p = learner$predict(task, 121:150)
   expect_prediction(p)
   expect_data_table(data.table::as.data.table(p), nrows = 30)
-  expect_character(learner$errors, len = 0L)
+  expect_null(learner$errors$condition)
 })
 
 test_that("resample works", {
