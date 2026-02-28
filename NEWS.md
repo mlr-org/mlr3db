@@ -1,5 +1,7 @@
 # mlr3db (development version)
 
+* compatibility: mlr3 1.5.0
+
 # mlr3db 0.7.0
 
 * Compatibility fixes with new polars version (1.1.0).
