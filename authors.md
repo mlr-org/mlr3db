@@ -12,7 +12,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/mlr-org/mlr3db/blob/v0.7.1/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/mlr-org/mlr3db/blob/main/DESCRIPTION)
 
 Lang M, Koers L, Becker M (2026). *mlr3db: Data Base Backend for
 'mlr3'*. R package version 0.7.1, <https://mlr3db.mlr-org.com>.
