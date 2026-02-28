@@ -2,6 +2,8 @@
 
 ## mlr3db (development version)
 
+- compatibility: mlr3 1.5.0
+
 ## mlr3db 0.7.0
 
 CRAN release: 2025-10-06
