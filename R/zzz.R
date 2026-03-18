@@ -11,7 +11,8 @@
 #'   with [as_duckdb_backend()]..
 "_PACKAGE"
 
-.onLoad = function(libname, pkgname) { # nolint
+#nolint next
+.onLoad = function(libname, pkgname) {
   # nocov start
   backports::import(pkgname)
   backports::import(pkgname, "R_user_dir", force = TRUE)

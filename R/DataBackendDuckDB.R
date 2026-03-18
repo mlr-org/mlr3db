@@ -22,7 +22,10 @@
 #'
 #' @importFrom mlr3 DataBackend
 #' @export
-DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneable = FALSE,
+DataBackendDuckDB = R6Class(
+  "DataBackendDuckDB",
+  inherit = DataBackend,
+  cloneable = FALSE,
   public = list(
     #' @template field_levels
     levels = NULL,
@@ -70,7 +73,6 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
 
         self$levels = self$distinct(rows = NULL, cols = strings_as_factors)
       }
-
     },
 
     #' @description
@@ -89,13 +91,16 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       tmp_tbl = write_temp_table(private$.data, rows)
       on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))
 
-      query = sprintf('SELECT %1$s FROM "%2$s" INNER JOIN "%3$s" ON "%2$s"."row_id" = "%3$s"."%4$s"',
+      query = sprintf(
+        'SELECT %1$s FROM "%2$s" INNER JOIN "%3$s" ON "%2$s"."row_id" = "%3$s"."%4$s"',
         paste0(sprintf('"%s"."%s"', self$table, union(cols, self$primary_key)), collapse = ","),
-        tmp_tbl, self$table, self$primary_key)
+        tmp_tbl,
+        self$table,
+        self$primary_key
+      )
 
       res = setDT(DBI::dbGetQuery(private$.data, query), key = self$primary_key)
-      recode(res[list(rows), cols, nomatch = NULL, on = self$primary_key, with = FALSE],
-        self$levels)
+      recode(res[list(rows), cols, nomatch = NULL, on = self$primary_key, with = FALSE], self$levels)
     },
 
     #' @description
@@ -107,8 +112,10 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
       private$.reconnect()
-      res = DBI::dbGetQuery(private$.data,
-        sprintf('SELECT * FROM "%s" ORDER BY "%s" LIMIT %i', self$table, self$primary_key, n))
+      res = DBI::dbGetQuery(
+        private$.data,
+        sprintf('SELECT * FROM "%s" ORDER BY "%s" LIMIT %i', self$table, self$primary_key, n)
+      )
       recode(setDT(res), self$levels)
     },
 
@@ -134,8 +141,13 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))
 
         get_query = function(col) {
-          sprintf('SELECT DISTINCT("%1$s"."%2$s") FROM "%3$s" LEFT JOIN "%1$s" ON "%3$s"."row_id" = "%1$s"."%4$s"',
-            self$table, col, tmp_tbl, self$primary_key)
+          sprintf(
+            'SELECT DISTINCT("%1$s"."%2$s") FROM "%3$s" LEFT JOIN "%1$s" ON "%3$s"."row_id" = "%1$s"."%4$s"',
+            self$table,
+            col,
+            tmp_tbl,
+            self$primary_key
+          )
         }
       }
 
@@ -169,7 +181,8 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
       tmp_tbl = write_temp_table(private$.data, rows)
       on.exit(DBI::dbRemoveTable(private$.data, tmp_tbl, temporary = TRUE))
 
-      query = sprintf('SELECT %1$s FROM (SELECT * FROM "%2$s" INNER JOIN "%3$s" ON "%2$s"."%4$s" = "%3$s"."row_id")',
+      query = sprintf(
+        'SELECT %1$s FROM (SELECT * FROM "%2$s" INNER JOIN "%3$s" ON "%2$s"."%4$s" = "%3$s"."row_id")',
         paste0(sprintf('COUNT("%s")', cols), collapse = ","),
         self$table,
         tmp_tbl,
@@ -193,8 +206,10 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
     rownames = function() {
       private$.reconnect()
-      res = DBI::dbGetQuery(private$.data,
-        sprintf('SELECT "%1$s" FROM "%2$s" ORDER BY "%1$s"', self$primary_key, self$table))
+      res = DBI::dbGetQuery(
+        private$.data,
+        sprintf('SELECT "%1$s" FROM "%2$s" ORDER BY "%1$s"', self$primary_key, self$table)
+      )
       res[[1L]]
     },
 
@@ -209,8 +224,7 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
     #' Number of rows (observations).
     nrow = function() {
       private$.reconnect()
-      res = DBI::dbGetQuery(private$.data,
-        sprintf('SELECT COUNT(*) AS n FROM "%s"', self$table))
+      res = DBI::dbGetQuery(private$.data, sprintf('SELECT COUNT(*) AS n FROM "%s"', self$table))
       as.integer(res$n)
     },
 
@@ -246,8 +260,14 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
         con = self$connector()
 
         if (!all(class(private$.data) == class(con))) {
-          stop(sprintf("Reconnecting failed. Expected a connection of class %s, but got %s",
-            paste0(class(private$.data$src$con), collapse = "/"), paste0(class(con), collapse = "/")), call. = FALSE)
+          stop(
+            sprintf(
+              "Reconnecting failed. Expected a connection of class %s, but got %s",
+              paste0(class(private$.data$src$con), collapse = "/"),
+              paste0(class(con), collapse = "/")
+            ),
+            call. = FALSE
+          )
         }
 
         private$.data = con
@@ -264,14 +284,21 @@ DataBackendDuckDB = R6Class("DataBackendDuckDB", inherit = DataBackend, cloneabl
 
 write_temp_table = function(con, rows) {
   tbl_name = sprintf("rows_%i", Sys.getpid())
-  DBI::dbWriteTable(con, tbl_name, data.frame(row_id = sort(unique(rows))),
-    temporary = TRUE, overwrite = TRUE, append = FALSE)
+  DBI::dbWriteTable(
+    con,
+    tbl_name,
+    data.frame(row_id = sort(unique(rows))),
+    temporary = TRUE,
+    overwrite = TRUE,
+    append = FALSE
+  )
   tbl_name
 }
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.tbl_duckdb_connection = function(data, primary_key, strings_as_factors = TRUE, ...) { # nolint
+#nolint next
+as_data_backend.tbl_duckdb_connection = function(data, primary_key, strings_as_factors = TRUE, ...) {
   b = DataBackendDuckDB$new(data, primary_key)
   path = data$src$con@driver@dbdir
   if (!identical(path, ":memory:") && test_string(path) && file.exists(path)) {

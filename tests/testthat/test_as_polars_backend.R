@@ -28,4 +28,3 @@ test_that("Task", {
   expect_backend(task$backend)
   expect_task(task)
 })
-

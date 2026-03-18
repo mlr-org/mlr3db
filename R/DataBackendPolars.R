@@ -3,7 +3,8 @@
 #' @description
 #' A [mlr3::DataBackend] using `LazyFrame` from package `polars`.
 #' Can be easily constructed with [as_polars_backend()].
-#' [mlr3::Task]s can interface out-of-memory files if the `polars::polars_lazy_frame` was imported using a `polars::scan_x` function.
+#' [mlr3::Task]s can interface out-of-memory files if the `polars::polars_lazy_frame` was imported
+#' using a `polars::scan_x` function.
 #' Streaming, a `polars` alpha feature, is always enabled, but only used when applicable.
 #' A connector is not required but can be useful e.g. for scanning larger than memory files
 #'
@@ -18,7 +19,8 @@
 #'   Whether to remove NAs or not.
 #' @param primary_key (`character(1)`)\cr
 #'   Name of the primary key column.
-#'   Because `polars` does not natively support primary keys, uniqueness of the primary key column is expected but not enforced.
+#'   Because `polars` does not natively support primary keys,
+#'   uniqueness of the primary key column is expected but not enforced.
 #' @param connector (`function()`)\cr
 #'   Optional function which is called to re-connect to e.g. a source file in case the connection became invalid.
 #'
@@ -77,7 +79,10 @@
 #'     file.remove("iris.parquet")
 #'   }
 #' }
-DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneable = FALSE,
+DataBackendPolars = R6Class(
+  "DataBackendPolars",
+  inherit = DataBackend,
+  cloneable = FALSE,
   public = list(
     #' @template field_levels
     levels = NULL,
@@ -110,7 +115,12 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
         self$levels = list()
       } else {
         h = self$head(1L)
-        string_cols = setdiff(names(h)[map_lgl(h, function(x) {is.character(x) || is.factor(x)})], self$primary_key)
+        string_cols = setdiff(
+          names(h)[map_lgl(h, function(x) {
+            is.character(x) || is.factor(x)
+          })],
+          self$primary_key
+        )
 
         if (isTRUE(strings_as_factors)) {
           strings_as_factors = string_cols
@@ -140,8 +150,7 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
       )$select(polars::pl$col(!!!union(self$primary_key, cols)))$collect(engine = "streaming")
       res = as.data.table(res)
 
-      recode(res[list(rows), cols, nomatch = NULL, on = self$primary_key, with = FALSE],
-             self$levels)
+      recode(res[list(rows), cols, nomatch = NULL, on = self$primary_key, with = FALSE], self$levels)
     },
 
     #' @description
@@ -176,8 +185,8 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
 
       get_distinct = function(col) {
         x = dat$select(
-            polars::pl$col(!!!col)$unique()
-          )$collect(engine = "streaming")$get_column(col)$to_r_vector()
+          polars::pl$col(!!!col)$unique()
+        )$collect(engine = "streaming")$get_column(col)$to_r_vector()
 
         if (is.factor(x)) {
           x = as.character(x)
@@ -206,8 +215,8 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
       }
 
       res = private$.data$filter(
-          polars::pl$col(self$primary_key)$is_in(list(rows))
-        )
+        polars::pl$col(self$primary_key)$is_in(list(rows))
+      )
       res = res$select(
         !!!lapply(cols, function(col) {
           polars::pl$col(!!!col)$is_null()$sum()$alias(col)
@@ -228,11 +237,7 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
     rownames = function() {
       private$.reconnect()
 
-        private$.data$
-          select(polars::pl$col(self$primary_key))$
-          collect()$
-          get_column(self$primary_key)$
-          to_r_vector()
+      private$.data$select(polars::pl$col(self$primary_key))$collect()$get_column(self$primary_key)$to_r_vector()
     },
 
     #' @field colnames (`character()`)\cr
@@ -273,8 +278,14 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
       con = self$connector()
 
       if (!all(class(private$.data) == class(con))) {
-        stop(sprintf("Reconnecting failed. Expected a connection of class %s, but got %s",
-                     paste0(class(private$.data), collapse = "/"), paste0(class(con), collapse = "/")), call. = FALSE)
+        stop(
+          sprintf(
+            "Reconnecting failed. Expected a connection of class %s, but got %s",
+            paste0(class(private$.data), collapse = "/"),
+            paste0(class(con), collapse = "/")
+          ),
+          call. = FALSE
+        )
       }
 
       private$.data = con
@@ -284,7 +295,8 @@ DataBackendPolars = R6Class("DataBackendPolars", inherit = DataBackend, cloneabl
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.polars_data_frame = function(data, primary_key = NULL, ...) { # nolint
+#nolint next
+as_data_backend.polars_data_frame = function(data, primary_key = NULL, ...) {
   data = as.data.frame(data)
 
   if (!is.null(primary_key) && test_integerish(data[[primary_key]])) {
@@ -296,6 +308,7 @@ as_data_backend.polars_data_frame = function(data, primary_key = NULL, ...) { # 
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.polars_lazy_frame = function(data, primary_key, strings_as_factors = TRUE, ...) { # nolint
+#nolint next
+as_data_backend.polars_lazy_frame = function(data, primary_key, strings_as_factors = TRUE, ...) {
   DataBackendPolars$new(data, primary_key, strings_as_factors)
 }

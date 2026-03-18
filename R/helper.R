@@ -19,8 +19,5 @@ get_db_path = function(path, hash, extension) {
     dir.create(parent, recursive = TRUE)
   }
 
-  file.path(parent, sprintf("%s.%s",
-    gsub("[^[:alnum:]._-]", "_", hash),
-    extension)
-  )
+  file.path(parent, sprintf("%s.%s", gsub("[^[:alnum:]._-]", "_", hash), extension))
 }
