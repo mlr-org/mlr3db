@@ -66,7 +66,10 @@
 #'   rm(tbl)
 #'   DBI::dbDisconnect(con)
 #' }
-DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable = FALSE,
+DataBackendDplyr = R6Class(
+  "DataBackendDplyr",
+  inherit = DataBackend,
+  cloneable = FALSE,
   public = list(
     #' @template field_levels
     levels = NULL,
@@ -137,10 +140,10 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
       res = setDT(dplyr::collect(dplyr::select_at(
         dplyr::filter_at(private$.data, self$primary_key, dplyr::all_vars(. %in% rows)),
-        union(cols, self$primary_key))))
+        union(cols, self$primary_key)
+      )))
 
-      recode(res[list(rows), cols, nomatch = NULL, with = FALSE, on = self$primary_key],
-        self$levels)
+      recode(res[list(rows), cols, nomatch = NULL, with = FALSE, on = self$primary_key], self$levels)
     },
 
     #' @description
@@ -203,7 +206,9 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
       res = dplyr::collect(dplyr::summarize_at(
         dplyr::filter_at(private$.data, self$primary_key, dplyr::all_vars(. %in% rows)),
-        cols, list(~ sum(is.na(.), na.rm = TRUE))))
+        cols,
+        list(~ sum(is.na(.), na.rm = TRUE))
+      ))
 
       if (nrow(res) == 0L) {
         return(setNames(integer(length(cols)), cols))
@@ -274,8 +279,14 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
         con = self$connector()
 
         if (!all(class(private$.data$src$con) == class(con))) {
-          stop(sprintf("Reconnecting failed. Expected a connection of class %s, but got %s",
-            paste0(class(private$.data$src$con), collapse = "/"), paste0(class(con), collapse = "/")), call. = FALSE)
+          stop(
+            sprintf(
+              "Reconnecting failed. Expected a connection of class %s, but got %s",
+              paste0(class(private$.data$src$con), collapse = "/"),
+              paste0(class(con), collapse = "/")
+            ),
+            call. = FALSE
+          )
         }
 
         private$.data$src$con = con
@@ -292,7 +303,8 @@ DataBackendDplyr = R6Class("DataBackendDplyr", inherit = DataBackend, cloneable 
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.tbl_SQLiteConnection = function(data, primary_key, strings_as_factors = TRUE, ...) { # nolint
+#nolint next
+as_data_backend.tbl_SQLiteConnection = function(data, primary_key, strings_as_factors = TRUE, ...) {
   b = DataBackendDplyr$new(data, primary_key)
   path = data$src$con@dbname
   if (!identical(path, ":memory:") && test_string(path) && file.exists(path)) {
@@ -303,12 +315,14 @@ as_data_backend.tbl_SQLiteConnection = function(data, primary_key, strings_as_fa
 
 #' @importFrom mlr3 as_data_backend
 #' @export
-as_data_backend.tbl_lazy = function(data, primary_key, strings_as_factors = TRUE, ...) { # nolint
+#nolint next
+as_data_backend.tbl_lazy = function(data, primary_key, strings_as_factors = TRUE, ...) {
   DataBackendDplyr$new(data, primary_key)
 }
 
 #' @rawNamespace if (getRversion() >= "3.6.0") S3method(dplyr::show_query, DataBackendDplyr)
-show_query.DataBackendDplyr = function(x, ...) { # nolint
+#nolint next
+show_query.DataBackendDplyr = function(x, ...) {
   requireNamespace("dplyr")
   requireNamespace("dbplyr")
   dplyr::show_query(x$.__enclos_env__$private$.data)

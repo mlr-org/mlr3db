@@ -28,7 +28,13 @@ as_duckdb_backend = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:
 }
 
 #' @export
-as_duckdb_backend.data.frame = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), primary_key = NULL, ...) { # nolint
+#nolint next
+as_duckdb_backend.data.frame = function(
+  data,
+  path = getOption("mlr3db.duckdb_dir", ":temp:"),
+  primary_key = NULL,
+  ...
+) {
   backend = as_data_backend(data, primary_key = primary_key)
   as_duckdb_backend.DataBackend(backend, path = path, ...)
 }
@@ -53,19 +59,26 @@ as_duckdb_backend.character = function(data, path = getOption("mlr3db.duckdb_dir
 }
 
 #' @export
-as_duckdb_backend.DataBackend = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), ...) { # nolint
+#nolint next
+as_duckdb_backend.DataBackend = function(data, path = getOption("mlr3db.duckdb_dir", ":temp:"), ...) {
   path = get_db_path(path, hash = data$hash, "duckdb")
   primary_key = data$primary_key
 
   con = NULL
-  on.exit({
-    if (!is.null(con)) DBI::dbDisconnect(con, shutdown = TRUE)
-  }, add = TRUE)
+  on.exit(
+    {
+      if (!is.null(con)) DBI::dbDisconnect(con, shutdown = TRUE)
+    },
+    add = TRUE
+  )
 
   if (!file.exists(path)) {
-    on.exit({
-      if (file.exists(path)) unlink(paste0(path, c("", ".wal", ".tmp"), recursive = TRUE))
-    }, add = TRUE)
+    on.exit(
+      {
+        if (file.exists(path)) unlink(paste0(path, c("", ".wal", ".tmp"), recursive = TRUE))
+      },
+      add = TRUE
+    )
 
     con = DBI::dbConnect(duckdb::duckdb(), dbdir = path, read_only = FALSE)
     DBI::dbWriteTable(con, "data", data$head(Inf), row.names = FALSE)

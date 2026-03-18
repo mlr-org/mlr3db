@@ -18,16 +18,19 @@ disconnect = function(x) {
   UseMethod("disconnect")
 }
 
+#nolint next
 disconnect.tbl_dbi = function(x) {
   disconnect(x$src$con)
 }
 registerS3method("disconnect", "tbl_dbi", disconnect.tbl_dbi)
 
+#nolint next
 disconnect.SQLiteConnection = function(x) {
   DBI::dbDisconnect(x)
 }
 registerS3method("disconnect", "SQLiteConnection", disconnect.SQLiteConnection)
 
+#nolint next
 disconnect.DataBackend = function(x) {
   mlr3misc::get_private(x)$finalize()
 }

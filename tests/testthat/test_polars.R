@@ -20,11 +20,14 @@ test_that("valid DataBackend (polars LazyFrame)", {
 
 test_that("valid DataBackend with scanning", {
   polars::as_polars_df(iris)$with_row_index("row_id", offset = 1L)$write_parquet("iris.parquet")
-  on.exit({
-    if (file.exists("iris.parquet")) {
-      file.remove("iris.parquet")
-    }
-  }, add = TRUE)
+  on.exit(
+    {
+      if (file.exists("iris.parquet")) {
+        file.remove("iris.parquet")
+      }
+    },
+    add = TRUE
+  )
 
   data = polars::pl$scan_parquet("iris.parquet")
 
@@ -34,8 +37,9 @@ test_that("valid DataBackend with scanning", {
   expect_equal(b$nrow, nrow(iris))
 
   # valid with connector
-  b = DataBackendPolars$new(data, "row_id", strings_as_factors = TRUE,
-                            connector = function() polars::pl$scan_parquet("iris.parquet"))
+  b = DataBackendPolars$new(data, "row_id", strings_as_factors = TRUE, connector = function() {
+    polars::pl$scan_parquet("iris.parquet")
+  })
   expect_backend(b)
   expect_equal(b$nrow, nrow(iris))
 })

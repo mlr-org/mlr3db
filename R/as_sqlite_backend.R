@@ -29,13 +29,21 @@ as_sqlite_backend = function(data, path = getOption("mlr3db.sqlite_dir", ":temp:
 
 #' @inheritParams as_data_backend
 #' @export
-as_sqlite_backend.data.frame = function(data, path = getOption("mlr3db.sqlite_dir", ":temp:"), primary_key = NULL, keep_rownames = FALSE, ...) { # nolint
+#nolint next
+as_sqlite_backend.data.frame = function(
+  data,
+  path = getOption("mlr3db.sqlite_dir", ":temp:"),
+  primary_key = NULL,
+  keep_rownames = FALSE,
+  ...
+) {
   backend = as_data_backend(data, primary_key = primary_key, keep_rownames = keep_rownames)
   as_sqlite_backend.DataBackend(backend, path = path, ...)
 }
 
 #' @export
-as_sqlite_backend.DataBackend = function(data, path = getOption("mlr3db.sqlite_dir", ":temp:"), ...) { # nolint
+#nolint next
+as_sqlite_backend.DataBackend = function(data, path = getOption("mlr3db.sqlite_dir", ":temp:"), ...) {
   path = get_db_path(path, data$hash, "sqlite")
   primary_key = data$primary_key
 

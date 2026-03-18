@@ -8,7 +8,8 @@
 #' * [mlr3::DataBackend]: Creates a new [DataBackendPolars].
 #'
 #' There is no automatic connection to the origin file set.
-#' If the data is obtained using scanning and the data is streamed, a `connector` can be set manually but is not required.
+#' If the data is obtained using scanning and the data is streamed,
+#' a `connector` can be set manually but is not required.
 #'
 #' @param data (`data.frame()` | [mlr3::DataBackend])\cr
 #'   See description.
@@ -43,7 +44,7 @@ as_polars_backend.DataBackend = function(data, streaming = FALSE, ...) {
 
   primary_key = data$primary_key
 
-  if(streaming) {
+  if (streaming) {
     polars::as_polars_df(data$head(Inf))$write_parquet(sprintf("%s.parquet", path))
     data = polars::pl$scan_parquet(sprintf("%s.parquet", path))
   } else {
