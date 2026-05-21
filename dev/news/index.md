@@ -2,6 +2,8 @@
 
 ## mlr3db (development version)
 
+compatibility: dplyr 2.6.0
+
 ## mlr3db 0.7.1
 
 CRAN release: 2026-02-28
