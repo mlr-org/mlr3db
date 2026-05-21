@@ -290,6 +290,7 @@ DataBackendDplyr = R6Class(
         }
 
         private$.data$src$con = con
+        private$.data$con = con
       }
     },
 
