@@ -50,7 +50,7 @@ if (mlr3misc::require_namespaces("polars", quietly = TRUE)) {
   b = DataBackendPolars$new(data, "row_id", strings_as_factors = TRUE)
   print(b)
 
-  # Query disinct values
+  # Query distinct values
   b$distinct(b$rownames, "Species")
 
   # Query number of missing values
