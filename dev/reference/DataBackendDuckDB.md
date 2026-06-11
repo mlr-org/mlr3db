@@ -75,7 +75,7 @@ constructed with
 
 ### Public methods
 
-- [`DataBackendDuckDB$new()`](#method-DataBackendDuckDB-new)
+- [`DataBackendDuckDB$new()`](#method-DataBackendDuckDB-initialize)
 
 - [`DataBackendDuckDB$data()`](#method-DataBackendDuckDB-data)
 
@@ -92,7 +92,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `DataBackendDuckDB$new()`
 
 Creates a backend for a
 [`duckdb::duckdb()`](https://r.duckdb.org/reference/duckdb.html)
@@ -160,7 +160,7 @@ database.
 
 ------------------------------------------------------------------------
 
-### Method [`data()`](https://rdrr.io/r/utils/data.html)
+### `DataBackendDuckDB$data()`
 
 Returns a slice of the data.
 
@@ -189,7 +189,7 @@ in duplicated rows, duplicated column names lead to an exception.
 
 ------------------------------------------------------------------------
 
-### Method [`head()`](https://rdrr.io/r/utils/head.html)
+### `DataBackendDuckDB$head()`
 
 Retrieve the first `n` rows.
 
@@ -211,7 +211,7 @@ of the first `n` rows.
 
 ------------------------------------------------------------------------
 
-### Method `distinct()`
+### `DataBackendDuckDB$distinct()`
 
 Returns a named list of vectors of distinct values for each column
 specified. If `na_rm` is `TRUE`, missing values are removed from the
@@ -245,7 +245,7 @@ Named [`list()`](https://rdrr.io/r/base/list.html) of distinct values.
 
 ------------------------------------------------------------------------
 
-### Method `missings()`
+### `DataBackendDuckDB$missings()`
 
 Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.

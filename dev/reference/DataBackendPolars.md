@@ -63,7 +63,7 @@ than memory files
 
 ### Public methods
 
-- [`DataBackendPolars$new()`](#method-DataBackendPolars-new)
+- [`DataBackendPolars$new()`](#method-DataBackendPolars-initialize)
 
 - [`DataBackendPolars$data()`](#method-DataBackendPolars-data)
 
@@ -80,7 +80,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `DataBackendPolars$new()`
 
 Creates a backend for a
 [polars::polars_data_frame](https://pola-rs.github.io/r-polars/man/pl__DataFrame.html)
@@ -140,7 +140,7 @@ object.
 
 ------------------------------------------------------------------------
 
-### Method [`data()`](https://rdrr.io/r/utils/data.html)
+### `DataBackendPolars$data()`
 
 Returns a slice of the data.
 
@@ -167,7 +167,7 @@ ignored.
 
 ------------------------------------------------------------------------
 
-### Method [`head()`](https://rdrr.io/r/utils/head.html)
+### `DataBackendPolars$head()`
 
 Retrieve the first `n` rows.
 
@@ -189,7 +189,7 @@ of the first `n` rows.
 
 ------------------------------------------------------------------------
 
-### Method `distinct()`
+### `DataBackendPolars$distinct()`
 
 Returns a named list of vectors of distinct values for each column
 specified. If `na_rm` is `TRUE`, missing values are removed from the
@@ -223,7 +223,7 @@ Named [`list()`](https://rdrr.io/r/base/list.html) of distinct values.
 
 ------------------------------------------------------------------------
 
-### Method `missings()`
+### `DataBackendPolars$missings()`
 
 Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.
@@ -291,7 +291,7 @@ if (mlr3misc::require_namespaces("polars", quietly = TRUE)) {
   b = DataBackendPolars$new(data, "row_id", strings_as_factors = TRUE)
   print(b)
 
-  # Query disinct values
+  # Query distinct values
   b$distinct(b$rownames, "Species")
 
   # Query number of missing values

@@ -9,7 +9,7 @@ Can be easily constructed with as_duckdb_backend()."><meta name="robots" content
 
     <a class="navbar-brand me-2" href="../index.html">mlr3db</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.7.1.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.7.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,12 +61,12 @@ List (named with column names) of factor levels as <code><a href="https://rdrr.i
 Used to auto-convert character columns to factor variables.</p></dd>
 
 
-<dt><code>connector</code></dt>
+    <dt><code>connector</code></dt>
 <dd><p>(<code>function()</code>)<br>
 Function which is called to re-connect in case the connection became invalid.</p></dd>
 
 
-<dt><code>table</code></dt>
+    <dt><code>table</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Data base table or view to operate on.</p></dd>
 
@@ -80,27 +80,27 @@ Data base table or view to operate on.</p></dd>
 Data frame as returned by pragma <code>table_info()</code>.</p></dd>
 
 
-<dt><code>rownames</code></dt>
+    <dt><code>rownames</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code>)<br>
 Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.</p></dd>
 
 
-<dt><code>colnames</code></dt>
+    <dt><code>colnames</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
 Returns vector of all column names, including the primary key column.</p></dd>
 
 
-<dt><code>nrow</code></dt>
+    <dt><code>nrow</code></dt>
 <dd><p>(<code>integer(1)</code>)<br>
 Number of rows (observations).</p></dd>
 
 
-<dt><code>ncol</code></dt>
+    <dt><code>ncol</code></dt>
 <dd><p>(<code>integer(1)</code>)<br>
 Number of columns (variables), including the primary key column.</p></dd>
 
 
-<dt><code>valid</code></dt>
+    <dt><code>valid</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
 Returns <code>NA</code> if the data does not inherits from <code>"tbl_sql"</code> (i.e., it is not a real SQL data base).
 Returns the result of <code><a href="https://dbi.r-dbi.org/reference/dbIsValid.html" class="external-link">DBI::dbIsValid()</a></code> otherwise.</p></dd>
@@ -113,16 +113,15 @@ Returns the result of <code><a href="https://dbi.r-dbi.org/reference/dbIsValid.h
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-DataBackendDuckDB-new"><code>DataBackendDuckDB$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-DataBackendDuckDB-initialize"><code>DataBackendDuckDB$new()</code></a></p></li>
 <li><p><a href="#method-DataBackendDuckDB-data"><code>DataBackendDuckDB$data()</code></a></p></li>
 <li><p><a href="#method-DataBackendDuckDB-head"><code>DataBackendDuckDB$head()</code></a></p></li>
 <li><p><a href="#method-DataBackendDuckDB-distinct"><code>DataBackendDuckDB$distinct()</code></a></p></li>
 <li><p><a href="#method-DataBackendDuckDB-missings"><code>DataBackendDuckDB$missings()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-format"><code>mlr3::DataBackend$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-print"><code>mlr3::DataBackend$print()</code></a></span></li>
-</ul></details></p><hr><a id="method-DataBackendDuckDB-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-print"><code>mlr3::DataBackend$print()</code></a></span></li>
+</ul></details></p><hr><a id="method-DataBackendDuckDB-initialize"></a><div class="section">
+<h3 id="databackendduckdb-new-"><code>DataBackendDuckDB$new()</code><a class="anchor" aria-label="anchor" href="#databackendduckdb-new-"></a></h3>
 <p>Creates a backend for a <code><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb::duckdb()</a></code> database.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/DataBackendDuckDB.html">DataBackendDuckDB</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
@@ -132,9 +131,7 @@ Returns the result of <code><a href="https://dbi.r-dbi.org/reference/dbIsValid.h
 <span>  strings_as_factors <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  connector <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
 <dd><p>(connection)<br>
@@ -142,26 +139,22 @@ A connection created with <code><a href="https://dbi.r-dbi.org/reference/dbConne
 If constructed manually (and not via the helper function <code><a href="as_duckdb_backend.html">as_duckdb_backend()</a></code>,
 make sure that there exists an (unique) index for the key column.</p></dd>
 
-
-<dt><code>table</code></dt>
+      <dt><code>table</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Table or view to operate on.</p></dd>
 
-
-<dt><code>primary_key</code></dt>
+      <dt><code>primary_key</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Name of the primary key column.</p></dd>
 
-
-<dt><code>strings_as_factors</code></dt>
+      <dt><code>strings_as_factors</code></dt>
 <dd><p>(<code>logical(1)</code> || <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
 Either a character vector of column names to convert to factors, or a single logical flag:
 if <code>FALSE</code>, no column will be converted, if <code>TRUE</code> all string columns (except the primary key).
 For conversion, the backend is queried for distinct values of the respective columns
 on construction and their levels are stored in <code>$levels</code>.</p></dd>
 
-
-<dt><code>connector</code></dt>
+      <dt><code>connector</code></dt>
 <dd><p>(function()<code>)\cr If not </code>NULL`, a function which re-connects to the database in case the connection has become invalid.
 Database connections can become invalid due to timeouts or if the backend is serialized
 to the file system and then de-serialized again.
@@ -177,8 +170,10 @@ To protect your credentials, it is recommended to use the <a href="https://CRAN.
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendDuckDB-data"></a><div class="section">
-<h3 id="method-data-">Method <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code><a class="anchor" aria-label="anchor" href="#method-data-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-DataBackendDuckDB-data"></a><div class="section">
+<h3 id="databackendduckdb-data-"><code>DataBackendDuckDB$data()</code><a class="anchor" aria-label="anchor" href="#databackendduckdb-data-"></a></h3>
 <p>Returns a slice of the data.</p>
 <p>The rows must be addressed as vector of primary key values, columns must be referred to via column names.
 Queries for rows with no matching row id and queries for columns with no matching
@@ -187,16 +182,13 @@ Rows are guaranteed to be returned in the same order as <code>rows</code>, colum
 Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDuckDB</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
 Row indices.</p></dd>
 
-
-<dt><code>cols</code></dt>
+      <dt><code>cols</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code><br>
 Column names.</p></dd>
 
@@ -204,14 +196,14 @@ Column names.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendDuckDB-head"></a><div class="section">
-<h3 id="method-head-">Method <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">head()</a></code><a class="anchor" aria-label="anchor" href="#method-head-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-DataBackendDuckDB-head"></a><div class="section">
+<h3 id="databackendduckdb-head-"><code>DataBackendDuckDB$head()</code><a class="anchor" aria-label="anchor" href="#databackendduckdb-head-"></a></h3>
 <p>Retrieve the first <code>n</code> rows.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDuckDB</span><span class="op">$</span><span class="fu">head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">6L</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n</code></dt>
 <dd><p>(<code>integer(1)</code>)<br>
@@ -219,74 +211,69 @@ Number of rows.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code> of the first <code>n</code> rows.</p>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendDuckDB-distinct"></a><div class="section">
-<h3 id="method-distinct-">Method <code>distinct()</code><a class="anchor" aria-label="anchor" href="#method-distinct-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-DataBackendDuckDB-distinct"></a><div class="section">
+<h3 id="databackendduckdb-distinct-"><code>DataBackendDuckDB$distinct()</code><a class="anchor" aria-label="anchor" href="#databackendduckdb-distinct-"></a></h3>
 <p>Returns a named list of vectors of distinct values for each column
 specified. If <code>na_rm</code> is <code>TRUE</code>, missing values are removed from the
 returned vectors of distinct values. Non-existing rows and columns are
 silently ignored.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDuckDB</span><span class="op">$</span><span class="fu">distinct</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span>, na_rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
 Row indices.</p></dd>
 
-
-<dt><code>cols</code></dt>
+      <dt><code>cols</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code><br>
 Column names.</p></dd>
 
-
-<dt><code>na_rm</code></dt>
+      <dt><code>na_rm</code></dt>
 <dd><p><code>logical(1)</code><br>
 Whether to remove NAs or not.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Named <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> of distinct values.</p>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendDuckDB-missings"></a><div class="section">
-<h3 id="method-missings-">Method <code>missings()</code><a class="anchor" aria-label="anchor" href="#method-missings-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-DataBackendDuckDB-missings"></a><div class="section">
+<h3 id="databackendduckdb-missings-"><code>DataBackendDuckDB$missings()</code><a class="anchor" aria-label="anchor" href="#databackendduckdb-missings-"></a></h3>
 <p>Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendDuckDB</span><span class="op">$</span><span class="fu">missings</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
 Row indices.</p></dd>
 
-
-<dt><code>cols</code></dt>
+      <dt><code>cols</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code><br>
 Column names.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>Total of missing values per column (named <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>).</p>
 </div>
 
 </div>
+
 
     </div>
 
