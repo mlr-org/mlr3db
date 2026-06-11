@@ -40,7 +40,7 @@ if (mlr3misc::require_namespaces(c("tibble", "RSQLite", "dbplyr"), quietly = TRU
   b = DataBackendDplyr$new(tbl, primary_key = "row_id")
   print(b)
 
-  # Query disinct values
+  # Query distinct values
   b$distinct(b$rownames, "Species")
 
   # Query number of missing values

@@ -53,7 +53,7 @@
 #'   b = DataBackendDplyr$new(tbl, primary_key = "row_id")
 #'   print(b)
 #'
-#'   # Query disinct values
+#'   # Query distinct values
 #'   b$distinct(b$rownames, "Species")
 #'
 #'   # Query number of missing values
@@ -167,7 +167,7 @@ DataBackendDplyr = R6Class(
     #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
       private$.reconnect()
-      # TODO: what does dplyr::disinct return for enums?
+      # TODO: what does dplyr::distinct return for enums?
       assert_names(cols, type = "unique")
       cols = intersect(cols, self$colnames)
 
