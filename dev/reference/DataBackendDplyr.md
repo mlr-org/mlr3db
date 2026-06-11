@@ -329,10 +329,10 @@ if (mlr3misc::require_namespaces(c("tibble", "RSQLite", "dbplyr"), quietly = TRU
 #> 
 #> ── <TaskClassif> (150x5) ───────────────────────────────────────────────────────
 #> • Target: Species
-#> • Target classes: setosa (33%), versicolor (33%), virginica (33%)
 #> • Properties: multiclass
 #> • Features (4):
 #>   • dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width
+#> • Target classes: setosa (33%), versicolor (33%), virginica (33%)
 #> 
 #> ── <DataBackendDplyr> (120x5) ──────────────────────────────────────────────────
 #>  Sepal.Length Petal.Length Petal.Width Species row_id
