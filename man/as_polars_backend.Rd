@@ -29,5 +29,6 @@ with the conversion from \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataT
 }
 
 There is no automatic connection to the origin file set.
-If the data is obtained using scanning and the data is streamed, a \code{connector} can be set manually but is not required.
+If the data is obtained using scanning and the data is streamed,
+a \code{connector} can be set manually but is not required.
 }

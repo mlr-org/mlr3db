@@ -6,7 +6,8 @@
 \description{
 A \link[mlr3:DataBackend]{mlr3::DataBackend} using \code{LazyFrame} from package \code{polars}.
 Can be easily constructed with \code{\link[=as_polars_backend]{as_polars_backend()}}.
-\link[mlr3:Task]{mlr3::Task}s can interface out-of-memory files if the \code{polars::polars_lazy_frame} was imported using a \code{polars::scan_x} function.
+\link[mlr3:Task]{mlr3::Task}s can interface out-of-memory files if the \code{polars::polars_lazy_frame} was imported
+using a \code{polars::scan_x} function.
 Streaming, a \code{polars} alpha feature, is always enabled, but only used when applicable.
 A connector is not required but can be useful e.g. for scanning larger than memory files
 }
@@ -69,193 +70,195 @@ if (mlr3misc::require_namespaces("polars", quietly = TRUE)) {
 \code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendPolars}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{levels}}{(named \code{list()})\cr
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{levels}}{(named \code{list()})\cr
 List (named with column names) of factor levels as \code{character()}.
 Used to auto-convert character columns to factor variables.}
 
-\item{\code{connector}}{(\verb{function()})\cr
+    \item{\code{connector}}{(\verb{function()})\cr
 Function which is called to re-connect in case the connection became invalid.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{rownames}}{(\code{integer()})\cr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{rownames}}{(\code{integer()})\cr
 Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.}
 
-\item{\code{colnames}}{(\code{character()})\cr
+    \item{\code{colnames}}{(\code{character()})\cr
 Returns vector of all column names, including the primary key column.}
 
-\item{\code{nrow}}{(\code{integer(1)})\cr
+    \item{\code{nrow}}{(\code{integer(1)})\cr
 Number of rows (observations).}
 
-\item{\code{ncol}}{(\code{integer(1)})\cr
+    \item{\code{ncol}}{(\code{integer(1)})\cr
 Number of columns (variables), including the primary key column.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-DataBackendPolars-new}{\code{DataBackendPolars$new()}}
-\item \href{#method-DataBackendPolars-data}{\code{DataBackendPolars$data()}}
-\item \href{#method-DataBackendPolars-head}{\code{DataBackendPolars$head()}}
-\item \href{#method-DataBackendPolars-distinct}{\code{DataBackendPolars$distinct()}}
-\item \href{#method-DataBackendPolars-missings}{\code{DataBackendPolars$missings()}}
+  \itemize{
+    \item \href{#method-DataBackendPolars-initialize}{\code{DataBackendPolars$new()}}
+    \item \href{#method-DataBackendPolars-data}{\code{DataBackendPolars$data()}}
+    \item \href{#method-DataBackendPolars-head}{\code{DataBackendPolars$head()}}
+    \item \href{#method-DataBackendPolars-distinct}{\code{DataBackendPolars$distinct()}}
+    \item \href{#method-DataBackendPolars-missings}{\code{DataBackendPolars$missings()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-format'><code>mlr3::DataBackend$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-print'><code>mlr3::DataBackend$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-format'><code>mlr3::DataBackend$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-print'><code>mlr3::DataBackend$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendPolars-new"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendPolars-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a backend for a \link[polars:pl__DataFrame]{polars::polars_data_frame} object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendPolars$new(
+\if{html}{\out{<a id="method-DataBackendPolars-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendPolars-initialize}{}}}
+\subsection{\code{DataBackendPolars$new()}}{
+  Creates a backend for a \link[polars:polars_data_frame]{polars::polars_data_frame} object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendPolars$new(
   data,
   primary_key,
   strings_as_factors = TRUE,
   connector = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{(\link[polars:pl__LazyFrame]{polars::polars_lazy_frame})\cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{(\link[polars:polars_lazy_frame]{polars::polars_lazy_frame})\cr
 The data object.
 
 Instead of calling the constructor itself, please call \code{\link[mlr3:as_data_backend]{mlr3::as_data_backend()}} on
-a \link[polars:pl__LazyFrame]{polars::polars_lazy_frame} or \link[polars:pl__DataFrame]{polars::polars_data_frame}.
-Note that only \link[polars:pl__LazyFrame]{polars::polars_lazy_frame}s will be converted to a \link{DataBackendPolars}.
-\link[polars:pl__DataFrame]{polars::polars_data_frame} objects without lazy execution will be converted to a
+a \link[polars:polars_lazy_frame]{polars::polars_lazy_frame} or \link[polars:polars_data_frame]{polars::polars_data_frame}.
+Note that only \link[polars:polars_lazy_frame]{polars::polars_lazy_frame}s will be converted to a \link{DataBackendPolars}.
+\link[polars:polars_data_frame]{polars::polars_data_frame} objects without lazy execution will be converted to a
 \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}.}
-
-\item{\code{primary_key}}{(\code{character(1)})\cr
+      \item{\code{primary_key}}{(\code{character(1)})\cr
 Name of the primary key column.
-Because \code{polars} does not natively support primary keys, uniqueness of the primary key column is expected but not enforced.}
-
-\item{\code{strings_as_factors}}{(\code{logical(1)} || \code{character()})\cr
+Because \code{polars} does not natively support primary keys,
+uniqueness of the primary key column is expected but not enforced.}
+      \item{\code{strings_as_factors}}{(\code{logical(1)} || \code{character()})\cr
 Either a character vector of column names to convert to factors, or a single logical flag:
 if \code{FALSE}, no column will be converted, if \code{TRUE} all string columns (except the primary key).
 For conversion, the backend is queried for distinct values of the respective columns
 on construction and their levels are stored in \verb{$levels}.}
-
-\item{\code{connector}}{(\verb{function()})\cr
+      \item{\code{connector}}{(\verb{function()})\cr
 Optional function which is called to re-connect to e.g. a source file in case the connection became invalid.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendPolars-data"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendPolars-data}{}}}
-\subsection{Method \code{data()}}{
-Returns a slice of the data.
+\subsection{\code{DataBackendPolars$data()}}{
+  Returns a slice of the data.
 
 The rows must be addressed as vector of primary key values, columns must be referred to via column names.
 Queries for rows with no matching row id and queries for columns with no matching
 column name are silently ignored.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendPolars$data(rows, cols)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{(\code{integer()})\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendPolars$data(rows, cols)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{rows}}{(\code{integer()})\cr
 Row indices.}
-
-\item{\code{cols}}{(\code{character()})\cr
+      \item{\code{cols}}{(\code{character()})\cr
 Column names.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendPolars-head"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendPolars-head}{}}}
-\subsection{Method \code{head()}}{
-Retrieve the first \code{n} rows.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendPolars$head(n = 6L)}\if{html}{\out{</div>}}
+\subsection{\code{DataBackendPolars$head()}}{
+  Retrieve the first \code{n} rows.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendPolars$head(n = 6L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{n}}{(\code{integer(1)})\cr
+Number of rows.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{\link[data.table:data.table]{data.table::data.table()}} of the first \code{n} rows.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{(\code{integer(1)})\cr
-Number of rows.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link[data.table:data.table]{data.table::data.table()}} of the first \code{n} rows.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendPolars-distinct"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendPolars-distinct}{}}}
-\subsection{Method \code{distinct()}}{
-Returns a named list of vectors of distinct values for each column
+\subsection{\code{DataBackendPolars$distinct()}}{
+  Returns a named list of vectors of distinct values for each column
 specified. If \code{na_rm} is \code{TRUE}, missing values are removed from the
 returned vectors of distinct values. Non-existing rows and columns are
 silently ignored.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendPolars$distinct(rows, cols, na_rm = TRUE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{(\code{integer()})\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendPolars$distinct(rows, cols, na_rm = TRUE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{rows}}{(\code{integer()})\cr
 Row indices.}
-
-\item{\code{cols}}{(\code{character()})\cr
+      \item{\code{cols}}{(\code{character()})\cr
 Column names.}
-
-\item{\code{na_rm}}{(\code{logical(1)})\cr
+      \item{\code{na_rm}}{(\code{logical(1)})\cr
 Whether to remove NAs or not.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Named \code{list()} of distinct values.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Named \code{list()} of distinct values.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendPolars-missings"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendPolars-missings}{}}}
-\subsection{Method \code{missings()}}{
-Returns the number of missing values per column in the specified slice
+\subsection{\code{DataBackendPolars$missings()}}{
+  Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendPolars$missings(rows, cols)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{(\code{integer()})\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendPolars$missings(rows, cols)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{rows}}{(\code{integer()})\cr
 Row indices.}
-
-\item{\code{cols}}{(\code{character()})\cr
+      \item{\code{cols}}{(\code{character()})\cr
 Column names.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Total of missing values per column (named \code{numeric()}).
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Total of missing values per column (named \code{numeric()}).
-}
-}
+
 }
