@@ -1,5 +1,7 @@
 # mlr3db (development version)
 
+# mlr3db 0.7.2
+
 * compatibility: dplyr 2.6.0
 
 # mlr3db 0.7.1
