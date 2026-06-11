@@ -316,10 +316,10 @@ if (mlr3misc::require_namespaces("polars", quietly = TRUE)) {
 #> 
 #> ── <TaskClassif> (150x5) ───────────────────────────────────────────────────────
 #> • Target: Species
-#> • Target classes: setosa (33%), versicolor (33%), virginica (33%)
 #> • Properties: multiclass
 #> • Features (4):
 #>   • dbl (4): Petal.Length, Petal.Width, Sepal.Length, Sepal.Width
+#> • Target classes: setosa (33%), versicolor (33%), virginica (33%)
 #> 
 #> ── <DataBackendPolars> (150x6) ─────────────────────────────────────────────────
 #>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species row_id

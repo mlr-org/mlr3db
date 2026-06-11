@@ -30,12 +30,14 @@ You can install the released version of mlr3db from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
+
 install.packages("mlr3db")
 ```
 
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("mlr-org/mlr3db")
 ```
@@ -45,6 +47,7 @@ devtools::install_github("mlr-org/mlr3db")
 ### DataBackendDplyr
 
 ``` r
+
 library("mlr3db")
 #> Loading required package: mlr3
 
@@ -74,6 +77,7 @@ resample(task, lrn("classif.rpart"), rsmp("cv", folds = 3))
 ### DataBackendDuckDB
 
 ``` r
+
 library("mlr3db")
 
 # Get an example parquet file from the package install directory:
