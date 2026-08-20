@@ -22,9 +22,13 @@ if (getRversion() >= "3.6.0") S3method(dplyr::show_query, DataBackendDplyr)
 import(checkmate)
 import(data.table)
 importFrom(R6,R6Class)
-importFrom(mlr3,DataBackend)
-importFrom(mlr3,as_data_backend)
-importFrom(mlr3misc,calculate_hash)
-importFrom(mlr3misc,map_lgl)
+importFrom(mlr3,
+  DataBackend,
+  as_data_backend
+)
+importFrom(mlr3misc,
+  calculate_hash,
+  map_lgl
+)
 importFrom(stats,setNames)
 importFrom(utils,head)
