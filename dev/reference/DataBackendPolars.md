@@ -313,6 +313,9 @@ if (mlr3misc::require_namespaces("polars", quietly = TRUE)) {
 #>            NA         3.6          1.4         0.2  setosa      5
 #>            NA         3.9          1.7         0.4  setosa      6
 #> [...] (144 rows omitted)
+#> Warning: ! Using `...` to supply values to `pl$col()` is deprecated as of polars 1.16.0.
+#> ℹ Pass the values as a single `names` argument instead.
+#> This warning is displayed once every 8 hours.
 #> 
 #> ── <TaskClassif> (150x5) ───────────────────────────────────────────────────────
 #> • Target: Species
