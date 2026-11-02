@@ -2,6 +2,9 @@
 
 ## mlr3db (development version)
 
+- compatibility: polars 2.0.0. `DataBackendPolars` now requires polars
+  \>= 1.16.0.
+
 ## mlr3db 0.7.2
 
 CRAN release: 2026-05-22
