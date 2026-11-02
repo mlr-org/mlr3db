@@ -1,5 +1,7 @@
 # mlr3db (development version)
 
+* compatibility: polars 2.0.0. `DataBackendPolars` now requires polars >= 1.16.0.
+
 # mlr3db 0.7.2
 
 * compatibility: dplyr 2.6.0

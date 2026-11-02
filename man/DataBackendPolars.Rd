@@ -44,7 +44,7 @@ if (mlr3misc::require_namespaces("polars", quietly = TRUE)) {
 
   # Define a backend on a subset of the database: do not use column "Sepal.Width"
   data = data$select(
-    polars::pl$col(!!!setdiff(colnames(data), "Sepal.Width"))
+    polars::pl$col(names = setdiff(colnames(data), "Sepal.Width"))
   )$head(120) # Use only first 120 rows
 
   # Backend with only scanned data
