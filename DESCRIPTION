@@ -37,7 +37,7 @@ Suggests:
     future.callr,
     hms,
     lgr,
-    polars (>= 1.1.0),
+    polars (>= 1.16.0),
     RSQLite,
     rlang,
     testthat (>= 3.0.0),

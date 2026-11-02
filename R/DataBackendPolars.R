@@ -61,7 +61,7 @@
 #'
 #'   # Define a backend on a subset of the database: do not use column "Sepal.Width"
 #'   data = data$select(
-#'     polars::pl$col(!!!setdiff(colnames(data), "Sepal.Width"))
+#'     polars::pl$col(names = setdiff(colnames(data), "Sepal.Width"))
 #'   )$head(120) # Use only first 120 rows
 #'
 #'   # Backend with only scanned data
@@ -147,7 +147,7 @@ DataBackendPolars = R6Class(
       data = private$.data
       res = data$filter(
         polars::pl$col(self$primary_key)$is_in(list(rows))
-      )$select(polars::pl$col(!!!union(self$primary_key, cols)))$collect(engine = "streaming")
+      )$select(polars::pl$col(names = union(self$primary_key, cols)))$collect(engine = "streaming")
       res = as.data.table(res)
 
       recode(res[list(rows), cols, nomatch = NULL, on = self$primary_key, with = FALSE], self$levels)
@@ -180,12 +180,13 @@ DataBackendPolars = R6Class(
       dat = private$.data
 
       if (!is.null(rows)) {
+        rows = assert_integerish(rows, coerce = TRUE)
         dat = dat$filter(polars::pl$col(self$primary_key)$is_in(list(rows)))
       }
 
       get_distinct = function(col) {
         x = dat$select(
-          polars::pl$col(!!!col)$unique()
+          polars::pl$col(names = col)$unique()
         )$collect(engine = "streaming")$get_column(col)$to_r_vector()
 
         if (is.factor(x)) {
@@ -219,7 +220,7 @@ DataBackendPolars = R6Class(
       )
       res = res$select(
         !!!lapply(cols, function(col) {
-          polars::pl$col(!!!col)$is_null()$sum()$alias(col)
+          polars::pl$col(names = col)$is_null()$sum()$alias(col)
         })
       )$collect(engine = "streaming")
 
