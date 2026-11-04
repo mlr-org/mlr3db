@@ -54,9 +54,8 @@ as_sqlite_backend(data, path = getOption("mlr3db.sqlite_dir", ":temp:"), ...)
     remote workers. Set to a custom path instead or use special string
     `":user:"` instead.
 
-  - `":user:"`: User cache directory as returned by
-    [`backports::R_user_dir()`](https://rdrr.io/pkg/backports/man/R_user_dir.html)
-    is used.
+  - `":user:"`: User cache directory as returned by `R_user_dir()` is
+    used.
 
   The default for this argument can be configured via option
   `"mlr3db.sqlite_dir"` or `"mlr3db.duckdb_dir"`, respectively. The

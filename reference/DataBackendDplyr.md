@@ -67,7 +67,7 @@ an out-of-memory database.
 
 ### Public methods
 
-- [`DataBackendDplyr$new()`](#method-DataBackendDplyr-new)
+- [`DataBackendDplyr$new()`](#method-DataBackendDplyr-initialize)
 
 - [`DataBackendDplyr$data()`](#method-DataBackendDplyr-data)
 
@@ -84,7 +84,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `DataBackendDplyr$new()`
 
 Creates a backend for a
 [`dplyr::tbl()`](https://dplyr.tidyverse.org/reference/tbl.html) object.
@@ -152,7 +152,7 @@ Creates a backend for a
 
 ------------------------------------------------------------------------
 
-### Method [`data()`](https://rdrr.io/r/utils/data.html)
+### `DataBackendDplyr$data()`
 
 Returns a slice of the data. Calls
 [`dplyr::filter()`](https://dplyr.tidyverse.org/reference/filter.html)
@@ -186,7 +186,7 @@ in duplicated rows, duplicated column names lead to an exception.
 
 ------------------------------------------------------------------------
 
-### Method [`head()`](https://rdrr.io/r/utils/head.html)
+### `DataBackendDplyr$head()`
 
 Retrieve the first `n` rows.
 
@@ -208,7 +208,7 @@ of the first `n` rows.
 
 ------------------------------------------------------------------------
 
-### Method `distinct()`
+### `DataBackendDplyr$distinct()`
 
 Returns a named list of vectors of distinct values for each column
 specified. If `na_rm` is `TRUE`, missing values are removed from the
@@ -242,7 +242,7 @@ Named [`list()`](https://rdrr.io/r/base/list.html) of distinct values.
 
 ------------------------------------------------------------------------
 
-### Method `missings()`
+### `DataBackendDplyr$missings()`
 
 Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.
@@ -302,7 +302,7 @@ if (mlr3misc::require_namespaces(c("tibble", "RSQLite", "dbplyr"), quietly = TRU
   b = DataBackendDplyr$new(tbl, primary_key = "row_id")
   print(b)
 
-  # Query disinct values
+  # Query distinct values
   b$distinct(b$rownames, "Species")
 
   # Query number of missing values
