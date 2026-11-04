@@ -1,4 +1,4 @@
-# mlr3db (development version)
+# mlr3db 0.7.3
 
 * compatibility: polars 2.0.0. `DataBackendPolars` now requires polars >= 1.16.0.
 
